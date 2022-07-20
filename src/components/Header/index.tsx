@@ -3,6 +3,7 @@ import { Container, Content, LogoTitulo, Titulo } from './styles'
 import logoImg from '../../assets/logo.png'
 
 import homeImg from '../../assets/home.svg'
+import { Link } from 'react-router-dom'
 
 export function Header() {
   return (

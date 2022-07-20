@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { Button, Form } from './styles'
 
 export function Login() {
@@ -12,6 +13,8 @@ export function Login() {
         <input />
       </label>
       <Button type="submit">Logar</Button>
+      <Link to="/consoles">Consoles</Link>
+      <Link to="/games">Games</Link>
     </Form>
   )
 }

@@ -3,12 +3,13 @@ import homeImg from '../../assets/home.svg'
 import gameImg from '../../assets/game.svg'
 import consolesImg from '../../assets/consoles.svg'
 import usersImg from '../../assets/users.svg'
+import { Link } from 'react-router-dom'
 
 export function Menu() {
   return (
     <>
       <Container>
-        <nav>
+        {/* <nav>
           <a href="./">
             <img src={homeImg} alt="" /> Início
           </a>
@@ -21,6 +22,14 @@ export function Menu() {
           <a href="./">
             <img src={usersImg} alt="" /> Usuários
           </a>
+        </nav> */}
+        <nav>
+          <Link to="/login">
+            <img src={homeImg} alt="" /> Início
+          </Link>
+          <Link to="/consoles">
+            <img src={consolesImg} alt="" /> Consoles
+          </Link>
         </nav>
       </Container>
     </>

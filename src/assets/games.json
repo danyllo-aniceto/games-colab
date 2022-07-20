@@ -1,0 +1,82 @@
+[
+  { 
+    "id": "1",
+    "name": "God of War",
+    "developer": "Santa Mônica",
+    "summary": "God of War é uma série de jogos eletrônicos de ação-aventura vagamente baseado nas mitologias grega e nórdica sendo criado originalmente por David Jaffe da Santa Monica Studio. Iniciada em 2005, a série tornou-se carro-chefe para a marca PlayStation, que consiste em oito jogos em várias plataforma.",
+    "console": "PlayStation",
+    "genre": "RPG",
+    "image": "https://cdn1.epicgames.com/offer/3ddd6a590da64e3686042d108968a6b2/EGS_GodofWar_SantaMonicaStudio_S2_1200x1600-fbdf3cbc2980749091d52751ffabb7b7_1200x1600-fbdf3cbc2980749091d52751ffabb7b7",
+    "raiting": 0
+  },
+  {
+    "id": "2",
+    "name": "The last of Us",
+    "developer": "Naughty Dog",
+    "summary":"The Last of Us é uma franquia de jogos eletrônicos de ação-aventura e survival horror exclusiva da PlayStation, criada por Neil Druckmann. A franquia é situada em um mundo pós-apocalíptico, com seres humanos hostis e criaturas canibalísticas infectadas por uma mutação do fungo Cordyceps.",
+    "console":"PlayStation",
+    "genre":"Ação",
+    "image":"https://upload.wikimedia.org/wikipedia/pt/b/be/The_Last_of_Us_capa.png",
+    "raiting": 0
+  },
+  {
+    "id": "3",
+    "name": "Uncharted",
+    "developer": "Naughty Dog",
+    "summary":"Uncharted é uma série de videojogos de ação-aventura produzida pela Naughty Dog e publicada pela Sony Computer Entertainment para as plataformas PlayStation.",
+    "console":"PlayStation",
+    "genre":"Aventura",
+    "image":"https://image.api.playstation.com/vulcan/ap/rnd/202111/2001/9Vdas199J3tqxTIBWGijbpjW.png",
+    "raiting": 0
+  },
+  {
+    "id": "4",
+    "name": "Forza Horizon",
+    "developer": "Play Ground Games",
+    "summary":"Forza Horizon é um jogo de corrida exclusivo para o console Xbox 360 e retrocompatível com Xbox One com melhorias e resolução 4K.",
+    "console":"Xbox",
+    "genre":"Esporte",
+    "image":"https://pbs.twimg.com/media/FRmOvW_VgAEBpUl?format=jpg&name=900x900",
+    "raiting": 0
+  },
+  {
+    "id": "5",
+    "name": "Fallout 4",
+    "developer": "Bethesda Game Studios",
+    "summary":"O jogador assume um personagem referido como Sole Survivor (sobrevivente solitário), que emerge da Vault 111 (traduzido como refúgio), um abrigo nuclear subterrâneo. Após o personagem testemunhar a morte do seu cônjuge e o sequestro do filho, o sobrevivente solitário viaja pela Commonwealth de Massachusetts, nas áreas ao redor de Boston. ",
+    "console":"Xbox",
+    "genre":"RPG",
+    "image":"https://upload.wikimedia.org/wikipedia/pt/thumb/7/70/Fallout_4_cover_art.jpg/220px-Fallout_4_cover_art.jpg",
+    "raiting": 0
+  },
+  {
+    "id": "6",
+    "name": "Monster Hunter Rise",
+    "developer": "Capcom",
+    "summary":"Rise segue muitas das novas convenções estabelecidas em World , ao mesmo tempo em que introduz novos recursos e mecânicas, incluindo um novo companheiro animal chamado Palamute que pode ser usado para atravessar o mapa ou para a batalha, e o uso de Wirebugs para atravessar o mundo e montar e montar certos monstros.",
+    "console":"Nintendo Switch",
+    "genre":"RPG",
+    "image":"https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Monster_hunter_rise_cover.jpg/220px-Monster_hunter_rise_cover.jpg",
+    "raiting": 0
+  },
+  {
+    "id": "7",
+    "name": "Roblox",
+    "developer": "Roblox Corporation",
+    "summary":"Roblox é uma plataforma de jogos MMOSG e Sandbox baseados normalmente em mundo aberto, multiplataforma e simulação que permite criar do zero seu próprio mundo virtual chamado de 'experiência' ou 'place' onde os milhares de jogadores da plataforma podem interagir sobre",
+    "console":"Windows",
+    "genre":"Jogo eletrônico de simulaçã",
+    "image":"https://kgo.googleusercontent.com/profile_vrt_raw_bytes_1587515338_10341.png",
+    "raiting": 0
+  },
+  {
+    "id": "8",
+    "name": "Asphalt 9: Legends",
+    "developer": "Gameloft, Gameloft Iberica S.A.U.",
+    "summary":"Asphalt 9: Legends é um jogo eletrônico de corrida desenvolvido pela Gameloft Barcelona e publicado pela Gameloft. Lançado em 25 de julho de 2018, é a nona sequência principal da série Asphalt.",
+    "console":"Windows",
+    "genre":"Jogo eletrônico de corrida",
+    "image":"https://play-lh.googleusercontent.com/C6sPfagvw2RwDPVIpPL4dIoI9rwIpvk0m3qQyFsKv24ox5NBahu0-kEx7wx0mxHRVac",
+    "raiting": 0
+  }
+]
