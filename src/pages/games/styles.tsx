@@ -2,6 +2,17 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
   max-width: 75vw;
+
+  .buttons button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    width: 50px;
+
+    &:first-child {
+      transform: rotate(180deg);
+    }
+  }
 `
 
 export const Carousel = styled.div`
@@ -15,6 +26,7 @@ export const Item = styled.div`
   padding: 10px;
   width: 280px;
   border-radius: 16px;
+  flex: none;
 
   .image img {
     width: 100%;

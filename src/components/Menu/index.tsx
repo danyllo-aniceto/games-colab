@@ -9,26 +9,18 @@ export function Menu() {
   return (
     <>
       <Container>
-        {/* <nav>
-          <a href="./">
-            <img src={homeImg} alt="" /> Início
-          </a>
-          <a href="./">
-            <img src={consolesImg} alt="" /> Consoles
-          </a>
-          <a href="./">
-            <img src={gameImg} alt="" /> Jogos
-          </a>
-          <a href="./">
-            <img src={usersImg} alt="" /> Usuários
-          </a>
-        </nav> */}
         <nav>
           <Link to="/login">
             <img src={homeImg} alt="" /> Início
           </Link>
           <Link to="/consoles">
             <img src={consolesImg} alt="" /> Consoles
+          </Link>
+          <Link to="/games">
+            <img src={gameImg} alt="" /> Jogos
+          </Link>
+          <Link to="/users">
+            <img src={usersImg} alt="" /> Usuários
           </Link>
         </nav>
       </Container>

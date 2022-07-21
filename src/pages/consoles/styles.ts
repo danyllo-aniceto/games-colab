@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 
+export const Container = styled.div``
+
 export const ContentConsoles = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-  margin: 10px;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  padding: 20px;
 `
 
 export const Console = styled.div`
