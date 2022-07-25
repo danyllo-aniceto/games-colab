@@ -10,7 +10,7 @@ export function Menu() {
     <>
       <Container>
         <nav>
-          <Link to="/login">
+          <Link to="/dashboard">
             <img src={homeImg} alt="" /> Início
           </Link>
           <Link to="/consoles">

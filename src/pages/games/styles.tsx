@@ -3,6 +3,11 @@ import styled from 'styled-components'
 export const Container = styled.div`
   max-width: 75vw;
 
+  .buttons {
+    width: 100%;
+    text-align: center;
+  }
+
   .buttons button {
     background-color: transparent;
     border: none;
@@ -19,6 +24,10 @@ export const Carousel = styled.div`
   display: flex;
   overflow-x: auto;
   scroll-behavior: smooth;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
 export const Item = styled.div`
   background-color: white;

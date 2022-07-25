@@ -2,20 +2,36 @@ import { Carousel, Container, Info, Item } from './styles'
 
 import arrowImg from '../../assets/arrow.svg'
 import { useEffect, useRef, useState } from 'react'
+import { BaseLayout } from '../../layout/BaseLayout'
 
 export function Games() {
   const [data, setData] = useState([])
   const carousel = useRef(null)
 
-  useEffect(() => {
+  async function getData() {
     fetch('http://localhost:3000/static/games.json')
       .then(response => response.json())
       .then(setData)
+  }
+
+  useEffect(() => {
+    getData()
   }, [])
+
+  // const handleLeftClick = e => {
+  //   e.preventDefault()
+  //   carousel.current.scrollLeft -= carousel.current.offsetWidth
+  // }
+
+  // const handleRightClick = e => {
+  //   e.preventDefault()
+
+  //   carousel.current.scrollLeft += carousel.current.offsetWidth
+  // }
 
   if (!data || !data.length) return null
   return (
-    <>
+    <BaseLayout>
       <Container>
         <div className="logo">
           <img src="" alt="" />
@@ -46,6 +62,6 @@ export function Games() {
           </button>
         </div>
       </Container>
-    </>
+    </BaseLayout>
   )
 }

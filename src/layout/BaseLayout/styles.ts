@@ -11,4 +11,8 @@ export const ContentChildren = styled.section`
   flex: 1;
   overflow: auto;
   height: 80vh;
+
+  /* &::-webkit-scrollbar {
+    display: none;
+  } */
 `

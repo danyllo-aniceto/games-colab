@@ -1,20 +1,45 @@
 import { Link } from 'react-router-dom'
-import { Button, Form } from './styles'
+import {
+  Container,
+  Form,
+  UserCard,
+  CardTop,
+  Img,
+  P,
+  CardGroup,
+  Label,
+  UserEmail,
+  UserPassword,
+  ButtonRegister,
+  ButtonNewRegister
+} from './styles'
+import logoImg from '../../assets/logo.png'
 
-export function Login() {
+interface LoginProps {
+  onOpenNewUserModal: () => void
+}
+
+export function Login({ onOpenNewUserModal }: LoginProps) {
   return (
-    <Form>
-      <label>
-        Email:
-        <input />
-      </label>
-      <label>
-        Password:
-        <input />
-      </label>
-      <Button type="submit">Logar</Button>
-      <Link to="/consoles">Consoles</Link>
-      <Link to="/games">Games</Link>
-    </Form>
+    <Container>
+      <Form>
+        <UserCard>
+          <CardTop>
+            <Img src={logoImg}></Img>
+            <P>User Cadastro</P>
+          </CardTop>
+          <CardGroup>
+            <Label>Email: </Label>
+            <UserEmail type="email" placeholder="Digite seu email" />
+            <Label>Senha: </Label>
+            <UserPassword type="password" placeholder="Digite sua senha" />
+            <ButtonRegister type="submit">Login</ButtonRegister>
+            <ButtonNewRegister type="button" onClick={onOpenNewUserModal}>
+              Registrar-se
+            </ButtonNewRegister>
+          </CardGroup>
+        </UserCard>
+      </Form>
+    </Container>
   )
 }
