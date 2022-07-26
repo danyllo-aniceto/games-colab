@@ -4,6 +4,16 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  h1 {
+    font-size: 50px;
+    margin-top: 25px;
+    text-align: center;
+    font-family: 'Righteous', cursive;
+    color: var(--header-color-blue);
+    -webkit-text-stroke-width: 0.1px;
+    -webkit-text-stroke-color: var(--text-title);
+  }
 `
 
 export const ContentConsoles = styled.div`
@@ -16,7 +26,7 @@ export const ContentConsoles = styled.div`
 export const Console = styled.div`
   width: 300px;
   height: 400px;
-  background: #000;
+  background: #dee9ffd1;
   border-radius: 30px;
   overflow: hidden;
   position: relative;
@@ -61,7 +71,7 @@ export const Console = styled.div`
   }
 
   img {
-    height: 100%;
+    max-width: 60%;
     z-index: 10;
     transition: all 0.25s ease;
   }
