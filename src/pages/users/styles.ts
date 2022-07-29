@@ -30,3 +30,5 @@ export const Container = styled.div`
     }
   }
 `
+
+export const ContentAction = styled.div``

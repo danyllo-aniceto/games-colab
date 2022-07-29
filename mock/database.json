@@ -1,0 +1,43 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Ygor",
+      "email": "ygor@gmail.com",
+      "password": "xfdslkfjdlkfjdskfj"
+    },
+    {
+      "id": 2,
+      "name": "ana",
+      "email": "ana@gmail.com",
+      "password": "xfdslkfjdlkfjdskfj"
+    },
+    {
+      "id": 3,
+      "name": "José",
+      "email": "jose@gmail.com",
+      "password": "xfdslkfjdlkfjdskfj"
+    },
+    {
+      "id": 4,
+      "name": "teste",
+      "email": "teste@gmail.com",
+      "password": "123456"
+    },
+    {
+      "name": "Carlos Aberto",
+      "email": "carlos@gmail.com",
+      "password": "123456",
+      "id": 5
+    },
+    {
+      "name": "Gabriel",
+      "email": "gabriel@gmail.com",
+      "password": "8fssa66",
+      "id": 6
+    }
+  ],
+  "auth": {
+    "token": "aaaaaaaaaa.bbbbbbbbbb.cccccccc"
+  }
+}
