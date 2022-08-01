@@ -12,22 +12,59 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  TextField
+  TextField,
+  Snackbar,
+  Alert
 } from '@mui/material'
 import { IDeleteUserDTOResponse } from '../../services/UserService/dtos/IDeleteUserDTO'
 
 export function Users() {
   const [listUsers, setListUsers] = useState<ILoadUserDTOResponse[]>([])
+
   const [openModalEdit, setOpenModalEdit] = useState(false)
   const [openModalDelete, setOpenModalDelete] = useState(false)
 
-  function deleteUser() {
+  const [id, setId] = useState(null)
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const [openAlert, setOpenAlert] = useState(false)
+
+  /*****************************************/
+  async function deleteUser() {
     console.log('Deletar usuário')
+    const userService = new UserService()
+    try {
+      const response = await userService.deleteById(id)
+      setOpenModalDelete(false)
+      setOpenAlert(true)
+      getUsers()
+    } catch (error) {
+      console.log('erro')
+    }
   }
 
-  function editUser() {
-    console.log('Edição concluída')
+  /*****************************************/
+
+  async function editUser() {
+    const userService = new UserService()
+    try {
+      const response = await userService.updateById({
+        id,
+        name,
+        email,
+        password
+      })
+      setOpenModalEdit(false)
+      setOpenAlert(true)
+      getUsers()
+    } catch (error) {
+      console.log('Edição concluída')
+    }
   }
+
+  /*****************************************/
 
   async function getUsers() {
     const userService = new UserService()
@@ -47,6 +84,21 @@ export function Users() {
   return (
     <BaseLayout>
       <>
+        <Snackbar
+          open={openAlert}
+          autoHideDuration={6000}
+          onClose={() => setOpenAlert(false)}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        >
+          <Alert
+            onClose={() => setOpenAlert(false)}
+            severity="success"
+            sx={{ width: '100%' }}
+          >
+            Operação realizada com sucesso.
+          </Alert>
+        </Snackbar>
+
         <Container>
           <table>
             <thead>
@@ -66,11 +118,20 @@ export function Users() {
                     <ContentAction>
                       <EditIcon
                         color="action"
-                        onClick={() => setOpenModalEdit(true)}
+                        onClick={() => {
+                          setId(user.id)
+                          setName(user.name)
+                          setEmail(user.email)
+                          setPassword(user.password)
+                          setOpenModalEdit(true)
+                        }}
                       />
                       <DeleteIcon
                         color="warning"
-                        onClick={() => setOpenModalDelete(true)}
+                        onClick={() => {
+                          setId(user.id)
+                          setOpenModalDelete(true)
+                        }}
                       />
                     </ContentAction>
                   </td>
@@ -84,17 +145,19 @@ export function Users() {
           <DialogTitle>Dados do Usuário</DialogTitle>
           <DialogContent>
             <TextField
+              value={name}
+              onChange={event => setName(event.target.value)}
               autoFocus
               margin="dense"
-              id="name"
               label="Nome"
               fullWidth
               variant="standard"
             />
             <TextField
               autoFocus
+              value={email}
+              onChange={event => setEmail(event.target.value)}
               margin="dense"
-              id="name"
               label="Email"
               type="email"
               fullWidth
@@ -102,8 +165,9 @@ export function Users() {
             />
             <TextField
               autoFocus
+              value={password}
+              onChange={event => setPassword(event.target.value)}
               margin="dense"
-              id="name"
               label="Senha"
               type="password"
               fullWidth

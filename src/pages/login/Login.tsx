@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import {
   Container,
   Form,
@@ -11,13 +10,10 @@ import {
   UserEmail,
   UserPassword,
   ButtonRegister,
-  ButtonNewRegister,
-  ContentModal
+  ButtonNewRegister
 } from './styles'
 import logoImg from '../../assets/logo.png'
 import { FormEvent, useState } from 'react'
-import Modal from 'react-modal'
-import closeImg from '../../assets/close.svg'
 import UserService from '../../services/UserService'
 import {
   Dialog,
@@ -67,7 +63,7 @@ export function Login() {
           <UserCard>
             <CardTop>
               <Img src={logoImg}></Img>
-              <P>User Cadastro</P>
+              <P>Meu Game Favorito</P>
             </CardTop>
             <CardGroup>
               <Label>Email: </Label>
@@ -85,45 +81,6 @@ export function Login() {
           </UserCard>
         </Form>
       </Container>
-      {/* <Modal
-        isOpen={isOpen}
-        onRequestClose={() => setIsOpen(false)}
-        overlayClassName="react-modal-overlay"
-        className="react-modal-contentet"
-      >
-        <button
-          type="button"
-          onClick={() => setIsOpen(false)}
-          className="react-modal-close"
-        >
-          <img src={closeImg} alt="Fechal modal" />
-        </button>
-
-        <ContentModal onSubmit={handleCreateNewTransaction}>
-          <h2>Cadastrar Usuário</h2>
-
-          <input
-            placeholder="Nome"
-            value={name}
-            onChange={event => setName(event.target.value)}
-          />
-
-          <input
-            type="email"
-            placeholder="E-mail"
-            value={email}
-            onChange={event => setEmail(event.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="Senha"
-            value={password}
-            onChange={event => setPassword(event.target.value)}
-          />
-
-          <button type="submit">Cadastrar</button>
-        </ContentModal>
-      </Modal> */}
 
       <Dialog
         open={openModalNewUser}

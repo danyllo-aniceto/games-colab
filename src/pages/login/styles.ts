@@ -2,6 +2,8 @@ import testeImg from '../../assets/sonic.jpg'
 import styled from 'styled-components'
 
 export const Container = styled.div`
+  background-color: var(--containers-color-blue);
+  height: 100vh;
   /* background-image: url(${testeImg});
   background-size: cover;
   height: 100vh; */
@@ -26,26 +28,30 @@ export const Container = styled.div`
 //   width: 250px;
 //   padding: 5px;
 //   border-radius: 5px;
+
 // `
+
+//--background: #88AAEE;
+
+//--header-color-blue: #1D376B;
+//--containers-color-blue: #3D4C6B;
+
+//--blue: #325FB8;
+//--light-blue: #3F78EB;
+
+//--text-title: #dbe7ff;
 
 export const UserCard = styled.div`
   display: flex;
+  background: #dee9ffd1;
   flex-direction: column;
   box-shadow: 0px 4px 6px 3px rgba(0, 19, 74, 0.46);
-  background-color: #dceefa;
+
   padding: 30px;
   gap: 3px;
   border-radius: 5px;
   width: 300px;
-  margin-top: 125px;
-`
-
-export const UserName = styled.input`
-  border-radius: 5px;
-  outline: 0;
-  width: 100%;
-  height: 30px;
-  padding: 5px;
+  margin-top: 120px;
 `
 export const UserEmail = styled.input`
   border-radius: 5px;
@@ -62,19 +68,50 @@ export const UserPassword = styled.input`
   padding: 5px;
 `
 export const ButtonRegister = styled.button`
-  background-color: #4d82a7;
-  width: 100%;
-  border-radius: 30px;
-  padding: 12px;
-  color: #f9f9fa;
-  font-family: sans-serif;
-  font-weight: 600;
+  position: relative;
+  padding: 1em 1.5em;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  outline: none;
   font-size: 18px;
-  border: 0px;
-  margin-top: 10px;
+  margin: 1em 0.8em;
+  color: var(--header-color-blue);
 
-  :hover {
-    background-color: #7ba4c0a8;
+  ::after,
+  ::before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 20%;
+    height: 20%;
+    border: 2px solid;
+    transition: all 0.6s ease;
+    border-radius: 2px;
+  }
+
+  ::after {
+    bottom: 0;
+    right: 0;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-bottom-color: var(--header-color-blue);
+    border-right-color: var(--header-color-blue);
+  }
+
+  ::before {
+    top: 0;
+    left: 0;
+    border-bottom-color: transparent;
+    border-right-color: transparent;
+    border-top-color: var(--header-color-blue);
+    border-left-color: var(--header-color-blue);
+  }
+
+  :hover:after,
+  :hover:before {
+    width: 100%;
+    height: 100%;
   }
 `
 
@@ -100,7 +137,7 @@ export const Img = styled.img`
 `
 
 export const P = styled.p`
-  color: #03607c;
+  color: var(--header-color-blue);
   font-family: sans-serif;
   font-weight: 600;
 `
@@ -110,52 +147,16 @@ export const CardGroup = styled.div`
   flex-direction: column;
   gap: 5px;
 `
-export const ButtonNewRegister = styled.button``
+export const ButtonNewRegister = styled.button`
+  border: none;
+  background-color: transparent;
+  align-self: flex-end;
+  margin-top: 5px;
+  transition: filter 0.2s;
 
-export const ContentModal = styled.form`
-  h2 {
-    color: var(--text-title);
-    font-size: 1.5rem;
-    margin-bottom: 2rem;
-  }
-
-  input {
-    width: 100%;
-    padding: 0 1.5rem;
-    height: 4rem;
-    border-radius: 0.25rem;
-
-    border: 1px solid #d7d7d7;
-    background: #e7e9ee;
-
-    font-weight: 400;
-    font-size: 1rem;
-
-    &::placeholder {
-      color: var(--text-body);
-    }
-
-    & + input {
-      margin-top: 1rem;
-    }
-  }
-
-  button[type='submit'] {
-    width: 100%;
-    padding: 0 1.5rem;
-    height: 4rem;
-    background: var(--green);
-    color: #fff;
-    border-radius: 0.25rem;
-    border: 0;
-    font-size: 1rem;
-    margin-top: 1.5rem;
-    font-weight: 600;
-
-    transition: filter 0.2s;
-
-    &:hover {
-      filter: brightness(0.9);
-    }
+  color: var(--header-color-blue);
+  :hover {
+    filter: drop-shadow(2px 2px 5px rgb(0 0 0 / 0.5));
+    color: var(--blue);
   }
 `
