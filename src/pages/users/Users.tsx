@@ -46,7 +46,6 @@ export function Users() {
   }
 
   /*****************************************/
-
   async function editUser() {
     const userService = new UserService()
     try {
@@ -63,7 +62,6 @@ export function Users() {
       console.log('Edição concluída')
     }
   }
-
   /*****************************************/
 
   async function getUsers() {
@@ -140,7 +138,6 @@ export function Users() {
             </tbody>
           </table>
         </Container>
-
         <Dialog open={openModalEdit} onClose={() => setOpenModalEdit(false)}>
           <DialogTitle>Dados do Usuário</DialogTitle>
           <DialogContent>
@@ -179,7 +176,6 @@ export function Users() {
             <Button onClick={editUser}>Editar</Button>
           </DialogActions>
         </Dialog>
-
         <Dialog
           open={openModalDelete}
           onClose={() => setOpenModalDelete(false)}

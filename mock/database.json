@@ -1,22 +1,36 @@
 {
   "users": [
     {
-      "id": 1,
-      "name": "Ygor ",
-      "email": "ygor@gmail.com",
-      "password": "xfdslkfjdlkfjdskfj"
-    },
-    {
-      "id": 2,
-      "name": "ana",
-      "email": "ana@gmail.com",
-      "password": "xfdslkfjdlkfjdskfj"
-    },
-    {
       "id": 5,
       "name": "Carlos Alberto",
       "email": "carlos@gmail.com",
       "password": "123456"
+    },
+    {
+      "name": "Danyllo ",
+      "email": "danyllo@gmail.com",
+      "password": "54615",
+      "id": 6
+    },
+    {
+      "name": "Gabriel",
+      "email": "gabriel@gmail.com",
+      "password": "DBSUHADBUHL",
+      "id": 7
+    },
+    {
+      "name": "Ygor",
+      "email": "ygor@gmail.com",
+      "password": "123456",
+      "id": 8
+    }
+  ],
+  "consoles": [
+    {
+      "id": 1,
+      "name": "teste",
+      "description": "hfisdhfngvigfdgfgfdgdfdfdzfgdz",
+      "image": "https://static3.tcdn.com.br/img/img_prod/460977/teste_100485_1_cbc226c7d23a19c784fb4752ffe61337.png"
     }
   ],
   "auth": {

@@ -24,6 +24,8 @@ export const ContentConsoles = styled.div`
 `
 
 export const Console = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 300px;
   height: 400px;
   background: #dee9ffd1;
@@ -115,4 +117,13 @@ export const Console = styled.div`
       color: #000;
     }
   }
+`
+export const ContentAction = styled.div`
+  align-self: flex-end;
+  z-index: 30;
+  position: absolute;
+  top: 0px;
+
+  padding: 10px;
+  padding-top: 30px;
 `

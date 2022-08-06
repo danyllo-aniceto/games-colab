@@ -21,15 +21,17 @@ import {
   DialogContent,
   TextField,
   DialogActions,
-  Button
+  Button,
+  Snackbar,
+  Alert
 } from '@mui/material'
 
 export function Login() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [isOpen, setIsOpen] = useState(false)
   const [openModalNewUser, setOpenModalNewUser] = useState(false)
+  const [openAlert, setOpenAlert] = useState(false)
 
   async function handleCreateNewTransaction(event: FormEvent) {
     event.preventDefault()
@@ -42,6 +44,8 @@ export function Login() {
         email,
         password
       })
+      setOpenModalNewUser(false)
+      setOpenAlert(true)
 
       console.log('cadastro realizado com sucesso')
     } catch (error) {
@@ -53,11 +57,24 @@ export function Login() {
     setName('')
     setEmail('')
     setPassword('')
-    setIsOpen(false)
   }
 
   return (
     <>
+      <Snackbar
+        open={openAlert}
+        autoHideDuration={6000}
+        onClose={() => setOpenAlert(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <Alert
+          onClose={() => setOpenAlert(false)}
+          severity="success"
+          sx={{ width: '100%' }}
+        >
+          Operação realizada com sucesso.
+        </Alert>
+      </Snackbar>
       <Container>
         <Form>
           <UserCard>
