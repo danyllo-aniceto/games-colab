@@ -1,9 +1,5 @@
 import { ContentConsoles, Console, Container, ContentAction } from './styles'
 
-import xboxOneImg from '../../assets/xbox-one.svg'
-import playstation4Img from '../../assets/playstation-4.svg'
-import nintendoSwitchImg from '../../assets/nintendo-switch.svg'
-import microsoftWindowsImg from '../../assets/microsoft-windows.svg'
 import addImg from '../../assets/add.svg'
 import { BaseLayout } from '../../layout/BaseLayout'
 import { useEffect, useState } from 'react'
@@ -16,16 +12,18 @@ import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
+
 import {
   Dialog,
   DialogTitle,
   DialogContent,
   TextField,
   DialogActions,
-  Button
+  Button,
+  Icon
 } from '@mui/material'
-
-const options = ['Editar', 'Deletar']
 
 const ITEM_HEIGHT = 48
 
@@ -45,6 +43,9 @@ export function Consoles() {
   )
   /*************************************************************************/
   const [openModalNewConsole, setOpenModalNewConsole] = useState(false)
+  const [openModalEdit, setOpenModalEdit] = useState(false)
+  const [openModalDelete, setOpenModalDelete] = useState(false)
+  const [id, setId] = useState(null)
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [image, setImage] = useState('')
@@ -85,15 +86,59 @@ export function Consoles() {
     setDescription('')
   }
 
+  /*****************************************/
+  async function editConsole() {
+    const consoleService = new ConsoleService()
+    try {
+      const response = await consoleService.updateById({
+        id,
+        name,
+        description,
+        image
+      })
+      setOpenModalEdit(false)
+      getConsoles()
+    } catch (error) {
+      console.log('Edição concluída')
+    }
+  }
+  /*****************************************/
+
+  async function deleteConsole() {
+    console.log('Deletar console')
+    const consoleService = new ConsoleService()
+    try {
+      const response = await consoleService.deleteById(id)
+      setOpenModalDelete(false)
+      getConsoles()
+    } catch (error) {
+      console.log('erro')
+    }
+  }
+
+  /*****************************************/
+
   return (
     <BaseLayout>
       <>
         <Container>
           <h1>Escolha sua plataforma preferida:</h1>
           <ContentConsoles>
-            {listConsoles.map(console => (
-              <Console key={console.id}>
+            {listConsoles.map(consolle => (
+              <Console key={consolle.id}>
                 <ContentAction>
+                  <EditIcon
+                    color="action"
+                    onClick={() => {
+                      console.log(consolle)
+                      setId(consolle.id)
+                      setName(consolle.name)
+                      setDescription(consolle.description)
+                      setImage(consolle.image)
+                      setOpenModalEdit(true)
+                      handleClose()
+                    }}
+                  />
                   <IconButton
                     aria-label="more"
                     id="long-button"
@@ -119,22 +164,36 @@ export function Consoles() {
                       }
                     }}
                   >
-                    {options.map(option => (
-                      <MenuItem
-                        key={option}
-                        selected={option === 'Pyxis'}
-                        onClick={handleClose}
-                      >
-                        {option}
-                      </MenuItem>
-                    ))}
+                    <MenuItem
+                      onClick={() => {
+                        console.log(consolle)
+                        setId(consolle.id)
+                        setName(consolle.name)
+                        setDescription(consolle.description)
+                        setImage(consolle.image)
+                        setOpenModalEdit(true)
+                        handleClose()
+                      }}
+                    >
+                      Editar
+                    </MenuItem>
+
+                    <MenuItem
+                      onClick={() => {
+                        setId(consolle.id)
+                        setOpenModalDelete(true)
+                        handleClose()
+                      }}
+                    >
+                      Deletar
+                    </MenuItem>
                   </Menu>
                 </ContentAction>
-                <img src={console.image} alt={console.name} />
+                <img src={consolle.image} alt={consolle.name} />
                 <div className="description">
-                  <h2>{console.name}</h2>
+                  <h2>{consolle.name}</h2>
                   <p>
-                    &nbsp;{console.description}
+                    &nbsp;{consolle.description}
                     <button> Ver jogos </button>
                   </p>
                 </div>
@@ -187,6 +246,56 @@ export function Consoles() {
               Cancelar
             </Button>
             <Button onClick={handleCreateNewConsole}>Cadastrar</Button>
+          </DialogActions>
+        </Dialog>
+
+        <Dialog open={openModalEdit} onClose={() => setOpenModalEdit(false)}>
+          <DialogTitle>Dados do Console</DialogTitle>
+          <DialogContent>
+            <TextField
+              value={name}
+              onChange={event => setName(event.target.value)}
+              autoFocus
+              margin="dense"
+              label="Nome"
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              autoFocus
+              value={description}
+              onChange={event => setDescription(event.target.value)}
+              margin="dense"
+              label="Descrição"
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              autoFocus
+              value={image}
+              onChange={event => setImage(event.target.value)}
+              margin="dense"
+              label="Imagem"
+              fullWidth
+              variant="standard"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenModalEdit(false)}>Cancelar</Button>
+            <Button onClick={editConsole}>Editar</Button>
+          </DialogActions>
+        </Dialog>
+        <Dialog
+          open={openModalDelete}
+          onClose={() => setOpenModalDelete(false)}
+        >
+          <DialogTitle>Deletar Usuário</DialogTitle>
+          <DialogContent>
+            Tem certeza que deseja excluir este console?
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenModalDelete(false)}>Cancelar</Button>
+            <Button onClick={deleteConsole}>Deletar</Button>
           </DialogActions>
         </Dialog>
       </>

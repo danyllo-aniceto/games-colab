@@ -29,10 +29,17 @@
     {
       "id": 1,
       "name": "teste",
-      "description": "hfisdhfngvigfdgfgfdgdfdfdzfgdz",
+      "description": "teste 8",
       "image": "https://static3.tcdn.com.br/img/img_prod/460977/teste_100485_1_cbc226c7d23a19c784fb4752ffe61337.png"
+    },
+    {
+      "id": 2,
+      "name": "Teste 2",
+      "description": "132654465648984",
+      "image": ""
     }
   ],
+  "games": [],
   "auth": {
     "token": "aaaaaaaaaa.bbbbbbbbbb.cccccccc"
   }

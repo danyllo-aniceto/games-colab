@@ -7,7 +7,7 @@ export const Container = styled.div`
 
   h1 {
     font-size: 50px;
-    margin-top: 25px;
+    margin-top: 10px;
     text-align: center;
     font-family: 'Righteous', cursive;
     color: var(--header-color-blue);

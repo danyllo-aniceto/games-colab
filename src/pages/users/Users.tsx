@@ -10,13 +10,11 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   TextField,
   Snackbar,
   Alert
 } from '@mui/material'
-import { IDeleteUserDTOResponse } from '../../services/UserService/dtos/IDeleteUserDTO'
 
 export function Users() {
   const [listUsers, setListUsers] = useState<ILoadUserDTOResponse[]>([])
