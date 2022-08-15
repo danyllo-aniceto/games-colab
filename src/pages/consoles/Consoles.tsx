@@ -178,7 +178,7 @@ export function Consoles() {
                       Editar
                     </MenuItem>
 
-                    <MenuItem
+                    {/* <MenuItem
                       onClick={() => {
                         setId(consolle.id)
                         setOpenModalDelete(true)
@@ -186,7 +186,7 @@ export function Consoles() {
                       }}
                     >
                       Deletar
-                    </MenuItem>
+                    </MenuItem> */}
                   </Menu>
                 </ContentAction>
                 <img src={consolle.image} alt={consolle.name} />

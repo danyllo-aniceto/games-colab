@@ -3,33 +3,29 @@ import { Carousel, Container, Info, Item } from './styles'
 import arrowImg from '../../assets/arrow.svg'
 import { useEffect, useRef, useState } from 'react'
 import { BaseLayout } from '../../layout/BaseLayout'
+import GameService from '../../services/GameService'
+import { ILoadGameDTOResponse } from '../../services/GameService/dtos/ILoadGameDTO'
 
 export function Games() {
-  const [data, setData] = useState([])
   const carousel = useRef(null)
 
-  async function getData() {
-    fetch('http://localhost:3000/static/games.json')
-      .then(response => response.json())
-      .then(setData)
+  const [listGames, setListGames] = useState<ILoadGameDTOResponse[]>([])
+
+  async function getGames() {
+    const gameService = new GameService()
+
+    try {
+      const response = await gameService.loadAll()
+      setListGames(response)
+    } catch (error) {
+      console.log('erro')
+    }
   }
 
   useEffect(() => {
-    getData()
+    getGames()
   }, [])
 
-  // const handleLeftClick = e => {
-  //   e.preventDefault()
-  //   carousel.current.scrollLeft -= carousel.current.offsetWidth
-  // }
-
-  // const handleRightClick = e => {
-  //   e.preventDefault()
-
-  //   carousel.current.scrollLeft += carousel.current.offsetWidth
-  // }
-
-  if (!data || !data.length) return null
   return (
     <BaseLayout>
       <Container>
@@ -37,21 +33,18 @@ export function Games() {
           <img src="" alt="" />
         </div>
         <Carousel ref={carousel}>
-          {data.map(item => {
-            const { id, name, image, developer, console } = item
-            return (
-              <Item key={id}>
-                <div className="image">
-                  <img src={image} alt={name} />
-                </div>
-                <Info>
-                  <span className="name-game">{name}</span>
-                  <span className="developer-game">{developer}</span>
-                  <span className="console-game">{console}</span>
-                </Info>
-              </Item>
-            )
-          })}
+          {listGames.map(game => (
+            <Item key={game.id}>
+              <div className="image">
+                <img src={game.image} alt={game.name} />
+              </div>
+              <Info>
+                <span className="name-game">{game.name}</span>
+                <span className="developer-game">{game.developer}</span>
+                <span className="console-game">{game.console}</span>
+              </Info>
+            </Item>
+          ))}
         </Carousel>
         <div className="buttons">
           <button>
