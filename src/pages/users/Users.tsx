@@ -4,20 +4,14 @@ import UserService from '../../services/UserService'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { Container, ContentAction } from './styles'
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Backdrop,
-  CircularProgress
-} from '@mui/material'
+import { Backdrop, CircularProgress } from '@mui/material'
 import { Toast } from '../../components/Toast'
 import { AxiosError } from 'axios'
 import { ToastType } from '../../components/Toast/enum'
 import { IUserDTO } from '../../dtos/IUserDTO'
-import { InputField } from '../../components/InputField'
+import { DialogEditUser } from './DialogEditUser'
+import { DialogDeleteUser } from './DialogDeleteUser'
+import { LoadingComponent } from '../../components/Loading'
 
 interface IMessageAlert {
   message: string
@@ -43,8 +37,7 @@ export function Users() {
     password: ''
   })
 
-  // estado loading
-
+  // estado do loading
   const [loading, setLoading] = useState(false)
 
   // estados do ToastAlert
@@ -136,13 +129,10 @@ export function Users() {
 
         <Container>
           {loading ? (
-            <Backdrop
-              sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 1 }}
+            <LoadingComponent
               open={loading}
-              onClick={() => setLoading(false)}
-            >
-              <CircularProgress color="inherit" />
-            </Backdrop>
+              onClose={() => setLoading(false)}
+            />
           ) : (
             <table>
               <thead>
@@ -188,48 +178,19 @@ export function Users() {
           )}
         </Container>
 
-        <Dialog open={openModalEdit} onClose={() => setOpenModalEdit(false)}>
-          <DialogTitle>Dados do Usuário</DialogTitle>
-          <DialogContent>
-            <InputField
-              label="Nome"
-              name="name"
-              onChange={handleChange}
-              value={user.name}
-            />
-            <InputField
-              label="E-mail"
-              name="email"
-              onChange={handleChange}
-              value={user.email}
-              type="email"
-            />
-            <InputField
-              label="Senha"
-              name="password"
-              onChange={handleChange}
-              value={user.password}
-              type="password"
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setOpenModalEdit(false)}>Cancelar</Button>
-            <Button onClick={editUser}>Editar</Button>
-          </DialogActions>
-        </Dialog>
-        <Dialog
+        <DialogEditUser
+          open={openModalEdit}
+          onClose={() => setOpenModalEdit(false)}
+          onChange={handleChange}
+          onSubmitEdit={editUser}
+          user={user}
+        />
+
+        <DialogDeleteUser
           open={openModalDelete}
           onClose={() => setOpenModalDelete(false)}
-        >
-          <DialogTitle>Deletar Usuário</DialogTitle>
-          <DialogContent>
-            Tem certeza que deseja excluir este usuário?
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setOpenModalDelete(false)}>Cancelar</Button>
-            <Button onClick={deleteUser}>Deletar</Button>
-          </DialogActions>
-        </Dialog>
+          onSubmitDelete={deleteUser}
+        />
       </>
     </BaseLayout>
   )

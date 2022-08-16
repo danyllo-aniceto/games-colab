@@ -10,21 +10,21 @@ import { IUserDTO } from '../../../dtos/IUserDTO'
 
 interface IDialogEditUser {
   user: IUserDTO
-  openModalEdit: boolean
+  open: boolean
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-  onCloseModalEdit: () => void
-  onSubmitEditUser: () => Promise<void>
+  onClose: () => void
+  onSubmitEdit: () => Promise<void>
 }
 
 export function DialogEditUser({
   user,
-  openModalEdit,
+  open,
   onChange,
-  onCloseModalEdit,
-  onSubmitEditUser
+  onClose,
+  onSubmitEdit
 }: IDialogEditUser) {
   return (
-    <Dialog open={openModalEdit} onClose={onCloseModalEdit}>
+    <Dialog open={open} onClose={onClose}>
       <DialogTitle>Dados do Usuário</DialogTitle>
       <DialogContent>
         <InputField
@@ -49,8 +49,8 @@ export function DialogEditUser({
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={onCloseModalEdit}>Cancelar</Button>
-        <Button onClick={onSubmitEditUser}>Editar</Button>
+        <Button onClick={onClose}>Cancelar</Button>
+        <Button onClick={onSubmitEdit}>Editar</Button>
       </DialogActions>
     </Dialog>
   )
