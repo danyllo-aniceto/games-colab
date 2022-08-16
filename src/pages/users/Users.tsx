@@ -9,7 +9,9 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle
+  DialogTitle,
+  Backdrop,
+  CircularProgress
 } from '@mui/material'
 import { Toast } from '../../components/Toast'
 import { AxiosError } from 'axios'
@@ -40,6 +42,10 @@ export function Users() {
     email: '',
     password: ''
   })
+
+  // estado loading
+
+  const [loading, setLoading] = useState(false)
 
   // estados do ToastAlert
   const [openAlert, setOpenAlert] = useState(false)
@@ -99,6 +105,7 @@ export function Users() {
   /*****************************************/
 
   async function getUsers() {
+    setLoading(true)
     try {
       const response = await userService.loadAll()
       setListUsers(response)
@@ -108,6 +115,8 @@ export function Users() {
         `Falha ao buscar usuários - ${response?.data?.message}`,
         ToastType.ERROR
       )
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -126,48 +135,59 @@ export function Users() {
         />
 
         <Container>
-          <table>
-            <thead>
-              <tr>
-                <td>Nome</td>
-                <td>E-mail</td>
-                <td>Ações</td>
-              </tr>
-            </thead>
-
-            <tbody>
-              {listUsers.map(user => (
-                <tr key={user.id}>
-                  <td>{user.name}</td>
-                  <td>{user.email}</td>
-                  <td>
-                    <ContentAction>
-                      <EditIcon
-                        color="action"
-                        onClick={() => {
-                          setUser({
-                            id: user.id,
-                            name: user.name,
-                            email: user.email,
-                            password: user.password
-                          })
-                          setOpenModalEdit(true)
-                        }}
-                      />
-                      <DeleteIcon
-                        color="warning"
-                        onClick={() => {
-                          setUser({ id: user.id, ...user })
-                          setOpenModalDelete(true)
-                        }}
-                      />
-                    </ContentAction>
-                  </td>
+          {loading ? (
+            <Backdrop
+              sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 1 }}
+              open={loading}
+              onClick={() => setLoading(false)}
+            >
+              <CircularProgress color="inherit" />
+            </Backdrop>
+          ) : (
+            <table>
+              <thead>
+                <tr>
+                  <td>Nome</td>
+                  <td>E-mail</td>
+                  <td>Ações</td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+
+              <tbody>
+                {listUsers.map(user => (
+                  <tr key={user.id}>
+                    <td>{user.name}</td>
+                    <td>{user.email}</td>
+                    <td>
+                      <ContentAction>
+                        <EditIcon
+                          color="action"
+                          onClick={() => {
+                            setUser({
+                              id: user.id,
+                              name: user.name,
+                              email: user.email,
+                              password: user.password
+                            })
+                            setOpenModalEdit(true)
+                          }}
+                        />
+                        <DeleteIcon
+                          color="warning"
+                          onClick={() => {
+                            setUser({ id: user.id, ...user })
+                            setOpenModalDelete(true)
+                          }}
+                        />
+                      </ContentAction>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </Container>
+
         <Dialog open={openModalEdit} onClose={() => setOpenModalEdit(false)}>
           <DialogTitle>Dados do Usuário</DialogTitle>
           <DialogContent>
