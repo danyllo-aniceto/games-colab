@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react'
 import { ILoadConsoleDTOResponse } from '../../services/ConsoleService/dtos/ILoadConsoleDTO'
 import ConsoleService from '../../services/ConsoleService'
 
+import { AxiosError } from 'axios'
+
 import * as React from 'react'
 import IconButton from '@mui/material/IconButton'
 import Menu from '@mui/material/Menu'
@@ -24,8 +26,20 @@ import {
   Button,
   Icon
 } from '@mui/material'
+import { DialogDeleteConsole } from './DialogDeleteConsole'
+import { DialogEditConsole } from './DialogEditConsole'
+import { IConsoleDTO } from '../../dtos/IConsoleDTO'
+import { ToastType } from '../../components/Toast/enum'
+import { Toast } from '../../components/Toast'
+import { LoadingComponent } from '../../components/Loading'
+import { DialogCreateConsole } from './DialogCreateConsole'
 
 const ITEM_HEIGHT = 48
+
+interface IMessageAlert {
+  message: string
+  type: ToastType
+}
 
 export function Consoles() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -38,26 +52,59 @@ export function Consoles() {
   }
 
   /*************************************************************************/
-  const [listConsoles, setListConsoles] = useState<ILoadConsoleDTOResponse[]>(
-    []
-  )
-  /*************************************************************************/
+  // constante da instância da service
+  const consoleService = new ConsoleService()
+
+  // estado da listagem de consoles
+  const [listConsoles, setListConsoles] = useState<IConsoleDTO[]>([])
+  // estado do objeto console
+  const [consolle, setConsolle] = useState<IConsoleDTO>({
+    id: null,
+    name: '',
+    description: '',
+    image: ''
+  })
+
+  // estados do modal de criar, editar e deletar um console
   const [openModalNewConsole, setOpenModalNewConsole] = useState(false)
   const [openModalEdit, setOpenModalEdit] = useState(false)
   const [openModalDelete, setOpenModalDelete] = useState(false)
-  const [id, setId] = useState(null)
-  const [name, setName] = useState('')
-  const [description, setDescription] = useState('')
-  const [image, setImage] = useState('')
-  /*************************************************************************/
-  async function getConsoles() {
-    const consoleService = new ConsoleService()
 
+  // estado do loading
+  const [loading, setLoading] = useState(false)
+
+  // estados do ToastAlert
+  const [openAlert, setOpenAlert] = useState(false)
+  const [messageAlert, setMessageAlert] = useState<IMessageAlert>({
+    type: ToastType.SUCCESS,
+    message: ''
+  })
+
+  function displayNotificationMessage(message: string, type: ToastType) {
+    setOpenAlert(true)
+    setMessageAlert({ message, type })
+  }
+
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const { name } = event.target
+    const { value } = event.target
+    setConsolle(values => ({ ...values, [name]: value }))
+  }
+  /*************************************************************************/
+
+  async function getConsoles() {
+    setLoading(true)
     try {
       const response = await consoleService.loadAll()
       setListConsoles(response)
-    } catch {
-      console.log('erro')
+    } catch (error) {
+      const { response } = error as AxiosError
+      displayNotificationMessage(
+        `Falha ao buscar consoles - ${response?.data?.message}`,
+        ToastType.ERROR
+      )
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -66,53 +113,65 @@ export function Consoles() {
   }, [])
 
   /*************************************************************************/
-  async function handleCreateNewConsole(event: React.FormEvent) {
-    event.preventDefault()
-    const consoleServie = new ConsoleService()
-
+  async function handleCreateNewConsole() {
     try {
-      const response = await consoleServie.create({
-        name,
-        description,
-        image
-      })
+      await consoleService.create(consolle)
       setOpenModalNewConsole(false)
+      displayNotificationMessage(
+        'Console criado com sucesso!',
+        ToastType.SUCCESS
+      )
+      getConsoles()
     } catch (error) {
-      console.log('erro ao cadastrar')
+      const { response } = error as AxiosError
+      displayNotificationMessage(
+        `Falha ao criar console - ${response?.data?.message}`,
+        ToastType.ERROR
+      )
     }
 
-    setName('')
-    setImage('')
-    setDescription('')
+    setConsolle({
+      id: null,
+      name: '',
+      description: '',
+      image: ''
+    })
   }
 
   /*****************************************/
   async function editConsole() {
-    const consoleService = new ConsoleService()
     try {
-      const response = await consoleService.updateById({
-        id,
-        name,
-        description,
-        image
-      })
+      await consoleService.updateById(consolle)
       setOpenModalEdit(false)
+      displayNotificationMessage(
+        'Console editado com sucesso!',
+        ToastType.SUCCESS
+      )
       getConsoles()
     } catch (error) {
-      console.log('Edição concluída')
+      const { response } = error as AxiosError
+      displayNotificationMessage(
+        `Falha ao editar console - ${response?.data?.message}`,
+        ToastType.ERROR
+      )
     }
   }
   /*****************************************/
-
   async function deleteConsole() {
-    console.log('Deletar console')
-    const consoleService = new ConsoleService()
     try {
-      const response = await consoleService.deleteById(id)
+      await consoleService.deleteById(consolle.id)
       setOpenModalDelete(false)
+      displayNotificationMessage(
+        'Console deletado com sucesso!',
+        ToastType.SUCCESS
+      )
       getConsoles()
     } catch (error) {
-      console.log('erro')
+      const { response } = error as AxiosError
+      displayNotificationMessage(
+        `Falha ao deletar console - ${response?.data?.message}`,
+        ToastType.ERROR
+      )
     }
   }
 
@@ -121,183 +180,86 @@ export function Consoles() {
   return (
     <BaseLayout>
       <>
+        <Toast
+          open={openAlert}
+          onClose={() => setOpenAlert(false)}
+          type={messageAlert.type}
+          message={messageAlert.message}
+        />
         <Container>
-          <h1>Escolha sua plataforma preferida:</h1>
-          <ContentConsoles>
-            {listConsoles.map(consolle => (
-              <Console key={consolle.id}>
-                <ContentAction>
-                  <EditIcon
-                    color="action"
-                    onClick={() => {
-                      console.log(consolle)
-                      setId(consolle.id)
-                      setName(consolle.name)
-                      setDescription(consolle.description)
-                      setImage(consolle.image)
-                      setOpenModalEdit(true)
-                      handleClose()
-                    }}
-                  />
-                  <IconButton
-                    aria-label="more"
-                    id="long-button"
-                    aria-controls={open ? 'long-menu' : undefined}
-                    aria-expanded={open ? 'true' : undefined}
-                    aria-haspopup="true"
-                    onClick={handleClick}
-                  >
-                    <MoreVertIcon />
-                  </IconButton>
-                  <Menu
-                    id="long-menu"
-                    MenuListProps={{
-                      'aria-labelledby': 'long-button'
-                    }}
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                    PaperProps={{
-                      style: {
-                        maxHeight: ITEM_HEIGHT * 4.5,
-                        width: '20ch'
-                      }
-                    }}
-                  >
-                    <MenuItem
-                      onClick={() => {
-                        console.log(consolle)
-                        setId(consolle.id)
-                        setName(consolle.name)
-                        setDescription(consolle.description)
-                        setImage(consolle.image)
-                        setOpenModalEdit(true)
-                        handleClose()
-                      }}
-                    >
-                      Editar
-                    </MenuItem>
-
-                    {/* <MenuItem
-                      onClick={() => {
-                        setId(consolle.id)
-                        setOpenModalDelete(true)
-                        handleClose()
-                      }}
-                    >
-                      Deletar
-                    </MenuItem> */}
-                  </Menu>
-                </ContentAction>
-                <img src={consolle.image} alt={consolle.name} />
-                <div className="description">
-                  <h2>{consolle.name}</h2>
-                  <p>
-                    &nbsp;{consolle.description}
-                    <button> Ver jogos </button>
-                  </p>
-                </div>
-              </Console>
-            ))}
-            <Console onClick={() => setOpenModalNewConsole(true)}>
-              <img src={addImg} alt="Adicionar novo console" />
-              <div className="description">
-                <h2>Novo Console</h2>
-              </div>
-            </Console>
-          </ContentConsoles>
+          {loading ? (
+            <LoadingComponent
+              open={loading}
+              onClose={() => setLoading(false)}
+            />
+          ) : (
+            <>
+              <h1>Escolha sua plataforma preferida:</h1>
+              <ContentConsoles>
+                {listConsoles.map(consolle => (
+                  <Console key={consolle.id}>
+                    <ContentAction>
+                      <EditIcon
+                        color="action"
+                        onClick={() => {
+                          setConsolle({
+                            id: consolle.id,
+                            name: consolle.name,
+                            description: consolle.description,
+                            image: consolle.image
+                          })
+                          setOpenModalEdit(true)
+                        }}
+                      />
+                      <DeleteIcon
+                        color="warning"
+                        onClick={() => {
+                          setConsolle({ id: consolle.id, ...consolle })
+                          setOpenModalDelete(true)
+                        }}
+                      />
+                    </ContentAction>
+                    <img src={consolle.image} alt={consolle.name} />
+                    <div className="description">
+                      <h2>{consolle.name}</h2>
+                      <p>
+                        &nbsp;{consolle.description}
+                        <button> Ver jogos </button>
+                      </p>
+                    </div>
+                  </Console>
+                ))}
+                <Console onClick={() => setOpenModalNewConsole(true)}>
+                  <img src={addImg} alt="Adicionar novo console" />
+                  <div className="description">
+                    <h2>Novo Console</h2>
+                  </div>
+                </Console>
+              </ContentConsoles>
+            </>
+          )}
         </Container>
-        <Dialog
+        <DialogCreateConsole
           open={openModalNewConsole}
           onClose={() => setOpenModalNewConsole(false)}
-        >
-          <DialogTitle>Cadastrar Console</DialogTitle>
-          <DialogContent>
-            <TextField
-              autoFocus
-              margin="dense"
-              value={name}
-              onChange={event => setName(event.target.value)}
-              label="Nome"
-              fullWidth
-              variant="standard"
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              value={description}
-              onChange={event => setDescription(event.target.value)}
-              label="Descrição"
-              fullWidth
-              variant="standard"
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              value={image}
-              onChange={event => setImage(event.target.value)}
-              label="Imagem"
-              fullWidth
-              variant="standard"
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setOpenModalNewConsole(false)}>
-              Cancelar
-            </Button>
-            <Button onClick={handleCreateNewConsole}>Cadastrar</Button>
-          </DialogActions>
-        </Dialog>
+          onChange={handleChange}
+          onSubmitCreate={handleCreateNewConsole}
+          consolle={consolle}
+        />
 
-        <Dialog open={openModalEdit} onClose={() => setOpenModalEdit(false)}>
-          <DialogTitle>Dados do Console</DialogTitle>
-          <DialogContent>
-            <TextField
-              value={name}
-              onChange={event => setName(event.target.value)}
-              autoFocus
-              margin="dense"
-              label="Nome"
-              fullWidth
-              variant="standard"
-            />
-            <TextField
-              autoFocus
-              value={description}
-              onChange={event => setDescription(event.target.value)}
-              margin="dense"
-              label="Descrição"
-              fullWidth
-              variant="standard"
-            />
-            <TextField
-              autoFocus
-              value={image}
-              onChange={event => setImage(event.target.value)}
-              margin="dense"
-              label="Imagem"
-              fullWidth
-              variant="standard"
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setOpenModalEdit(false)}>Cancelar</Button>
-            <Button onClick={editConsole}>Editar</Button>
-          </DialogActions>
-        </Dialog>
-        <Dialog
+        <DialogEditConsole
+          open={openModalEdit}
+          onClose={() => setOpenModalEdit(false)}
+          onChange={handleChange}
+          onSubmitEdit={editConsole}
+          consolle={consolle}
+        />
+
+        <DialogDeleteConsole
           open={openModalDelete}
           onClose={() => setOpenModalDelete(false)}
-        >
-          <DialogTitle>Deletar Usuário</DialogTitle>
-          <DialogContent>
-            Tem certeza que deseja excluir este console?
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setOpenModalDelete(false)}>Cancelar</Button>
-            <Button onClick={deleteConsole}>Deletar</Button>
-          </DialogActions>
-        </Dialog>
+          onSubmitDelete={deleteConsole}
+        />
       </>
     </BaseLayout>
   )
