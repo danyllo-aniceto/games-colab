@@ -3,73 +3,111 @@ import { BaseLayout } from '../../layout/BaseLayout'
 import UserService from '../../services/UserService'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { ILoadUserDTOResponse } from '../../services/UserService/dtos/ILoadUserDTO'
 import { Container, ContentAction } from './styles'
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
-  TextField,
-  Snackbar,
-  Alert
+  DialogTitle
 } from '@mui/material'
+import { Toast } from '../../components/Toast'
+import { AxiosError } from 'axios'
+import { ToastType } from '../../components/Toast/enum'
+import { IUserDTO } from '../../dtos/IUserDTO'
+import { InputField } from '../../components/InputField'
+
+interface IMessageAlert {
+  message: string
+  type: ToastType
+}
 
 export function Users() {
-  const [listUsers, setListUsers] = useState<ILoadUserDTOResponse[]>([])
+  // constante da instância da service
+  const userService = new UserService()
 
+  // estado da listagem de usuários
+  const [listUsers, setListUsers] = useState<IUserDTO[]>([])
+
+  // etados do modal de editar e deletar
   const [openModalEdit, setOpenModalEdit] = useState(false)
   const [openModalDelete, setOpenModalDelete] = useState(false)
 
-  const [id, setId] = useState(null)
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  // estado do objeto usuário
+  const [user, setUser] = useState<IUserDTO>({
+    id: null,
+    name: '',
+    email: '',
+    password: ''
+  })
 
+  // estados do ToastAlert
   const [openAlert, setOpenAlert] = useState(false)
+  const [messageAlert, setMessageAlert] = useState<IMessageAlert>({
+    type: ToastType.SUCCESS,
+    message: ''
+  })
+
+  function displayNotificationMessage(message: string, type: ToastType) {
+    setOpenAlert(true)
+    setMessageAlert({ message, type })
+  }
+
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const { name } = event.target
+    const { value } = event.target
+    setUser(values => ({ ...values, [name]: value }))
+  }
 
   /*****************************************/
   async function deleteUser() {
-    console.log('Deletar usuário')
-    const userService = new UserService()
     try {
-      const response = await userService.deleteById(id)
+      await userService.deleteById(user.id)
       setOpenModalDelete(false)
-      setOpenAlert(true)
+      displayNotificationMessage(
+        'Usuário deletado com sucesso!',
+        ToastType.SUCCESS
+      )
       getUsers()
     } catch (error) {
-      console.log('erro')
+      const { response } = error as AxiosError
+      displayNotificationMessage(
+        `Falha ao deletar usuário - ${response?.data?.message}`,
+        ToastType.ERROR
+      )
     }
   }
 
   /*****************************************/
   async function editUser() {
-    const userService = new UserService()
     try {
-      const response = await userService.updateById({
-        id,
-        name,
-        email,
-        password
-      })
+      await userService.updateById(user)
       setOpenModalEdit(false)
-      setOpenAlert(true)
+      displayNotificationMessage(
+        'Usuário editado com sucesso!',
+        ToastType.SUCCESS
+      )
       getUsers()
     } catch (error) {
-      console.log('Edição concluída')
+      const { response } = error as AxiosError
+      displayNotificationMessage(
+        `Falha ao editar usuário - ${response?.data?.message}`,
+        ToastType.ERROR
+      )
     }
   }
   /*****************************************/
 
   async function getUsers() {
-    const userService = new UserService()
-
     try {
       const response = await userService.loadAll()
       setListUsers(response)
     } catch (error) {
-      console.log('erro')
+      const { response } = error as AxiosError
+      displayNotificationMessage(
+        `Falha ao buscar usuários - ${response?.data?.message}`,
+        ToastType.ERROR
+      )
     }
   }
 
@@ -80,20 +118,12 @@ export function Users() {
   return (
     <BaseLayout>
       <>
-        <Snackbar
+        <Toast
           open={openAlert}
-          autoHideDuration={6000}
           onClose={() => setOpenAlert(false)}
-          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        >
-          <Alert
-            onClose={() => setOpenAlert(false)}
-            severity="success"
-            sx={{ width: '100%' }}
-          >
-            Operação realizada com sucesso.
-          </Alert>
-        </Snackbar>
+          type={messageAlert.type}
+          message={messageAlert.message}
+        />
 
         <Container>
           <table>
@@ -115,17 +145,19 @@ export function Users() {
                       <EditIcon
                         color="action"
                         onClick={() => {
-                          setId(user.id)
-                          setName(user.name)
-                          setEmail(user.email)
-                          setPassword(user.password)
+                          setUser({
+                            id: user.id,
+                            name: user.name,
+                            email: user.email,
+                            password: user.password
+                          })
                           setOpenModalEdit(true)
                         }}
                       />
                       <DeleteIcon
                         color="warning"
                         onClick={() => {
-                          setId(user.id)
+                          setUser({ id: user.id, ...user })
                           setOpenModalDelete(true)
                         }}
                       />
@@ -139,34 +171,25 @@ export function Users() {
         <Dialog open={openModalEdit} onClose={() => setOpenModalEdit(false)}>
           <DialogTitle>Dados do Usuário</DialogTitle>
           <DialogContent>
-            <TextField
-              value={name}
-              onChange={event => setName(event.target.value)}
-              autoFocus
-              margin="dense"
+            <InputField
               label="Nome"
-              fullWidth
-              variant="standard"
+              name="name"
+              onChange={handleChange}
+              value={user.name}
             />
-            <TextField
-              autoFocus
-              value={email}
-              onChange={event => setEmail(event.target.value)}
-              margin="dense"
-              label="Email"
+            <InputField
+              label="E-mail"
+              name="email"
+              onChange={handleChange}
+              value={user.email}
               type="email"
-              fullWidth
-              variant="standard"
             />
-            <TextField
-              autoFocus
-              value={password}
-              onChange={event => setPassword(event.target.value)}
-              margin="dense"
+            <InputField
               label="Senha"
+              name="password"
+              onChange={handleChange}
+              value={user.password}
               type="password"
-              fullWidth
-              variant="standard"
             />
           </DialogContent>
           <DialogActions>

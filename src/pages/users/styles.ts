@@ -25,7 +25,16 @@ export const Container = styled.div`
     tbody {
       td {
         background: #dee9ffd1;
-        border-radius: 5px;
+      }
+      tr {
+        td:first-child {
+          border-top-left-radius: 5px;
+          border-bottom-left-radius: 5px;
+        }
+        td:last-child {
+          border-top-right-radius: 5px;
+          border-bottom-right-radius: 5px;
+        }
       }
     }
   }
