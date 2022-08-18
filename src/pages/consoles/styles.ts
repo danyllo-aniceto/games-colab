@@ -119,11 +119,12 @@ export const Console = styled.div`
   }
 `
 export const ContentAction = styled.div`
-  align-self: flex-end;
   z-index: 30;
   position: absolute;
   top: 0px;
-
+  display: flex;
+  flex-direction: row;
   padding: 10px;
   padding-top: 30px;
+  gap: 200px;
 `

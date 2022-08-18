@@ -8,7 +8,7 @@
     },
     {
       "id": 6,
-      "name": "Danyllo ",
+      "name": "Danyllo Aniceto",
       "email": "danyllo@gmail.com",
       "password": "54615"
     }
@@ -16,7 +16,6 @@
   "consoles": [
     {
       "name": "teste",
-      "description": "teste 8",
       "image": "https://static3.tcdn.com.br/img/img_prod/460977/teste_100485_1_cbc226c7d23a19c784fb4752ffe61337.png",
       "id": 1
     }
@@ -101,6 +100,16 @@
       "genre": "Jogo eletrônico de corrida",
       "image": "https://play-lh.googleusercontent.com/C6sPfagvw2RwDPVIpPL4dIoI9rwIpvk0m3qQyFsKv24ox5NBahu0-kEx7wx0mxHRVac",
       "raiting": 0
+    },
+    {
+      "id": "eiAKeAH",
+      "name": "Fall Guys",
+      "developer": "Mediatonic",
+      "summary": "",
+      "console": "Playstation ",
+      "genre": "",
+      "image": "https://cdn2.unrealengine.com/egs-fallguys-mediatonic-ic1-400x400-609bfee35fc3.png?h=270&resize=1&w=480",
+      "raiting": null
     }
   ],
   "auth": {

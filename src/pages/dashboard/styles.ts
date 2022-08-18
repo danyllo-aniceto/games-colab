@@ -5,7 +5,7 @@ import godOfWarImg from '../../assets/godOfWar.jpg'
 export const Container = styled.div`
   background: #dee9ffd1;
   height: auto;
-  margin: 5px 2px;
+  margin: 20px 15px;
   padding: 5px 8px;
 `
 export const Header = styled.div`

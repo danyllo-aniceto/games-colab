@@ -1,31 +1,14 @@
 import { ContentConsoles, Console, Container, ContentAction } from './styles'
-
 import addImg from '../../assets/add.svg'
 import { BaseLayout } from '../../layout/BaseLayout'
 import { useEffect, useState } from 'react'
-import { ILoadConsoleDTOResponse } from '../../services/ConsoleService/dtos/ILoadConsoleDTO'
 import ConsoleService from '../../services/ConsoleService'
-
 import { AxiosError } from 'axios'
-
 import * as React from 'react'
-import IconButton from '@mui/material/IconButton'
-import Menu from '@mui/material/Menu'
-import MenuItem from '@mui/material/MenuItem'
-import MoreVertIcon from '@mui/icons-material/MoreVert'
 
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  TextField,
-  DialogActions,
-  Button,
-  Icon
-} from '@mui/material'
 import { DialogDeleteConsole } from './DialogDeleteConsole'
 import { DialogEditConsole } from './DialogEditConsole'
 import { IConsoleDTO } from '../../dtos/IConsoleDTO'
@@ -34,23 +17,12 @@ import { Toast } from '../../components/Toast'
 import { LoadingComponent } from '../../components/Loading'
 import { DialogCreateConsole } from './DialogCreateConsole'
 
-const ITEM_HEIGHT = 48
-
 interface IMessageAlert {
   message: string
   type: ToastType
 }
 
 export function Consoles() {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-  const open = Boolean(anchorEl)
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
-
   /*************************************************************************/
   // constante da instância da service
   const consoleService = new ConsoleService()
@@ -61,7 +33,6 @@ export function Consoles() {
   const [consolle, setConsolle] = useState<IConsoleDTO>({
     id: null,
     name: '',
-    description: '',
     image: ''
   })
 
@@ -133,7 +104,6 @@ export function Consoles() {
     setConsolle({
       id: null,
       name: '',
-      description: '',
       image: ''
     })
   }
@@ -199,37 +169,42 @@ export function Consoles() {
                 {listConsoles.map(consolle => (
                   <Console key={consolle.id}>
                     <ContentAction>
-                      <EditIcon
-                        color="action"
-                        onClick={() => {
-                          setConsolle({
-                            id: consolle.id,
-                            name: consolle.name,
-                            description: consolle.description,
-                            image: consolle.image
-                          })
-                          setOpenModalEdit(true)
-                        }}
-                      />
-                      <DeleteIcon
-                        color="warning"
-                        onClick={() => {
-                          setConsolle({ id: consolle.id, ...consolle })
-                          setOpenModalDelete(true)
-                        }}
-                      />
+                      <div>
+                        <EditIcon
+                          color="action"
+                          onClick={() => {
+                            setConsolle({
+                              id: consolle.id,
+                              name: consolle.name,
+                              image: consolle.image
+                            })
+                            setOpenModalEdit(true)
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <DeleteIcon
+                          color="warning"
+                          onClick={() => {
+                            setConsolle({ id: consolle.id, ...consolle })
+                            setOpenModalDelete(true)
+                          }}
+                        />
+                      </div>
                     </ContentAction>
                     <img src={consolle.image} alt={consolle.name} />
-                    <div className="description">
-                      <h2>{consolle.name}</h2>
-                      <p>
-                        &nbsp;{consolle.description}
-                        <button> Ver jogos </button>
-                      </p>
-                    </div>
                   </Console>
                 ))}
-                <Console onClick={() => setOpenModalNewConsole(true)}>
+                <Console
+                  onClick={() => {
+                    setConsolle({
+                      id: null,
+                      name: '',
+                      image: ''
+                    })
+                    setOpenModalNewConsole(true)
+                  }}
+                >
                   <img src={addImg} alt="Adicionar novo console" />
                   <div className="description">
                     <h2>Novo Console</h2>

@@ -1,34 +1,32 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-  max-width: 75vw;
+  padding: 0 10px;
+`
+export const ContentButton = styled.div`
+  margin-top: 20px;
+  margin-right: 50px;
+  display: flex;
+  justify-content: flex-end;
 
-  .buttons {
-    width: 100%;
-    text-align: center;
-  }
+  button {
+    font-size: 2rem;
+    background: var(--blue);
+    border: 0;
+    padding: 0 2rem;
+    border-radius: 0.25rem;
+    height: 4rem;
+    font-family: 'Righteous', cursive;
+    color: var(--text-title);
 
-  .buttons button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    width: 50px;
+    transition: filter 0.2s;
 
-    &:first-child {
-      transform: rotate(180deg);
+    &:hover {
+      filter: brightness(0.9);
     }
   }
 `
 
-export const Carousel = styled.div`
-  display: flex;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`
 export const Item = styled.div`
   background-color: white;
   margin: 10px;
@@ -38,8 +36,8 @@ export const Item = styled.div`
   flex: none;
 
   .image img {
+    height: 300px;
     width: 100%;
-    height: 100%;
     object-fit: cover;
   }
 `

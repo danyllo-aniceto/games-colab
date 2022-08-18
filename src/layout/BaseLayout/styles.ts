@@ -7,10 +7,9 @@ export const Container = styled.main`
 
 export const ContentChildren = styled.section`
   margin-left: 250px;
-  padding: 20px;
   flex: 1;
   overflow: auto;
-  height: 80vh;
+  height: 85vh;
 
   /* &::-webkit-scrollbar {
     display: none;

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export const Container = styled.div`
   background: var(--containers-color-blue);
   width: 250px;
-  height: 80vh;
+  height: 85vh;
   position: fixed;
 
   nav {

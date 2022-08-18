@@ -5,21 +5,21 @@ export const Container = styled.header`
 `
 
 export const Content = styled.div`
-  max-width: 1120px;
+  max-width: 1460px;
   margin: 0 auto;
-  height: 20vh;
+  height: 15vh;
   width: 100vw;
 
-  padding: 0.8rem 0.5rem 0.8rem;
+  padding: 0.8rem 10rem 0.8rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   button {
-    font-size: 2rem;
+    font-size: 1.5rem;
     background: var(--blue);
     border: 0;
-    padding: 0 2rem;
+    padding: 0 1.2rem;
     border-radius: 0.25rem;
     height: 4rem;
     font-family: 'Righteous', cursive;
@@ -40,7 +40,7 @@ export const LogoTitulo = styled.div`
   gap: 1rem;
 
   img {
-    width: 7rem;
+    width: 6rem;
   }
 `
 
@@ -57,6 +57,6 @@ export const Titulo = styled.div`
   }
 
   img {
-    width: 2.8rem;
+    width: 2.6rem;
   }
 `

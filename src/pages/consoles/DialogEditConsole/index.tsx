@@ -34,12 +34,7 @@ export function DialogEditConsole({
           onChange={onChange}
           value={consolle.name}
         />
-        <InputField
-          label="Descrição"
-          name="description"
-          onChange={onChange}
-          value={consolle.description}
-        />
+       
         <InputField
           label="Imagem"
           name="image"
