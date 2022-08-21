@@ -15,7 +15,7 @@ export function Router() {
         <Route path="/consoles" element={<Consoles />} />
         <Route path="/games" element={<Games />} />
         <Route path="/users" element={<Users />} />
-        <Route path="/gameDisplay" element={<GameDisplay />} />
+        <Route path="/gameDisplay/:id" element={<GameDisplay />} />
         <Route path="*" element={<Navigate to="/dashboard" />} />
       </Routes>
     </BrowserRouter>

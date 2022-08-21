@@ -7,15 +7,10 @@ import { Slider, SliderProps, Slide } from '../../components/Slider'
 import { LoadingComponent } from '../../components/Loading'
 import { IGameDTO } from '../../dtos/IGameDTO'
 import { DialogCreateGame } from './DialogCreateGame'
-import { ToastType } from '../../components/Toast/enum'
+import { IMessageAlert, ToastType } from '../../components/Toast/enum'
 import { AxiosError } from 'axios'
 import { Toast } from '../../components/Toast'
-import { Link } from 'react-router-dom'
-
-interface IMessageAlert {
-  message: string
-  type: ToastType
-}
+import { useNavigate } from 'react-router-dom'
 
 export function Games() {
   const settings: SliderProps = {
@@ -59,6 +54,8 @@ export function Games() {
     type: ToastType.SUCCESS,
     message: ''
   })
+
+  const navigate = useNavigate()
 
   function displayNotificationMessage(message: string, type: ToastType) {
     setOpenAlert(true)
@@ -158,21 +155,20 @@ export function Games() {
 
               <Slider settings={settings}>
                 {listGames.map(game => (
-                  <Slide>
-                    <Link to="/gameDisplay">
-                      <Item key={game.id}>
-                        <div className="image">
-                          <img src={game.image} alt={game.name} />
-                        </div>
-                        <Info>
-                          <span className="name-game">{game.name}</span>
-                          <span className="developer-game">
-                            {game.developer}
-                          </span>
-                          <span className="console-game">{game.console}</span>
-                        </Info>
-                      </Item>
-                    </Link>
+                  <Slide
+                    onClick={() => navigate(`/gameDisplay/${game.id}`)}
+                    key={game.id}
+                  >
+                    <Item key={game.id}>
+                      <div className="image">
+                        <img src={game.image} alt={game.name} />
+                      </div>
+                      <Info>
+                        <span className="name-game">{game.name}</span>
+                        <span className="developer-game">{game.developer}</span>
+                        <span className="console-game">{game.console}</span>
+                      </Info>
+                    </Item>
                   </Slide>
                 ))}
               </Slider>

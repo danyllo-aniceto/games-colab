@@ -22,16 +22,21 @@ export const Container = styled.div`
 export const Content = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 50px;
+  gap: 20px;
   margin-top: 20px;
 
   img {
     width: 250px;
+    margin-left: -25px;
   }
 
   .description {
     display: flex;
     flex-direction: row;
     gap: 25px;
+  }
+
+  .summary p {
+    margin-top: 30px;
   }
 `

@@ -134,47 +134,53 @@ export function Users() {
               onClose={() => setLoading(false)}
             />
           ) : (
-            <table>
-              <thead>
-                <tr>
-                  <td>Nome</td>
-                  <td>E-mail</td>
-                  <td>Ações</td>
-                </tr>
-              </thead>
+            <>
+              {listUsers.length === 0 ? (
+                <p>nao tem nenhum usuario cadastrado</p>
+              ) : (
+                <table>
+                  <thead>
+                    <tr>
+                      <td>Nome</td>
+                      <td>E-mail</td>
+                      <td>Ações</td>
+                    </tr>
+                  </thead>
 
-              <tbody>
-                {listUsers.map(user => (
-                  <tr key={user.id}>
-                    <td>{user.name}</td>
-                    <td>{user.email}</td>
-                    <td>
-                      <ContentAction>
-                        <EditIcon
-                          color="action"
-                          onClick={() => {
-                            setUser({
-                              id: user.id,
-                              name: user.name,
-                              email: user.email,
-                              password: user.password
-                            })
-                            setOpenModalEdit(true)
-                          }}
-                        />
-                        <DeleteIcon
-                          color="warning"
-                          onClick={() => {
-                            setUser({ id: user.id, ...user })
-                            setOpenModalDelete(true)
-                          }}
-                        />
-                      </ContentAction>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                  <tbody>
+                    {listUsers.map(user => (
+                      <tr key={user.id}>
+                        <td>{user.name}</td>
+                        <td>{user.email}</td>
+                        <td>
+                          <ContentAction>
+                            <EditIcon
+                              color="action"
+                              onClick={() => {
+                                setUser({
+                                  id: user.id,
+                                  name: user.name,
+                                  email: user.email,
+                                  password: user.password
+                                })
+                                setOpenModalEdit(true)
+                              }}
+                            />
+                            <DeleteIcon
+                              color="warning"
+                              onClick={() => {
+                                setUser({ id: user.id, ...user })
+                                setOpenModalDelete(true)
+                              }}
+                            />
+                          </ContentAction>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </>
           )}
         </Container>
 
