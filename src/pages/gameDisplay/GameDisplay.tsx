@@ -1,18 +1,31 @@
 import { AxiosError } from 'axios'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { Button } from '../../components/Button'
+import { LoadingComponent } from '../../components/Loading'
 import { Toast } from '../../components/Toast'
 import { IMessageAlert, ToastType } from '../../components/Toast/enum'
 import { IGameDTO } from '../../dtos/IGameDTO'
 import { BaseLayout } from '../../layout/BaseLayout'
 import GameService from '../../services/GameService'
-import { Container, Content } from './styles'
+import { DialogDeleteGame } from './DialogDeleteGame'
+import { DialogEditGame } from './DialogEditGame'
+import { Container, Content, ContentButtons } from './styles'
 
 export function GameDisplay() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [game, setGame] = useState<IGameDTO>()
+  const [loading, setLoading] = useState(false)
+  const [game, setGame] = useState<IGameDTO>({
+    id: null,
+    name: '',
+    developer: '',
+    summary: '',
+    console: '',
+    genre: '',
+    image: '',
+    raiting: null
+  })
   const { id } = useParams<'id'>()
-  const navigate = useNavigate
+  const navigate = useNavigate()
   const gameService = new GameService()
 
   // estados do ToastAlert
@@ -22,13 +35,24 @@ export function GameDisplay() {
     message: ''
   })
 
+  const [openModalEdit, setOpenModalEdit] = useState(false)
+  const [openModalDelete, setOpenModalDelete] = useState(false)
+
   function displayNotificationMessage(message: string, type: ToastType) {
     setOpenAlert(true)
     setMessageAlert({ message, type })
   }
 
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const { name } = event.target
+    const { value } = event.target
+    setGame(values => ({ ...values, [name]: value }))
+  }
+
+  /****************************************************/
+
   async function getGameById(id: number): Promise<void> {
-    console.log('***id', id)
+    setLoading(true)
     try {
       const response = await gameService.loadById(id)
       setGame(response)
@@ -38,6 +62,8 @@ export function GameDisplay() {
         `Falha ao buscar game - ${response?.data?.message}`,
         ToastType.ERROR
       )
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -46,6 +72,42 @@ export function GameDisplay() {
       getGameById(Number(id))
     }
   }, [])
+  /****************************************************/
+
+  async function deleteGame() {
+    try {
+      await gameService.deleteById(game.id)
+      setOpenModalDelete(false)
+
+      displayNotificationMessage(
+        'Jogo deletado com sucesso!',
+        ToastType.SUCCESS
+      )
+      navigate('/games')
+    } catch (error) {
+      const { response } = error as AxiosError
+      displayNotificationMessage(
+        `Falha ao deletarv jogo - ${response?.data?.message}`,
+        ToastType.ERROR
+      )
+    }
+  }
+
+  /****************************************************/
+  async function editGame() {
+    try {
+      await gameService.updateById(game)
+      setOpenModalEdit(false)
+      displayNotificationMessage('Jogo editado com sucesso', ToastType.SUCCESS)
+      getGameById(game.id)
+    } catch (error) {
+      const { response } = error as AxiosError
+      displayNotificationMessage(
+        `Falha ao editar jogo - ${response?.data?.message}`,
+        ToastType.ERROR
+      )
+    }
+  }
 
   return (
     <BaseLayout>
@@ -58,37 +120,88 @@ export function GameDisplay() {
         />
 
         <Container>
-          <h1 className="game-title">{game?.name}</h1>
-          <Content>
-            <img src={game?.image} alt={game?.name} />
-            <div className="description">
-              <div className="summary">
-                <h1>Resumo</h1>
-                <p>{game?.summary}</p>
-              </div>
-              <div className="sub-descriptions">
-                <table>
-                  <thead>
-                    <tr>
-                      <td>Desenvolvedor</td>
-                      <td>Gênero</td>
-                      <td>Console</td>
-                      <td>Raiting</td>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>{game?.developer}</td>
-                      <td>{game?.genre}</td>
-                      <td>{game?.console}</td>
-                      <td>{game?.raiting}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </Content>
+          {loading ? (
+            <LoadingComponent
+              open={loading}
+              onClose={() => setLoading(false)}
+            />
+          ) : (
+            <>
+              <h1 className="game-title">{game?.name}</h1>
+              <Content>
+                <div className="main-content">
+                  <img src={game?.image} alt={game?.name} />
+
+                  <div className="summary">
+                    <h1>Resumo</h1>
+                    <p>&nbsp;{game?.summary}</p>
+                    <div className="sub-descriptions">
+                      <table>
+                        <thead>
+                          <tr>
+                            <td>Desenvolvedor</td>
+                            <td>Gênero</td>
+                            <td>Console</td>
+                            <td>Raiting</td>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>{game?.developer}</td>
+                            <td>{game?.genre}</td>
+                            <td>{game?.console}</td>
+                            <td>{game?.raiting}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <ContentButtons>
+                  <Button
+                    onClick={() => {
+                      setGame({
+                        id: game.id,
+                        name: game.name,
+                        console: game.console,
+                        developer: game.developer,
+                        genre: game.genre,
+                        image: game.image,
+                        raiting: game.raiting,
+                        summary: game.summary
+                      })
+                      setOpenModalEdit(true)
+                    }}
+                  >
+                    Editar
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setGame({ id: game.id, ...game })
+                      setOpenModalDelete(true)
+                    }}
+                  >
+                    Deletar
+                  </Button>
+                  <Button onClick={() => navigate('/games')}>Voltar</Button>
+                </ContentButtons>
+              </Content>
+            </>
+          )}
         </Container>
+        <DialogEditGame
+          open={openModalEdit}
+          onClose={() => setOpenModalEdit(false)}
+          onChange={handleChange}
+          onSubmitEdit={editGame}
+          game={game}
+        />
+
+        <DialogDeleteGame
+          open={openModalDelete}
+          onClose={() => setOpenModalDelete(false)}
+          onSubmitDelete={deleteGame}
+        />
       </>
     </BaseLayout>
   )

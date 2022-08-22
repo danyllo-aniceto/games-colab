@@ -16,6 +16,7 @@ import { ToastType } from '../../components/Toast/enum'
 import { Toast } from '../../components/Toast'
 import { LoadingComponent } from '../../components/Loading'
 import { DialogCreateConsole } from './DialogCreateConsole'
+import { EmptyItem } from '../../components/EmptyItem'
 
 interface IMessageAlert {
   message: string
@@ -164,53 +165,76 @@ export function Consoles() {
             />
           ) : (
             <>
-              <h1>Escolha sua plataforma preferida:</h1>
-              <ContentConsoles>
-                {listConsoles.map(consolle => (
-                  <Console key={consolle.id}>
-                    <ContentAction>
-                      <div>
-                        <EditIcon
-                          color="action"
-                          onClick={() => {
-                            setConsolle({
-                              id: consolle.id,
-                              name: consolle.name,
-                              image: consolle.image
-                            })
-                            setOpenModalEdit(true)
-                          }}
-                        />
-                      </div>
-                      <div>
-                        <DeleteIcon
-                          color="warning"
-                          onClick={() => {
-                            setConsolle({ id: consolle.id, ...consolle })
-                            setOpenModalDelete(true)
-                          }}
-                        />
-                      </div>
-                    </ContentAction>
-                    <img src={consolle.image} alt={consolle.name} />
+              {listConsoles.length === 0 ? (
+                <>
+                  <EmptyItem message="Não tem nenhum console cadastrado" />
+                  <Console
+                    onClick={() => {
+                      setConsolle({
+                        id: null,
+                        name: '',
+                        image: ''
+                      })
+                      setOpenModalNewConsole(true)
+                    }}
+                  >
+                    <img src={addImg} alt="Adicionar novo console" />
+                    <div className="description">
+                      <h2>Novo Console</h2>
+                    </div>
                   </Console>
-                ))}
-                <Console
-                  onClick={() => {
-                    setConsolle({
-                      id: null,
-                      name: '',
-                      image: ''
-                    })
-                    setOpenModalNewConsole(true)
-                  }}
-                >
-                  <img src={addImg} alt="Adicionar novo console" />
-                  <div className="description">
-                    <h2>Novo Console</h2>
-                  </div>
-                </Console>
-              </ContentConsoles>
+                </>
+              ) : (
+                <>
+                  <h1>Escolha sua plataforma preferida:</h1>
+                  <ContentConsoles>
+                    {listConsoles.map(consolle => (
+                      <Console key={consolle.id}>
+                        <ContentAction>
+                          <div>
+                            <EditIcon
+                              color="action"
+                              onClick={() => {
+                                setConsolle({
+                                  id: consolle.id,
+                                  name: consolle.name,
+                                  image: consolle.image
+                                })
+                                setOpenModalEdit(true)
+                              }}
+                            />
+                          </div>
+                          <div>
+                            <DeleteIcon
+                              color="warning"
+                              onClick={() => {
+                                setConsolle({ id: consolle.id, ...consolle })
+                                setOpenModalDelete(true)
+                              }}
+                            />
+                          </div>
+                        </ContentAction>
+                        <img src={consolle.image} alt={consolle.name} />
+                      </Console>
+                    ))}
+                    <Console
+                      onClick={() => {
+                        setConsolle({
+                          id: null,
+                          name: '',
+                          image: ''
+                        })
+                        setOpenModalNewConsole(true)
+                      }}
+                    >
+                      <img src={addImg} alt="Adicionar novo console" />
+                      <div className="description">
+                        <h2>Novo Console</h2>
+                      </div>
+                    </Console>
+                  </ContentConsoles>
+                </>
+              )}
             </>
           )}
         </Container>

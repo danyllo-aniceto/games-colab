@@ -12,6 +12,7 @@ import { IUserDTO } from '../../dtos/IUserDTO'
 import { DialogEditUser } from './DialogEditUser'
 import { DialogDeleteUser } from './DialogDeleteUser'
 import { LoadingComponent } from '../../components/Loading'
+import { EmptyItem } from '../../components/EmptyItem'
 
 interface IMessageAlert {
   message: string
@@ -136,7 +137,7 @@ export function Users() {
           ) : (
             <>
               {listUsers.length === 0 ? (
-                <p>nao tem nenhum usuario cadastrado</p>
+                <EmptyItem message="Nenhum usuário encontrado" />
               ) : (
                 <table>
                   <thead>

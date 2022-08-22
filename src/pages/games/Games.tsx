@@ -11,6 +11,7 @@ import { IMessageAlert, ToastType } from '../../components/Toast/enum'
 import { AxiosError } from 'axios'
 import { Toast } from '../../components/Toast'
 import { useNavigate } from 'react-router-dom'
+import { Button } from '../../components/Button'
 
 export function Games() {
   const settings: SliderProps = {
@@ -134,7 +135,7 @@ export function Games() {
           ) : (
             <>
               <ContentButton>
-                <button
+                <Button
                   onClick={() => {
                     setGame({
                       id: null,
@@ -150,7 +151,7 @@ export function Games() {
                   }}
                 >
                   Novo Jogo
-                </button>
+                </Button>
               </ContentButton>
 
               <Slider settings={settings}>
