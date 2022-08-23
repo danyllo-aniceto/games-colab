@@ -10,9 +10,26 @@ import { BaseLayout } from '../../layout/BaseLayout'
 import GameService from '../../services/GameService'
 import { DialogDeleteGame } from './DialogDeleteGame'
 import { DialogEditGame } from './DialogEditGame'
-import { Container, Content, ContentButtons } from './styles'
+import {
+  Container,
+  Content,
+  ContentButtons,
+  ContentRaiting,
+  EvaluationContent,
+  CommentContent,
+  SecondaryContent,
+  RatingComponent
+} from './styles'
+
+import Rating from '@mui/material/Rating'
+import Typography from '@mui/material/Typography'
+import Box from '@mui/material/Box'
+import TextField from '@mui/material/TextField'
+
+import React from 'react'
 
 export function GameDisplay() {
+  const [value, setValue] = React.useState<number | null>(0)
   const [loading, setLoading] = useState(false)
   const [game, setGame] = useState<IGameDTO>({
     id: null,
@@ -157,34 +174,59 @@ export function GameDisplay() {
                     </div>
                   </div>
                 </div>
-                <ContentButtons>
-                  <Button
-                    onClick={() => {
-                      setGame({
-                        id: game.id,
-                        name: game.name,
-                        console: game.console,
-                        developer: game.developer,
-                        genre: game.genre,
-                        image: game.image,
-                        raiting: game.raiting,
-                        summary: game.summary
-                      })
-                      setOpenModalEdit(true)
-                    }}
-                  >
-                    Editar
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      setGame({ id: game.id, ...game })
-                      setOpenModalDelete(true)
-                    }}
-                  >
-                    Deletar
-                  </Button>
-                  <Button onClick={() => navigate('/games')}>Voltar</Button>
-                </ContentButtons>
+
+                <SecondaryContent>
+                  <EvaluationContent>
+                    <RatingComponent>
+                      <ContentRaiting>
+                        <Typography component="legend">Raiting</Typography>
+                        <Rating
+                          name="raiting"
+                          value={game.raiting}
+                          onChange={handleChange}
+                        />
+                      </ContentRaiting>
+                      <CommentContent>
+                        <TextField
+                          label="Comentário"
+                          multiline
+                          maxRows={4}
+                          onChange={handleChange}
+                        />
+                      </CommentContent>
+                    </RatingComponent>
+                    <Button>Avaliar</Button>
+                  </EvaluationContent>
+
+                  <ContentButtons>
+                    <Button
+                      onClick={() => {
+                        setGame({
+                          id: game.id,
+                          name: game.name,
+                          console: game.console,
+                          developer: game.developer,
+                          genre: game.genre,
+                          image: game.image,
+                          raiting: game.raiting,
+                          summary: game.summary
+                        })
+                        setOpenModalEdit(true)
+                      }}
+                    >
+                      Editar
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        setGame({ id: game.id, ...game })
+                        setOpenModalDelete(true)
+                      }}
+                    >
+                      Deletar
+                    </Button>
+                    <Button onClick={() => navigate('/games')}>Voltar</Button>
+                  </ContentButtons>
+                </SecondaryContent>
               </Content>
             </>
           )}

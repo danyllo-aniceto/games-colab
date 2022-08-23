@@ -1,5 +1,18 @@
 {
-  "users": [],
+  "users": [
+    {
+      "id": 1,
+      "name": "Ygor",
+      "email": "ygor@gmail.com.br",
+      "password": "850684"
+    },
+    {
+      "id": 2,
+      "name": "Danyllo Aniceto Carvalho",
+      "email": "danyllo.aniceto.carvalho@gmail.com",
+      "password": "87894561"
+    }
+  ],
   "consoles": [],
   "games": [
     {
@@ -9,7 +22,7 @@
       "developer": "Santa Monica",
       "genre": "Ação",
       "image": "https://cdn1.epicgames.com/offer/3ddd6a590da64e3686042d108968a6b2/EGS_GodofWar_SantaMonicaStudio_S2_1200x1600-fbdf3cbc2980749091d52751ffabb7b7_1200x1600-fbdf3cbc2980749091d52751ffabb7b7",
-      "raiting": null,
+      "raiting": 5,
       "summary": "God of War é uma série de jogos eletrônicos de ação-aventura vagamente baseado nas mitologias grega e nórdica sendo criado originalmente por David Jaffe da Santa Monica Studio. Iniciada em 2005, a série tornou-se carro-chefe para a marca PlayStation, que consiste em oito jogos em várias plataforma."
     },
     {

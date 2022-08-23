@@ -12,20 +12,9 @@ export const ContentButton = styled.div`
   justify-content: flex-end;
 
   button {
-    font-size: 2rem;
-    background: var(--blue);
-    border: 0;
+    font-size: 1.8rem;
     padding: 0 2rem;
-    border-radius: 0.25rem;
     height: 4rem;
-    font-family: 'Righteous', cursive;
-    color: var(--text-title);
-
-    transition: filter 0.2s;
-
-    &:hover {
-      filter: brightness(0.9);
-    }
   }
 `
 

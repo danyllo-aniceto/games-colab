@@ -92,9 +92,28 @@ export const Content = styled.div`
 `
 
 export const ContentButtons = styled.div`
-  align-self: flex-end;
-
   button {
     padding: 10px;
   }
+`
+export const ContentRaiting = styled.div``
+export const CommentContent = styled.div``
+
+export const EvaluationContent = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
+  align-items: center;
+`
+export const SecondaryContent = styled.div`
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+`
+export const RatingComponent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 `

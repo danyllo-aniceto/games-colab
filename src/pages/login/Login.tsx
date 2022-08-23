@@ -13,68 +13,79 @@ import {
   ButtonNewRegister
 } from './styles'
 import logoImg from '../../assets/logo.png'
-import { FormEvent, useState } from 'react'
+import { useState } from 'react'
 import UserService from '../../services/UserService'
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  TextField,
-  DialogActions,
-  Button,
-  Snackbar,
-  Alert
-} from '@mui/material'
+
+import { IUserDTO } from '../../dtos/IUserDTO'
+import { IMessageAlert, ToastType } from '../../components/Toast/enum'
+import { DialogCreateUser } from '../users/DialogCreateUser'
+import { AxiosError } from 'axios'
+import { Toast } from '../../components/Toast'
 
 export function Login() {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  // constante da instância da service
+  const userService = new UserService()
+
+  // estado do objeto usuário
+  const [user, setUser] = useState<IUserDTO>({
+    id: null,
+    name: '',
+    email: '',
+    password: ''
+  })
+
   const [openModalNewUser, setOpenModalNewUser] = useState(false)
+
+  // estados do ToastAlert
   const [openAlert, setOpenAlert] = useState(false)
+  const [messageAlert, setMessageAlert] = useState<IMessageAlert>({
+    type: ToastType.SUCCESS,
+    message: ''
+  })
 
-  async function handleCreateNewTransaction(event: FormEvent) {
-    event.preventDefault()
+  function displayNotificationMessage(message: string, type: ToastType) {
+    setOpenAlert(true)
+    setMessageAlert({ message, type })
+  }
 
-    const userService = new UserService()
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const { name } = event.target
+    const { value } = event.target
+    setUser(values => ({ ...values, [name]: value }))
+  }
 
+  async function handleCreateNewUser() {
     try {
-      const response = await userService.create({
-        name,
-        email,
-        password
-      })
+      await userService.create(user)
       setOpenModalNewUser(false)
-      setOpenAlert(true)
-
-      console.log('cadastro realizado com sucesso')
+      displayNotificationMessage(
+        'Usuário criado com sucesso!',
+        ToastType.SUCCESS
+      )
     } catch (error) {
-      console.log('erro ao cadastrar')
+      const { response } = error as AxiosError
+      displayNotificationMessage(
+        `Falha ao criar usuário - ${response?.data?.message}`,
+        ToastType.ERROR
+      )
     }
 
-    console.log(name, email, password)
-
-    setName('')
-    setEmail('')
-    setPassword('')
+    setUser({
+      id: null,
+      name: '',
+      email: '',
+      password: ''
+    })
   }
 
   return (
     <>
-      <Snackbar
+      <Toast
         open={openAlert}
-        autoHideDuration={6000}
         onClose={() => setOpenAlert(false)}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      >
-        <Alert
-          onClose={() => setOpenAlert(false)}
-          severity="success"
-          sx={{ width: '100%' }}
-        >
-          Operação realizada com sucesso.
-        </Alert>
-      </Snackbar>
+        type={messageAlert.type}
+        message={messageAlert.message}
+      />
       <Container>
         <Form>
           <UserCard>
@@ -99,47 +110,13 @@ export function Login() {
         </Form>
       </Container>
 
-      <Dialog
+      <DialogCreateUser
         open={openModalNewUser}
         onClose={() => setOpenModalNewUser(false)}
-      >
-        <DialogTitle>Cadastrar Usuário</DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            value={name}
-            onChange={event => setName(event.target.value)}
-            label="Nome"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            value={email}
-            onChange={event => setEmail(event.target.value)}
-            label="Email"
-            type="email"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            value={password}
-            onChange={event => setPassword(event.target.value)}
-            label="Senha"
-            type="password"
-            fullWidth
-            variant="standard"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenModalNewUser(false)}>Cancelar</Button>
-          <Button onClick={handleCreateNewTransaction}>Cadastrar</Button>
-        </DialogActions>
-      </Dialog>
+        onChange={handleChange}
+        onSubmitCreate={handleCreateNewUser}
+        user={user}
+      />
     </>
   )
 }

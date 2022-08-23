@@ -4,7 +4,6 @@ import UserService from '../../services/UserService'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { Container, ContentAction, Message } from './styles'
-import { Backdrop, CircularProgress } from '@mui/material'
 import { Toast } from '../../components/Toast'
 import { AxiosError } from 'axios'
 import { ToastType } from '../../components/Toast/enum'
@@ -13,6 +12,9 @@ import { DialogEditUser } from './DialogEditUser'
 import { DialogDeleteUser } from './DialogDeleteUser'
 import { LoadingComponent } from '../../components/Loading'
 import { EmptyItem } from '../../components/EmptyItem'
+import { Button } from '../../components/Button'
+import { ContentButton } from '../games/styles'
+import { DialogCreateUser } from './DialogCreateUser'
 
 interface IMessageAlert {
   message: string
@@ -26,9 +28,10 @@ export function Users() {
   // estado da listagem de usuários
   const [listUsers, setListUsers] = useState<IUserDTO[]>([])
 
-  // etados do modal de editar e deletar
+  // etados do modal de editar, deletar e criar
   const [openModalEdit, setOpenModalEdit] = useState(false)
   const [openModalDelete, setOpenModalDelete] = useState(false)
+  const [openModalNewUser, setOpenModalNewUser] = useState(false)
 
   // estado do objeto usuário
   const [user, setUser] = useState<IUserDTO>({
@@ -118,6 +121,33 @@ export function Users() {
     getUsers()
   }, [])
 
+  /*****************************************/
+  async function handleCreateNewUser() {
+    try {
+      await userService.create(user)
+      setOpenModalNewUser(false)
+      displayNotificationMessage(
+        'Usuário criado com sucesso!',
+        ToastType.SUCCESS
+      )
+      getUsers()
+    } catch (error) {
+      const { response } = error as AxiosError
+      displayNotificationMessage(
+        `Falha ao criar usuário - ${response?.data?.message}`,
+        ToastType.ERROR
+      )
+    }
+
+    setUser({
+      id: null,
+      name: '',
+      email: '',
+      password: ''
+    })
+  }
+  /*****************************************/
+
   return (
     <BaseLayout>
       <>
@@ -141,51 +171,76 @@ export function Users() {
                   <EmptyItem message="Nenhum usuário encontrado 😢" />
                 </Message>
               ) : (
-                <table>
-                  <thead>
-                    <tr>
-                      <td>Nome</td>
-                      <td>E-mail</td>
-                      <td>Ações</td>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    {listUsers.map(user => (
-                      <tr key={user.id}>
-                        <td>{user.name}</td>
-                        <td>{user.email}</td>
-                        <td>
-                          <ContentAction>
-                            <EditIcon
-                              color="action"
-                              onClick={() => {
-                                setUser({
-                                  id: user.id,
-                                  name: user.name,
-                                  email: user.email,
-                                  password: user.password
-                                })
-                                setOpenModalEdit(true)
-                              }}
-                            />
-                            <DeleteIcon
-                              color="warning"
-                              onClick={() => {
-                                setUser({ id: user.id, ...user })
-                                setOpenModalDelete(true)
-                              }}
-                            />
-                          </ContentAction>
-                        </td>
+                <>
+                  <ContentButton>
+                    <Button
+                      onClick={() => {
+                        setUser({
+                          id: null,
+                          name: '',
+                          email: '',
+                          password: ''
+                        })
+                        setOpenModalNewUser(true)
+                      }}
+                    >
+                      Novo Usuário
+                    </Button>
+                  </ContentButton>
+                  <table>
+                    <thead>
+                      <tr>
+                        <td>Nome</td>
+                        <td>E-mail</td>
+                        <td>Ações</td>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+
+                    <tbody>
+                      {listUsers.map(user => (
+                        <tr key={user.id}>
+                          <td>{user.name}</td>
+                          <td>{user.email}</td>
+                          <td>
+                            <ContentAction>
+                              <EditIcon
+                                color="action"
+                                onClick={() => {
+                                  setUser({
+                                    id: user.id,
+                                    name: user.name,
+                                    email: user.email,
+                                    password: user.password
+                                  })
+                                  setOpenModalEdit(true)
+                                }}
+                              />
+                              <DeleteIcon
+                                color="warning"
+                                onClick={() => {
+                                  setUser({ id: user.id, ...user })
+                                  setOpenModalDelete(true)
+                                }}
+                              />
+                            </ContentAction>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </>
               )}
             </>
           )}
         </Container>
+
+        <DialogCreateUser
+          open={openModalNewUser}
+          onClose={() => setOpenModalNewUser(false)}
+          onChange={handleChange}
+          onSubmitCreate={handleCreateNewUser}
+          user={user}
+        />
 
         <DialogEditUser
           open={openModalEdit}
