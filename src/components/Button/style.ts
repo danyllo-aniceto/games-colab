@@ -9,7 +9,7 @@ export const StyledButton = styled.button`
   height: 4rem;
   font-family: 'Righteous', cursive;
   color: var(--text-title);
-
+  padding: 10px;
   transition: filter 0.2s;
 
   &:hover {

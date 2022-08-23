@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components'
 
+import styled from 'styled-components'
 export const GlobalStyle = createGlobalStyle`
   :root{
     --background: #88AAEE;
@@ -52,3 +53,17 @@ export const GlobalStyle = createGlobalStyle`
     cursor: not-allowed;
   }
   `
+export const MessageDefault = styled.div`
+  color: var(--header-color-blue);
+  font-size: 25px;
+  font-family: 'Righteous', cursive;
+`
+
+export const ContentDefault = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  align-items: center;
+
+  margin-top: 25px;
+`

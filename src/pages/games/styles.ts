@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { Button } from '../../components/Button'
+import { MessageDefault } from '../../styles/global'
 
 export const Container = styled.div`
   padding: 0 10px;
@@ -75,4 +76,7 @@ export const Info = styled.div`
     background-color: var(--blue);
     color: var(--text-title);
   }
+`
+export const Message = styled(MessageDefault)`
+  margin-top: 18vh;
 `

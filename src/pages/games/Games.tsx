@@ -1,4 +1,4 @@
-import { Container, Info, Item, ContentButton } from './styles'
+import { Container, Info, Item, ContentButton, Message } from './styles'
 
 import { useEffect, useState } from 'react'
 import { BaseLayout } from '../../layout/BaseLayout'
@@ -12,6 +12,8 @@ import { AxiosError } from 'axios'
 import { Toast } from '../../components/Toast'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '../../components/Button'
+import { ContentDefault } from '../../styles/global'
+import { EmptyItem } from '../../components/EmptyItem'
 
 export function Games() {
   const settings: SliderProps = {
@@ -134,45 +136,77 @@ export function Games() {
             />
           ) : (
             <>
-              <ContentButton>
-                <Button
-                  onClick={() => {
-                    setGame({
-                      id: null,
-                      name: '',
-                      developer: '',
-                      summary: '',
-                      console: '',
-                      genre: '',
-                      image: '',
-                      raiting: null
-                    })
-                    setOpenModalNewGame(true)
-                  }}
-                >
-                  Novo Jogo
-                </Button>
-              </ContentButton>
+              {listGames.length === 0 ? (
+                <>
+                  <ContentDefault>
+                    <Message>
+                      <EmptyItem message="Nenhum jogo cadastrado 😥" />
+                    </Message>
 
-              <Slider settings={settings}>
-                {listGames.map(game => (
-                  <Slide
-                    onClick={() => navigate(`/gameDisplay/${game.id}`)}
-                    key={game.id}
-                  >
-                    <Item key={game.id}>
-                      <div className="image">
-                        <img src={game.image} alt={game.name} />
-                      </div>
-                      <Info>
-                        <span className="name-game">{game.name}</span>
-                        <span className="developer-game">{game.developer}</span>
-                        <span className="console-game">{game.console}</span>
-                      </Info>
-                    </Item>
-                  </Slide>
-                ))}
-              </Slider>
+                    <Button
+                      onClick={() => {
+                        setGame({
+                          id: null,
+                          name: '',
+                          developer: '',
+                          summary: '',
+                          console: '',
+                          genre: '',
+                          image: '',
+                          raiting: null
+                        })
+                        setOpenModalNewGame(true)
+                      }}
+                    >
+                      Novo Jogo
+                    </Button>
+                  </ContentDefault>
+                </>
+              ) : (
+                <>
+                  <ContentButton>
+                    <Button
+                      onClick={() => {
+                        setGame({
+                          id: null,
+                          name: '',
+                          developer: '',
+                          summary: '',
+                          console: '',
+                          genre: '',
+                          image: '',
+                          raiting: null
+                        })
+                        setOpenModalNewGame(true)
+                      }}
+                    >
+                      Novo Jogo
+                    </Button>
+                  </ContentButton>
+
+                  <Slider settings={settings}>
+                    {listGames.map(game => (
+                      <Slide
+                        onClick={() => navigate(`/gameDisplay/${game.id}`)}
+                        key={game.id}
+                      >
+                        <Item key={game.id}>
+                          <div className="image">
+                            <img src={game.image} alt={game.name} />
+                          </div>
+                          <Info>
+                            <span className="name-game">{game.name}</span>
+                            <span className="developer-game">
+                              {game.developer}
+                            </span>
+                            <span className="console-game">{game.console}</span>
+                          </Info>
+                        </Item>
+                      </Slide>
+                    ))}
+                  </Slider>
+                </>
+              )}
             </>
           )}
           <DialogCreateGame

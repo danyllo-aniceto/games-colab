@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+import { MessageDefault } from '../../styles/global'
+
 export const Container = styled.div`
   margin: 20px 15px;
 
@@ -41,3 +43,7 @@ export const Container = styled.div`
 `
 
 export const ContentAction = styled.div``
+
+export const Message = styled(MessageDefault)`
+  margin-top: 35vh;
+`

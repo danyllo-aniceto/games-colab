@@ -1,10 +1,6 @@
 {
-  "users": [
-    
-  ],
-  "consoles": [
-    
-  ],
+  "users": [],
+  "consoles": [],
   "games": [
     {
       "id": 1,

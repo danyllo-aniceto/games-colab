@@ -3,7 +3,7 @@ import { BaseLayout } from '../../layout/BaseLayout'
 import UserService from '../../services/UserService'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { Container, ContentAction } from './styles'
+import { Container, ContentAction, Message } from './styles'
 import { Backdrop, CircularProgress } from '@mui/material'
 import { Toast } from '../../components/Toast'
 import { AxiosError } from 'axios'
@@ -137,7 +137,9 @@ export function Users() {
           ) : (
             <>
               {listUsers.length === 0 ? (
-                <EmptyItem message="Nenhum usuário encontrado" />
+                <Message>
+                  <EmptyItem message="Nenhum usuário encontrado 😢" />
+                </Message>
               ) : (
                 <table>
                   <thead>

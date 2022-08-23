@@ -17,6 +17,7 @@ import { Toast } from '../../components/Toast'
 import { LoadingComponent } from '../../components/Loading'
 import { DialogCreateConsole } from './DialogCreateConsole'
 import { EmptyItem } from '../../components/EmptyItem'
+import { ContentDefault, MessageDefault } from '../../styles/global'
 
 interface IMessageAlert {
   message: string
@@ -167,22 +168,27 @@ export function Consoles() {
             <>
               {listConsoles.length === 0 ? (
                 <>
-                  <EmptyItem message="Não tem nenhum console cadastrado" />
-                  <Console
-                    onClick={() => {
-                      setConsolle({
-                        id: null,
-                        name: '',
-                        image: ''
-                      })
-                      setOpenModalNewConsole(true)
-                    }}
-                  >
-                    <img src={addImg} alt="Adicionar novo console" />
-                    <div className="description">
-                      <h2>Novo Console</h2>
-                    </div>
-                  </Console>
+                  <ContentDefault>
+                    <MessageDefault>
+                      <EmptyItem message="Nenhum console cadastrado 😥" />
+                    </MessageDefault>
+
+                    <Console
+                      onClick={() => {
+                        setConsolle({
+                          id: null,
+                          name: '',
+                          image: ''
+                        })
+                        setOpenModalNewConsole(true)
+                      }}
+                    >
+                      <img src={addImg} alt="Adicionar novo console" />
+                      <div className="description">
+                        <h2>Novo Console</h2>
+                      </div>
+                    </Console>
+                  </ContentDefault>
                 </>
               ) : (
                 <>
