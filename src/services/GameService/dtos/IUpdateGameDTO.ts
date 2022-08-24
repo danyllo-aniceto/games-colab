@@ -6,7 +6,7 @@ export interface IUpdateGameDTORequest {
   console?: string
   genre?: string
   image?: string
-  raiting?: number
+  rating?: number
 }
 
 export interface IUpdateGameDTOResponse {

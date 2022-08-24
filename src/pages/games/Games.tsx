@@ -39,7 +39,7 @@ export function Games() {
     console: '',
     genre: '',
     image: '',
-    raiting: null
+    rating: 0
   })
 
   // estado do loading
@@ -115,7 +115,7 @@ export function Games() {
       console: '',
       genre: '',
       image: '',
-      raiting: null
+      rating: 0
     })
   }
 
@@ -153,7 +153,7 @@ export function Games() {
                           console: '',
                           genre: '',
                           image: '',
-                          raiting: null
+                          rating: 0
                         })
                         setOpenModalNewGame(true)
                       }}
@@ -175,7 +175,7 @@ export function Games() {
                           console: '',
                           genre: '',
                           image: '',
-                          raiting: null
+                          rating: 0
                         })
                         setOpenModalNewGame(true)
                       }}

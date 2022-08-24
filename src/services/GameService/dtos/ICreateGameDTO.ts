@@ -5,7 +5,7 @@ export interface ICreateGameDTORequest {
   console: string
   genre: string
   image: string
-  raiting: number
+  rating: number
 }
 
 export interface ICreateGameDTOResponse {
@@ -15,6 +15,6 @@ export interface ICreateGameDTOResponse {
   console: string
   genre: string
   image: string
-  raiting: number
+  rating: number
   id: number
 }

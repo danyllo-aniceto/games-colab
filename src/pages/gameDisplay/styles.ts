@@ -27,18 +27,20 @@ export const Content = styled.div`
   gap: 20px;
   margin-top: 20px;
 
-  .main-content {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    margin-inline: 25px;
-  }
-
   img {
     width: 300px;
   }
+`
 
-  .summary h1 {
+export const MainContent = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  margin-inline: 25px;
+`
+
+export const Summary = styled.div`
+  h1 {
     color: var(--header-color-blue);
     font-size: 25px;
     font-family: 'Righteous', cursive;
@@ -47,44 +49,45 @@ export const Content = styled.div`
     line-height: 1.5rem;
   }
 
-  .summary p {
+  p {
     margin-top: 30px;
   }
+`
+export const TableContent = styled.div`
+  margin: 20px 15px;
 
-  .sub-descriptions {
-    table {
-      width: 100%;
-      border-spacing: 0 0.5rem;
+  table {
+    width: 100%;
+    border-spacing: 0 0.5rem;
 
+    td {
+      padding: 1rem 2rem;
+      border: 0;
+    }
+
+    thead {
+      color: var(--header-color-blue);
+      font-size: 25px;
+      font-family: 'Righteous', cursive;
+      font-weight: 400;
+      padding: 1rem 2rem;
+      text-align: left;
+      line-height: 1.5rem;
+    }
+
+    tbody {
       td {
-        padding: 1rem 2rem;
-        border: 0;
+        background: #1a397a;
+        color: var(--text-title);
       }
-
-      thead {
-        color: var(--header-color-blue);
-        font-size: 25px;
-        font-family: 'Righteous', cursive;
-        font-weight: 400;
-        padding: 1rem 2rem;
-        text-align: left;
-        line-height: 1.5rem;
-      }
-
-      tbody {
-        td {
-          background: #1a397a;
-          color: var(--text-title);
+      tr {
+        td:first-child {
+          border-top-left-radius: 5px;
+          border-bottom-left-radius: 5px;
         }
-        tr {
-          td:first-child {
-            border-top-left-radius: 5px;
-            border-bottom-left-radius: 5px;
-          }
-          td:last-child {
-            border-top-right-radius: 5px;
-            border-bottom-right-radius: 5px;
-          }
+        td:last-child {
+          border-top-right-radius: 5px;
+          border-bottom-right-radius: 5px;
         }
       }
     }
@@ -97,23 +100,56 @@ export const ContentButtons = styled.div`
   }
 `
 export const ContentRaiting = styled.div``
-export const CommentContent = styled.div``
 
-export const EvaluationContent = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 25px;
-  align-items: center;
-`
 export const SecondaryContent = styled.div`
-  margin-top: 20px;
+  margin-top: 5px;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
 `
-export const RatingComponent = styled.div`
+export const EvaluationContent = styled.div`
+  padding: 25px;
+  margin-inline: 25px;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 25px;
+  align-items: center;
+
+  h1 {
+    color: #1a397a;
+    font-size: 25px;
+    font-family: 'Righteous', cursive;
+    font-weight: 400;
+    text-align: center;
+    line-height: 1.5rem;
+  }
+`
+export const Evaluation = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`
+export const StyleTextField = styled.div``
+
+export const RatingAndEvaluation = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-inline: 10px;
+`
+export const Comment = styled.div``
+
+export const ItemsComment = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-inline: 10px;
+  align-items: center;
+`
+export const CommentContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 `

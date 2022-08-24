@@ -6,5 +6,5 @@ export interface IGameDTO {
   console: string
   genre: string
   image: string
-  raiting: number
+  rating: number
 }

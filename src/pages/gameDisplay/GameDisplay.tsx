@@ -10,15 +10,23 @@ import { BaseLayout } from '../../layout/BaseLayout'
 import GameService from '../../services/GameService'
 import { DialogDeleteGame } from './DialogDeleteGame'
 import { DialogEditGame } from './DialogEditGame'
+import DeleteIcon from '@mui/icons-material/Delete'
 import {
   Container,
   Content,
   ContentButtons,
   ContentRaiting,
-  EvaluationContent,
-  CommentContent,
   SecondaryContent,
-  RatingComponent
+  MainContent,
+  Summary,
+  EvaluationContent,
+  Evaluation,
+  StyleTextField,
+  RatingAndEvaluation,
+  TableContent,
+  Comment,
+  ItemsComment,
+  CommentContent
 } from './styles'
 
 import Rating from '@mui/material/Rating'
@@ -39,7 +47,7 @@ export function GameDisplay() {
     console: '',
     genre: '',
     image: '',
-    raiting: null
+    rating: 0
   })
   const { id } = useParams<'id'>()
   const navigate = useNavigate()
@@ -146,20 +154,20 @@ export function GameDisplay() {
             <>
               <h1 className="game-title">{game?.name}</h1>
               <Content>
-                <div className="main-content">
+                <MainContent>
                   <img src={game?.image} alt={game?.name} />
 
-                  <div className="summary">
+                  <Summary>
                     <h1>Resumo</h1>
                     <p>&nbsp;{game?.summary}</p>
-                    <div className="sub-descriptions">
+                    <TableContent>
                       <table>
                         <thead>
                           <tr>
                             <td>Desenvolvedor</td>
                             <td>Gênero</td>
                             <td>Console</td>
-                            <td>Raiting</td>
+                            <td>Rating</td>
                           </tr>
                         </thead>
                         <tbody>
@@ -167,36 +175,19 @@ export function GameDisplay() {
                             <td>{game?.developer}</td>
                             <td>{game?.genre}</td>
                             <td>{game?.console}</td>
-                            <td>{game?.raiting}</td>
+                            <td>{game?.rating}</td>
                           </tr>
                         </tbody>
                       </table>
-                    </div>
-                  </div>
-                </div>
+                    </TableContent>
+                  </Summary>
+                </MainContent>
 
                 <SecondaryContent>
-                  <EvaluationContent>
-                    <RatingComponent>
-                      <ContentRaiting>
-                        <Typography component="legend">Raiting</Typography>
-                        <Rating
-                          name="raiting"
-                          value={game.raiting}
-                          onChange={handleChange}
-                        />
-                      </ContentRaiting>
-                      <CommentContent>
-                        <TextField
-                          label="Comentário"
-                          multiline
-                          maxRows={4}
-                          onChange={handleChange}
-                        />
-                      </CommentContent>
-                    </RatingComponent>
-                    <Button>Avaliar</Button>
-                  </EvaluationContent>
+                  <ContentRaiting>
+                    <Typography component="legend">Rating</Typography>
+                    <Rating name="read-only" value={game.rating} readOnly />
+                  </ContentRaiting>
 
                   <ContentButtons>
                     <Button
@@ -208,7 +199,7 @@ export function GameDisplay() {
                           developer: game.developer,
                           genre: game.genre,
                           image: game.image,
-                          raiting: game.raiting,
+                          rating: game.rating,
                           summary: game.summary
                         })
                         setOpenModalEdit(true)
@@ -227,6 +218,69 @@ export function GameDisplay() {
                     <Button onClick={() => navigate('/games')}>Voltar</Button>
                   </ContentButtons>
                 </SecondaryContent>
+
+                <EvaluationContent>
+                  <h1>Contribua com sua avaliação!</h1>
+                  <Evaluation>
+                    <Box
+                      sx={{
+                        width: 900,
+                        maxWidth: '100%'
+                      }}
+                    >
+                      <StyleTextField>
+                        <TextField fullWidth label="Comentário" />
+                      </StyleTextField>
+                    </Box>
+                    <RatingAndEvaluation>
+                      <div>
+                        <Typography component="legend">Nota</Typography>
+                        <Rating
+                          name="simple-controlled"
+                          value={value}
+                          onChange={(event, newValue) => {
+                            setValue(newValue)
+                          }}
+                        />
+                      </div>
+                      <ContentButtons>
+                        <Button>Avaliar</Button>
+                      </ContentButtons>
+                    </RatingAndEvaluation>
+                  </Evaluation>
+                </EvaluationContent>
+
+                <TableContent>
+                  <table>
+                    <thead>
+                      <tr>
+                        <td>Avaliações</td>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr>
+                        <td>
+                          <CommentContent>
+                            <Comment>
+                              haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                            </Comment>
+                            <ItemsComment>
+                              <ContentRaiting>
+                                <Rating
+                                  name="read-only"
+                                  value={game.rating}
+                                  readOnly
+                                />
+                              </ContentRaiting>
+                              <DeleteIcon color="warning" />
+                            </ItemsComment>
+                          </CommentContent>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </TableContent>
               </Content>
             </>
           )}

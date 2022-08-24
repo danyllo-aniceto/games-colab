@@ -6,5 +6,5 @@ export interface ILoadByIdGameDTOResponse {
   console: string
   genre: string
   image: string
-  raiting: number
+  rating: number
 }

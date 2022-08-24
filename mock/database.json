@@ -13,7 +13,13 @@
       "password": "87894561"
     }
   ],
-  "consoles": [],
+  "consoles": [
+    {
+      "id": 1,
+      "name": "P",
+      "image": "https://yt3.ggpht.com/ytc/AMLnZu91BueDfRw_PPeht766E0RdKohGtiwzo89ozw_Jthk=s900-c-k-c0x00ffffff-no-rj"
+    }
+  ],
   "games": [
     {
       "id": 1,
@@ -22,18 +28,18 @@
       "developer": "Santa Monica",
       "genre": "Ação",
       "image": "https://cdn1.epicgames.com/offer/3ddd6a590da64e3686042d108968a6b2/EGS_GodofWar_SantaMonicaStudio_S2_1200x1600-fbdf3cbc2980749091d52751ffabb7b7_1200x1600-fbdf3cbc2980749091d52751ffabb7b7",
-      "raiting": 5,
+      "rating": 5,
       "summary": "God of War é uma série de jogos eletrônicos de ação-aventura vagamente baseado nas mitologias grega e nórdica sendo criado originalmente por David Jaffe da Santa Monica Studio. Iniciada em 2005, a série tornou-se carro-chefe para a marca PlayStation, que consiste em oito jogos em várias plataforma."
     },
     {
       "id": 2,
-      "name": "The last of Us",
-      "developer": "Naughty Dog",
-      "summary": "The Last of Us é uma franquia de jogos eletrônicos de ação-aventura e survival horror exclusiva da PlayStation, criada por Neil Druckmann. A franquia é situada em um mundo pós-apocalíptico, com seres humanos hostis e criaturas canibalísticas infectadas por uma mutação do fungo Cordyceps.",
+      "name": "The Last of Us",
       "console": "PlayStation",
+      "developer": "Naughty Dog",
       "genre": "Ação",
       "image": "https://upload.wikimedia.org/wikipedia/pt/b/be/The_Last_of_Us_capa.png",
-      "raiting": null
+      "rating": "3",
+      "summary": "The Last of Us é uma franquia de jogos eletrônicos de ação-aventura e survival horror exclusiva da PlayStation, criada por Neil Druckmann. A franquia é situada em um mundo pós-apocalíptico, com seres humanos hostis e criaturas canibalísticas infectadas por uma mutação do fungo Cordyceps."
     },
     {
       "id": 3,
@@ -42,7 +48,7 @@
       "developer": "Naughty Dog",
       "genre": "Aventura",
       "image": "https://image.api.playstation.com/vulcan/ap/rnd/202111/2001/9Vdas199J3tqxTIBWGijbpjW.png",
-      "raiting": null,
+      "rating": 5,
       "summary": "Uncharted é uma série de videojogos de ação-aventura produzida pela Naughty Dog e publicada pela Sony Computer Entertainment para as plataformas PlayStation."
     },
     {
@@ -53,7 +59,7 @@
       "console": "Xbox",
       "genre": "Esporte",
       "image": "https://pbs.twimg.com/media/FRmOvW_VgAEBpUl?format=jpg&name=900x900",
-      "raiting": 0
+      "rating": 3
     },
     {
       "id": 5,
@@ -63,7 +69,7 @@
       "console": "Xbox",
       "genre": "RPG",
       "image": "https://upload.wikimedia.org/wikipedia/pt/thumb/7/70/Fallout_4_cover_art.jpg/220px-Fallout_4_cover_art.jpg",
-      "raiting": 0
+      "rating": 4
     },
     {
       "id": 6,
@@ -73,7 +79,7 @@
       "console": "Nintendo Switch",
       "genre": "RPG",
       "image": "https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Monster_hunter_rise_cover.jpg/220px-Monster_hunter_rise_cover.jpg",
-      "raiting": 0
+      "rating": 2
     },
     {
       "id": 7,
@@ -83,7 +89,7 @@
       "console": "Windows",
       "genre": "Jogo eletrônico de simulaçã",
       "image": "https://kgo.googleusercontent.com/profile_vrt_raw_bytes_1587515338_10341.png",
-      "raiting": 0
+      "rating": 5
     }
   ],
   "auth": {
