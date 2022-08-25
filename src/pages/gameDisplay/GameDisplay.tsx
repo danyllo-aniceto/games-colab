@@ -26,7 +26,10 @@ import {
   TableContent,
   Comment,
   ItemsComment,
-  CommentContent
+  CommentContent,
+  SubTitle,
+  GameTitle,
+  Img
 } from './styles'
 
 import Rating from '@mui/material/Rating'
@@ -35,6 +38,7 @@ import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 
 import React from 'react'
+import { InputField } from '../../components/InputField'
 
 export function GameDisplay() {
   const [value, setValue] = React.useState<number | null>(0)
@@ -52,6 +56,8 @@ export function GameDisplay() {
   const { id } = useParams<'id'>()
   const navigate = useNavigate()
   const gameService = new GameService()
+
+  const [comment, setComment] = useState('')
 
   // estados do ToastAlert
   const [openAlert, setOpenAlert] = useState(false)
@@ -152,14 +158,15 @@ export function GameDisplay() {
             />
           ) : (
             <>
-              <h1 className="game-title">{game?.name}</h1>
+              <GameTitle>{game?.name}</GameTitle>
               <Content>
                 <MainContent>
-                  <img src={game?.image} alt={game?.name} />
+                  <Img src={game?.image} alt={game?.name} />
 
                   <Summary>
-                    <h1>Resumo</h1>
+                    <SubTitle>Resumo</SubTitle>
                     <p>&nbsp;{game?.summary}</p>
+
                     <TableContent>
                       <table>
                         <thead>
@@ -220,7 +227,8 @@ export function GameDisplay() {
                 </SecondaryContent>
 
                 <EvaluationContent>
-                  <h1>Contribua com sua avaliação!</h1>
+                  <SubTitle>Contribua com sua avaliação!</SubTitle>
+
                   <Evaluation>
                     <Box
                       sx={{
@@ -229,7 +237,15 @@ export function GameDisplay() {
                       }}
                     >
                       <StyleTextField>
-                        <TextField fullWidth label="Comentário" />
+                        {/* <TextField fullWidth label="Comentário" /> */}
+                        <InputField
+                          label="Comentário"
+                          name="comentary"
+                          onChange={e => setComment(e.target.value)}
+                          value={comment}
+                          variant="outlined"
+                          isTextArea
+                        />
                       </StyleTextField>
                     </Box>
                     <RatingAndEvaluation>
@@ -249,8 +265,41 @@ export function GameDisplay() {
                     </RatingAndEvaluation>
                   </Evaluation>
                 </EvaluationContent>
+                <SubTitle>Avaliações</SubTitle>
 
-                <TableContent>
+                <CommentContent>
+                  <Comment>&nbsp;Legal 😀</Comment>
+                  <ItemsComment>
+                    <ContentRaiting>
+                      <Rating name="read-only" value={game.rating} readOnly />
+                    </ContentRaiting>
+                    <DeleteIcon color="warning" />
+                  </ItemsComment>
+                </CommentContent>
+
+                <CommentContent>
+                  <Comment>&nbsp;Muito Bom!</Comment>
+                  <ItemsComment>
+                    <ContentRaiting>
+                      <Rating name="read-only" value={game.rating} readOnly />
+                    </ContentRaiting>
+                    <DeleteIcon color="warning" />
+                  </ItemsComment>
+                </CommentContent>
+
+                <CommentContent>
+                  <Comment>
+                    &nbsp;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                  </Comment>
+                  <ItemsComment>
+                    <ContentRaiting>
+                      <Rating name="read-only" value={game.rating} readOnly />
+                    </ContentRaiting>
+                    <DeleteIcon color="warning" />
+                  </ItemsComment>
+                </CommentContent>
+
+                {/* <TableContent>
                   <table>
                     <thead>
                       <tr>
@@ -263,7 +312,50 @@ export function GameDisplay() {
                         <td>
                           <CommentContent>
                             <Comment>
-                              haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                              haaaaaa aaaaaaaaaaaaaaaa aaaaaaaaaa
+                              aaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaa
+                              aaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaa aaaaaaaa
+                              aaaaaaaaaaaaaaaaa
+                            </Comment>
+                            <ItemsComment>
+                              <ContentRaiting>
+                                <Rating
+                                  name="read-only"
+                                  value={game.rating}
+                                  readOnly
+                                />
+                              </ContentRaiting>
+                              <DeleteIcon color="warning" />
+                            </ItemsComment>
+                          </CommentContent>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <CommentContent>
+                            <Comment>
+                              haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                            </Comment>
+                            <ItemsComment>
+                              <ContentRaiting>
+                                <Rating
+                                  name="read-only"
+                                  value={game.rating}
+                                  readOnly
+                                />
+                              </ContentRaiting>
+                              <DeleteIcon color="warning" />
+                            </ItemsComment>
+                          </CommentContent>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <CommentContent>
+                            <Comment>
+                              haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                             </Comment>
                             <ItemsComment>
                               <ContentRaiting>
@@ -280,7 +372,7 @@ export function GameDisplay() {
                       </tr>
                     </tbody>
                   </table>
-                </TableContent>
+                </TableContent> */}
               </Content>
             </>
           )}

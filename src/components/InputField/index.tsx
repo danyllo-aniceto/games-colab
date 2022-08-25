@@ -7,6 +7,8 @@ interface IInputFieldProps {
   label: React.ReactNode
   placeholder?: string
   type?: React.HTMLInputTypeAttribute
+  variant?: 'standard' | 'outlined' | 'filled'
+  isTextArea?: boolean
 }
 
 export function InputField({
@@ -15,7 +17,9 @@ export function InputField({
   onChange,
   value,
   type,
-  placeholder
+  placeholder,
+  variant = 'standard',
+  isTextArea
 }: IInputFieldProps) {
   return (
     <TextField
@@ -26,9 +30,11 @@ export function InputField({
       placeholder={placeholder}
       type={type}
       fullWidth
-      variant="standard"
+      variant={variant}
       autoFocus
       margin="dense"
+      multiline={isTextArea}
+      rows={isTextArea ? 4 : undefined}
     />
   )
 }

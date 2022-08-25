@@ -9,16 +9,16 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`
 
-  .game-title {
-    font-size: 50px;
-    margin-top: 10px;
-    text-align: center;
-    font-family: 'Righteous', cursive;
-    color: transparent;
-    -webkit-text-stroke-width: 0.8px;
-    -webkit-text-stroke-color: var(--header-color-blue);
-  }
+export const GameTitle = styled.h1`
+  font-size: 50px;
+  margin-top: 10px;
+  text-align: center;
+  font-family: 'Righteous', cursive;
+  color: transparent;
+  -webkit-text-stroke-width: 0.8px;
+  -webkit-text-stroke-color: var(--header-color-blue);
 `
 
 export const Content = styled.div`
@@ -26,10 +26,10 @@ export const Content = styled.div`
   flex-direction: column;
   gap: 20px;
   margin-top: 20px;
+`
 
-  img {
-    width: 300px;
-  }
+export const Img = styled.img`
+  max-width: 300px;
 `
 
 export const MainContent = styled.div`
@@ -39,13 +39,18 @@ export const MainContent = styled.div`
   margin-inline: 25px;
 `
 
+export const SubTitle = styled.h1`
+  color: var(--header-color-blue);
+  font-size: 25px;
+  font-family: 'Righteous', cursive;
+  font-weight: 400;
+  text-align: left;
+  line-height: 1.5rem;
+  align-self: center;
+`
+
 export const Summary = styled.div`
   h1 {
-    color: var(--header-color-blue);
-    font-size: 25px;
-    font-family: 'Righteous', cursive;
-    font-weight: 400;
-    text-align: left;
     line-height: 1.5rem;
   }
 
@@ -116,15 +121,7 @@ export const EvaluationContent = styled.div`
   flex-direction: column;
   gap: 25px;
   align-items: center;
-
-  h1 {
-    color: #1a397a;
-    font-size: 25px;
-    font-family: 'Righteous', cursive;
-    font-weight: 400;
-    text-align: center;
-    line-height: 1.5rem;
-  }
+  background-color: #b2caf5;
 `
 export const Evaluation = styled.div`
   display: flex;
@@ -139,17 +136,22 @@ export const RatingAndEvaluation = styled.div`
   justify-content: space-between;
   margin-inline: 10px;
 `
-export const Comment = styled.div``
+export const Comment = styled.div`
+  margin-left: 50px;
+`
 
 export const ItemsComment = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-inline: 10px;
+  margin-inline: 50px;
   align-items: center;
 `
 export const CommentContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
+  background-color: #b2caf5;
+
+  padding-block: 5px;
 `
