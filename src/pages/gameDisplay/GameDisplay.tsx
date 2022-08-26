@@ -290,6 +290,7 @@ export function GameDisplay() {
                 <CommentContent>
                   <Comment>
                     &nbsp;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                    &nbsp;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                   </Comment>
                   <ItemsComment>
                     <ContentRaiting>

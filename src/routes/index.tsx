@@ -5,6 +5,7 @@ import { Games } from '../pages/games/Games'
 import { Dashboard } from '../pages/dashboard/Dashboard'
 import { Users } from '../pages/users/Users'
 import { GameDisplay } from '../pages/gameDisplay/GameDisplay'
+import { BestConsoleGames } from '../pages/bestConsoleGames/BestConsoleGames'
 
 export function Router() {
   return (
@@ -16,6 +17,7 @@ export function Router() {
         <Route path="/games" element={<Games />} />
         <Route path="/users" element={<Users />} />
         <Route path="/gameDisplay/:id" element={<GameDisplay />} />
+        <Route path="/bestConsoleGames/:id" element={<BestConsoleGames />} />
         <Route path="*" element={<Navigate to="/dashboard" />} />
       </Routes>
     </BrowserRouter>
