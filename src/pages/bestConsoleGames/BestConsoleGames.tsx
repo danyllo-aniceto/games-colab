@@ -15,6 +15,7 @@ import ouroImg from './../../assets/medalha-de-ouro.png'
 import prataImg from './../../assets/medalha-de-prata.png'
 import bronzeImg from './../../assets/medalha-de-bronze.png'
 import {
+  ButtonBack,
   Card,
   Cards,
   Container,
@@ -155,7 +156,9 @@ export function BestConsoleGames() {
                   </Card>
                 </Cards>
               </Content>
-              <Button onClick={() => navigate('/consoles')}>Voltar</Button>
+              <ButtonBack>
+                <Button onClick={() => navigate('/consoles')}>Voltar</Button>
+              </ButtonBack>
             </>
           )}
         </Container>

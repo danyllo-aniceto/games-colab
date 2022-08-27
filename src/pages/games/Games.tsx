@@ -15,6 +15,9 @@ import { Button } from '../../components/Button'
 import { ContentDefault } from '../../styles/global'
 import { EmptyItem } from '../../components/EmptyItem'
 
+import TextField from '@mui/material/TextField'
+import Autocomplete from '@mui/material/Autocomplete'
+
 export function Games() {
   const settings: SliderProps = {
     spaceBetween: 50,
@@ -59,6 +62,8 @@ export function Games() {
   })
 
   const navigate = useNavigate()
+
+  const top100Films = []
 
   function displayNotificationMessage(message: string, type: ToastType) {
     setOpenAlert(true)
@@ -165,6 +170,15 @@ export function Games() {
               ) : (
                 <>
                   <ContentButton>
+                    <Autocomplete
+                      disablePortal
+                      id="combo-box-demo"
+                      options={top100Films}
+                      sx={{ width: 300 }}
+                      renderInput={params => (
+                        <TextField {...params} label="Movie" />
+                      )}
+                    />
                     <Button
                       onClick={() => {
                         setGame({

@@ -78,3 +78,9 @@ export const Summary = styled.p`
   margin-top: 20px;
   margin-inline: 10px;
 `
+export const ButtonBack = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-block: 25px;
+  margin-right: 60px;
+`
