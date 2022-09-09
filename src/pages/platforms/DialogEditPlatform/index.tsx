@@ -7,23 +7,23 @@ import {
 } from '@mui/material'
 import React from 'react'
 import { InputField } from '../../../components/InputField'
-import { IConsoleDTO } from '../../../dtos/IConsoleDTO'
+import { IPlatformDTO } from '../../../dtos/IPlatformDTO'
 
-interface IDialogEditConsole {
-  consolle: IConsoleDTO
+interface IDialogEditPlatform {
+  platform: IPlatformDTO
   open: boolean
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   onClose: () => void
   onSubmitEdit: () => Promise<void>
 }
 
-export function DialogEditConsole({
-  consolle,
+export function DialogEditPlatform({
+  platform,
   open,
   onChange,
   onClose,
   onSubmitEdit
-}: IDialogEditConsole) {
+}: IDialogEditPlatform) {
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Dados do Console</DialogTitle>
@@ -32,14 +32,14 @@ export function DialogEditConsole({
           label="Nome"
           name="name"
           onChange={onChange}
-          value={consolle.name}
+          value={platform.name}
         />
-       
+
         <InputField
           label="Imagem"
           name="image"
           onChange={onChange}
-          value={consolle.image}
+          value={platform.image}
         />
       </DialogContent>
       <DialogActions>

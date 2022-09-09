@@ -6,17 +6,17 @@ import {
   Button
 } from '@mui/material'
 
-interface IDialogDeleteConsoleProps {
+interface IDialogDeletePlatformProps {
   open: boolean
   onClose: () => void
   onSubmitDelete: () => Promise<void>
 }
 
-export function DialogDeleteConsole({
+export function DialogDeletePlatform({
   open,
   onClose,
   onSubmitDelete
-}: IDialogDeleteConsoleProps) {
+}: IDialogDeletePlatformProps) {
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Deletar Usuário</DialogTitle>

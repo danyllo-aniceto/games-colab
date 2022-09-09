@@ -25,7 +25,7 @@ export default class GameService {
   }
 
   public async loadAll(): Promise<ILoadGameDTOResponse[]> {
-    const { data } = await api.get<ILoadGameDTOResponse[]>(this.route)
+    const { data } = await api.get<ILoadGameDTOResponse[]>(`${this.route}`)
     return data
   }
 

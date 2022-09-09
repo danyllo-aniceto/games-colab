@@ -11,11 +11,11 @@ export const Header = styled.header`
   gap: 50px;
 `
 
-export const LogoConsole = styled.img`
+export const LogoPlatform = styled.img`
   max-width: 120px;
 `
 
-export const NameConsole = styled.h1`
+export const NamePlatform = styled.h1`
   font-size: 70px;
   margin-top: 10px;
   font-family: 'Righteous', cursive;

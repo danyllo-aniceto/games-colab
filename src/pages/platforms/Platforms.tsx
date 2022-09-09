@@ -1,21 +1,21 @@
-import { ContentConsoles, Console, Container, ContentAction } from './styles'
+import { ContentPlatforms, Platform, Container, ContentAction } from './styles'
 import addImg from '../../assets/add.svg'
 import { BaseLayout } from '../../layout/BaseLayout'
 import { useEffect, useState } from 'react'
-import ConsoleService from '../../services/ConsoleService'
+import PlatformService from '../../services/PlatformService'
 import { AxiosError } from 'axios'
 import * as React from 'react'
 
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 
-import { DialogDeleteConsole } from './DialogDeleteConsole'
-import { DialogEditConsole } from './DialogEditConsole'
-import { IConsoleDTO } from '../../dtos/IConsoleDTO'
+import { DialogDeletePlatform } from './DialogDeletePlatform'
+import { DialogEditPlatform } from './DialogEditPlatform'
+import { IPlatformDTO } from '../../dtos/IPlatformDTO'
 import { ToastType } from '../../components/Toast/enum'
 import { Toast } from '../../components/Toast'
 import { LoadingComponent } from '../../components/Loading'
-import { DialogCreateConsole } from './DialogCreateConsole'
+import { DialogCreatePlatform } from './DialogCreatePlatform'
 import { EmptyItem } from '../../components/EmptyItem'
 import { ContentDefault, MessageDefault } from '../../styles/global'
 import { useNavigate } from 'react-router-dom'
@@ -25,22 +25,22 @@ interface IMessageAlert {
   type: ToastType
 }
 
-export function Consoles() {
+export function Platforms() {
   /*************************************************************************/
   // constante da instância da service
-  const consoleService = new ConsoleService()
+  const platformService = new PlatformService()
 
   // estado da listagem de consoles
-  const [listConsoles, setListConsoles] = useState<IConsoleDTO[]>([])
+  const [listPlatforms, setListPlatforms] = useState<IPlatformDTO[]>([])
   // estado do objeto console
-  const [consolle, setConsolle] = useState<IConsoleDTO>({
+  const [platform, setPlatform] = useState<IPlatformDTO>({
     id: null,
     name: '',
     image: ''
   })
 
   // estados do modal de criar, editar e deletar um console
-  const [openModalNewConsole, setOpenModalNewConsole] = useState(false)
+  const [openModalNewPlatform, setOpenModalNewPlatform] = useState(false)
   const [openModalEdit, setOpenModalEdit] = useState(false)
   const [openModalDelete, setOpenModalDelete] = useState(false)
 
@@ -64,19 +64,19 @@ export function Consoles() {
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name } = event.target
     const { value } = event.target
-    setConsolle(values => ({ ...values, [name]: value }))
+    setPlatform(values => ({ ...values, [name]: value }))
   }
   /*************************************************************************/
 
-  async function getConsoles() {
+  async function getPlatforms() {
     setLoading(true)
     try {
-      const response = await consoleService.loadAll()
-      setListConsoles(response)
+      const response = await platformService.loadAll()
+      setListPlatforms(response)
     } catch (error) {
       const { response } = error as AxiosError
       displayNotificationMessage(
-        `Falha ao buscar consoles - ${response?.data?.message}`,
+        `Falha ao buscar plataformas - ${response?.data?.message}`,
         ToastType.ERROR
       )
     } finally {
@@ -85,28 +85,28 @@ export function Consoles() {
   }
 
   useEffect(() => {
-    getConsoles()
+    getPlatforms()
   }, [])
 
   /*************************************************************************/
-  async function handleCreateNewConsole() {
+  async function handleCreateNewPlatform() {
     try {
-      await consoleService.create(consolle)
-      setOpenModalNewConsole(false)
+      await platformService.create(platform)
+      setOpenModalNewPlatform(false)
       displayNotificationMessage(
-        'Console criado com sucesso!',
+        'Plataforma criada com sucesso!',
         ToastType.SUCCESS
       )
-      getConsoles()
+      getPlatforms()
     } catch (error) {
       const { response } = error as AxiosError
       displayNotificationMessage(
-        `Falha ao criar console - ${response?.data?.message}`,
+        `Falha ao criar plataforma - ${response?.data?.message}`,
         ToastType.ERROR
       )
     }
 
-    setConsolle({
+    setPlatform({
       id: null,
       name: '',
       image: ''
@@ -114,37 +114,37 @@ export function Consoles() {
   }
 
   /*****************************************/
-  async function editConsole() {
+  async function editPlatform() {
     try {
-      await consoleService.updateById(consolle)
+      await platformService.updateById(platform)
       setOpenModalEdit(false)
       displayNotificationMessage(
-        'Console editado com sucesso!',
+        'Plataforma editada com sucesso!',
         ToastType.SUCCESS
       )
-      getConsoles()
+      getPlatforms()
     } catch (error) {
       const { response } = error as AxiosError
       displayNotificationMessage(
-        `Falha ao editar console - ${response?.data?.message}`,
+        `Falha ao editar plataforma - ${response?.data?.message}`,
         ToastType.ERROR
       )
     }
   }
   /*****************************************/
-  async function deleteConsole() {
+  async function deletePlatform() {
     try {
-      await consoleService.deleteById(consolle.id)
+      await platformService.deleteById(platform.id)
       setOpenModalDelete(false)
       displayNotificationMessage(
-        'Console deletado com sucesso!',
+        'Plataforma deletada com sucesso!',
         ToastType.SUCCESS
       )
-      getConsoles()
+      getPlatforms()
     } catch (error) {
       const { response } = error as AxiosError
       displayNotificationMessage(
-        `Falha ao deletar console - ${response?.data?.message}`,
+        `Falha ao deletar plataforma - ${response?.data?.message}`,
         ToastType.ERROR
       )
     }
@@ -169,40 +169,40 @@ export function Consoles() {
             />
           ) : (
             <>
-              {listConsoles.length === 0 ? (
+              {listPlatforms.length === 0 ? (
                 <>
                   <ContentDefault>
                     <MessageDefault>
-                      <EmptyItem message="Nenhum console cadastrado 😥" />
+                      <EmptyItem message="Nenhuma plataforma cadastrada 😥" />
                     </MessageDefault>
 
-                    <Console
+                    <Platform
                       onClick={() => {
-                        setConsolle({
+                        setPlatform({
                           id: null,
                           name: '',
                           image: ''
                         })
-                        setOpenModalNewConsole(true)
+                        setOpenModalNewPlatform(true)
                       }}
                     >
-                      <img src={addImg} alt="Adicionar novo console" />
+                      <img src={addImg} alt="Adicionar nova plataforma" />
                       <div className="description">
-                        <h2>Novo Console</h2>
+                        <h2>Nova Plataforma</h2>
                       </div>
-                    </Console>
+                    </Platform>
                   </ContentDefault>
                 </>
               ) : (
                 <>
                   <h1>Escolha sua plataforma preferida:</h1>
-                  <ContentConsoles>
-                    {listConsoles.map(consolle => (
-                      <Console
+                  <ContentPlatforms>
+                    {listPlatforms.map(platform => (
+                      <Platform
                         onClick={() =>
-                          navigate(`/bestConsoleGames/${consolle.id}`)
+                          navigate(`/bestPlatformGames/${platform.id}`)
                         }
-                        key={consolle.id}
+                        key={platform.id}
                       >
                         <ContentAction>
                           <div>
@@ -210,10 +210,10 @@ export function Consoles() {
                               color="action"
                               onClick={e => {
                                 e.stopPropagation()
-                                setConsolle({
-                                  id: consolle.id,
-                                  name: consolle.name,
-                                  image: consolle.image
+                                setPlatform({
+                                  id: platform.id,
+                                  name: platform.name,
+                                  image: platform.image
                                 })
                                 setOpenModalEdit(true)
                               }}
@@ -224,62 +224,62 @@ export function Consoles() {
                               color="warning"
                               onClick={e => {
                                 e.stopPropagation()
-                                setConsolle({ id: consolle.id, ...consolle })
+                                setPlatform({ id: platform.id, ...platform })
                                 setOpenModalDelete(true)
                               }}
                             />
                           </div>
                         </ContentAction>
                         <img
-                          src={consolle.image}
-                          alt={consolle.name}
+                          src={platform.image}
+                          alt={platform.name}
                           onClick={() =>
-                            navigate(`/bestConsoleGames/${consolle.id}`)
+                            navigate(`/bestConsoleGames/${platform.id}`)
                           }
                         />
-                      </Console>
+                      </Platform>
                     ))}
-                    <Console
+                    <Platform
                       onClick={() => {
-                        setConsolle({
+                        setPlatform({
                           id: null,
                           name: '',
                           image: ''
                         })
-                        setOpenModalNewConsole(true)
+                        setOpenModalNewPlatform(true)
                       }}
                     >
-                      <img src={addImg} alt="Adicionar novo console" />
+                      <img src={addImg} alt="Adicionar nova plataforma" />
                       <div className="description">
-                        <h2>Novo Console</h2>
+                        <h2>Nova Plataforma</h2>
                       </div>
-                    </Console>
-                  </ContentConsoles>
+                    </Platform>
+                  </ContentPlatforms>
                 </>
               )}
             </>
           )}
         </Container>
-        <DialogCreateConsole
-          open={openModalNewConsole}
-          onClose={() => setOpenModalNewConsole(false)}
+        <DialogCreatePlatform
+          open={openModalNewPlatform}
+          onClose={() => setOpenModalNewPlatform(false)}
           onChange={handleChange}
-          onSubmitCreate={handleCreateNewConsole}
-          consolle={consolle}
+          onSubmitCreate={handleCreateNewPlatform}
+          platform={platform}
         />
 
-        <DialogEditConsole
+        <DialogEditPlatform
           open={openModalEdit}
           onClose={() => setOpenModalEdit(false)}
           onChange={handleChange}
-          onSubmitEdit={editConsole}
-          consolle={consolle}
+          onSubmitEdit={editPlatform}
+          platform={platform}
         />
 
-        <DialogDeleteConsole
+        <DialogDeletePlatform
           open={openModalDelete}
           onClose={() => setOpenModalDelete(false)}
-          onSubmitDelete={deleteConsole}
+          onSubmitDelete={deletePlatform}
         />
       </>
     </BaseLayout>

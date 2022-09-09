@@ -7,35 +7,35 @@ import {
 } from '@mui/material'
 import React from 'react'
 import { InputField } from '../../../components/InputField'
-import { IConsoleDTO } from '../../../dtos/IConsoleDTO'
+import { IPlatformDTO } from '../../../dtos/IPlatformDTO'
 
-interface IDialogCreateConsole {
-  consolle: IConsoleDTO
+interface IDialogCreatePlatform {
+  platform: IPlatformDTO
   open: boolean
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   onClose: () => void
   onSubmitCreate: () => Promise<void>
 }
 
-export function DialogCreateConsole({
-  consolle,
+export function DialogCreatePlatform({
+  platform,
   open,
   onChange,
   onClose,
   onSubmitCreate
-}: IDialogCreateConsole) {
+}: IDialogCreatePlatform) {
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Cadastrar Console</DialogTitle>
       <DialogContent>
         <InputField
-          value={consolle.name}
+          value={platform.name}
           onChange={onChange}
           label="Nome"
           name={'name'}
         />
         <InputField
-          value={consolle.image}
+          value={platform.image}
           onChange={onChange}
           label="Imagem"
           name={'image'}

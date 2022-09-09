@@ -5,9 +5,9 @@ import { Button } from '../../components/Button'
 import { LoadingComponent } from '../../components/Loading'
 import { Toast } from '../../components/Toast'
 import { IMessageAlert, ToastType } from '../../components/Toast/enum'
-import { IConsoleDTO } from '../../dtos/IConsoleDTO'
+import { IPlatformDTO } from '../../dtos/IPlatformDTO'
 import { BaseLayout } from '../../layout/BaseLayout'
-import ConsoleService from '../../services/ConsoleService'
+import PlatformService from '../../services/PlatformService'
 import { SubTitle } from '../gameDisplay/styles'
 
 import godOfWarImg from './../../assets/godOfWar.jpg'
@@ -23,24 +23,24 @@ import {
   GameDescription,
   Header,
   Image,
-  LogoConsole,
+  LogoPlatform,
   Medal,
-  NameConsole,
+  NamePlatform,
   NameTitle,
   Summary,
   Title
 } from './styles'
 
-export function BestConsoleGames() {
+export function BestPlatformGames() {
   const [loading, setLoading] = useState(false)
-  const [consolle, setConsolle] = useState<IConsoleDTO>({
+  const [platform, setPlatform] = useState<IPlatformDTO>({
     id: null,
     name: '',
     image: ''
   })
   const { id } = useParams<'id'>()
   const navigate = useNavigate()
-  const consoleService = new ConsoleService()
+  const platformService = new PlatformService()
 
   // estados do ToastAlert
   const [openAlert, setOpenAlert] = useState(false)
@@ -54,15 +54,15 @@ export function BestConsoleGames() {
     setMessageAlert({ message, type })
   }
 
-  async function getConsoleById(id: number): Promise<void> {
+  async function getPlatformById(id: number): Promise<void> {
     setLoading(true)
     try {
-      const response = await consoleService.loadById(id)
-      setConsolle(response)
+      const response = await platformService.loadById(id)
+      setPlatform(response)
     } catch (err) {
       const { response } = err as AxiosError
       displayNotificationMessage(
-        `Falha ao buscar jogos do console - ${response?.data?.message}`,
+        `Falha ao buscar jogos da plataforma - ${response?.data?.message}`,
         ToastType.ERROR
       )
     } finally {
@@ -72,7 +72,7 @@ export function BestConsoleGames() {
 
   useEffect(() => {
     if (id) {
-      getConsoleById(Number(id))
+      getPlatformById(Number(id))
     }
   }, [])
 
@@ -95,12 +95,12 @@ export function BestConsoleGames() {
           ) : (
             <>
               <Header>
-                <NameConsole>{consolle?.name}</NameConsole>
-                <LogoConsole src={consolle.image}></LogoConsole>
+                <NamePlatform>{platform?.name}</NamePlatform>
+                <LogoPlatform src={platform.image}></LogoPlatform>
               </Header>
               <Content>
                 <SubTitle>
-                  Veja os três jogos mais bem votados de {consolle.name}! 🏆
+                  Veja os três jogos mais bem votados de {platform.name}! 🏆
                 </SubTitle>
                 <Cards>
                   <Card>
@@ -157,7 +157,7 @@ export function BestConsoleGames() {
                 </Cards>
               </Content>
               <ButtonBack>
-                <Button onClick={() => navigate('/consoles')}>Voltar</Button>
+                <Button onClick={() => navigate('/platforms')}>Voltar</Button>
               </ButtonBack>
             </>
           )}

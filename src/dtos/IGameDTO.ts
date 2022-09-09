@@ -3,7 +3,7 @@ export interface IGameDTO {
   name: string
   developer: string
   summary: string
-  console: string
+  platform: string
   genre: string
   image: string
   rating: number

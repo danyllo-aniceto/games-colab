@@ -48,7 +48,7 @@ export function GameDisplay() {
     name: '',
     developer: '',
     summary: '',
-    console: '',
+    platform: '',
     genre: '',
     image: '',
     rating: 0
@@ -173,7 +173,7 @@ export function GameDisplay() {
                           <tr>
                             <td>Desenvolvedor</td>
                             <td>Gênero</td>
-                            <td>Console</td>
+                            <td>Plataforma</td>
                             <td>Rating</td>
                           </tr>
                         </thead>
@@ -181,7 +181,7 @@ export function GameDisplay() {
                           <tr>
                             <td>{game?.developer}</td>
                             <td>{game?.genre}</td>
-                            <td>{game?.console}</td>
+                            <td>{game?.platform}</td>
                             <td>{game?.rating}</td>
                           </tr>
                         </tbody>
@@ -202,7 +202,7 @@ export function GameDisplay() {
                         setGame({
                           id: game.id,
                           name: game.name,
-                          console: game.console,
+                          platform: game.platform,
                           developer: game.developer,
                           genre: game.genre,
                           image: game.image,

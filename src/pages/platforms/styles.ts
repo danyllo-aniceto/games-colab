@@ -16,14 +16,14 @@ export const Container = styled.div`
   }
 `
 
-export const ContentConsoles = styled.div`
+export const ContentPlatforms = styled.div`
   display: grid;
   grid-template-columns: auto auto auto;
   padding: 20px;
   gap: 3rem;
 `
 
-export const Console = styled.div`
+export const Platform = styled.div`
   display: flex;
   flex-direction: column;
   width: 300px;

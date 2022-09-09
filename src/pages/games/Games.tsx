@@ -39,7 +39,7 @@ export function Games() {
     name: '',
     developer: '',
     summary: '',
-    console: '',
+    platform: '',
     genre: '',
     image: '',
     rating: 0
@@ -117,7 +117,7 @@ export function Games() {
       name: '',
       developer: '',
       summary: '',
-      console: '',
+      platform: '',
       genre: '',
       image: '',
       rating: 0
@@ -155,7 +155,7 @@ export function Games() {
                           name: '',
                           developer: '',
                           summary: '',
-                          console: '',
+                          platform: '',
                           genre: '',
                           image: '',
                           rating: 0
@@ -186,7 +186,7 @@ export function Games() {
                           name: '',
                           developer: '',
                           summary: '',
-                          console: '',
+                          platform: '',
                           genre: '',
                           image: '',
                           rating: 0
@@ -213,7 +213,9 @@ export function Games() {
                             <span className="developer-game">
                               {game.developer}
                             </span>
-                            <span className="console-game">{game.console}</span>
+                            <span className="console-game">
+                              {game.platform}
+                            </span>
                           </Info>
                         </Item>
                       </Slide>

@@ -47,10 +47,10 @@ export function DialogEditGame({
           value={game.developer}
         />
         <InputField
-          label="Console"
-          name="console"
+          label="Plataforma"
+          name="platform"
           onChange={onChange}
-          value={game.console}
+          value={game.platform}
         />
         <InputField
           label="Gênero"

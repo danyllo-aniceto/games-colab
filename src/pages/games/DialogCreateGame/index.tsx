@@ -53,10 +53,10 @@ export function DialogCreateGame({
           name={'genre'}
         />
         <InputField
-          value={game.console}
+          value={game.platform}
           onChange={onChange}
-          label="Console"
-          name={'console'}
+          label="Plataforma"
+          name={'platform'}
         />
         <InputField
           value={game.image}

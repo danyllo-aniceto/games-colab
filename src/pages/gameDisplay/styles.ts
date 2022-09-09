@@ -72,7 +72,7 @@ export const TableContent = styled.div`
 
     thead {
       color: var(--header-color-blue);
-      font-size: 25px;
+      font-size: 20px;
       font-family: 'Righteous', cursive;
       font-weight: 400;
       padding: 1rem 2rem;

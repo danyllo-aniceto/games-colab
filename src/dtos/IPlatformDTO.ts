@@ -1,4 +1,4 @@
-export interface IConsoleDTO {
+export interface IPlatformDTO {
   id: number
   name: string
   image: string
