@@ -4,16 +4,16 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 
 import { StyledPagination } from './styles'
 
-export function Pagination({ count }: PaginationProps) {
+export function Pagination({ ...props }: PaginationProps) {
   return (
     <StyledPagination
-      count={count}
       renderItem={item => (
         <PaginationItem
           components={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
           {...item}
         />
       )}
+      {...props}
     />
   )
 }

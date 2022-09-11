@@ -17,10 +17,20 @@ import { ContentButton } from '../games/styles'
 import { DialogCreateUser } from './DialogCreateUser'
 import { Pagination } from '../../components/Pagination'
 import { useSearchParams } from 'react-router-dom'
+import { variables } from '../../constants/variables'
 
 interface IMessageAlert {
   message: string
   type: ToastType
+}
+
+interface LoadUser {
+  id: number
+  name: string
+  email: string
+  password: string
+  created_at: Date
+  updated_at: Date
 }
 
 export function Users() {
@@ -28,7 +38,7 @@ export function Users() {
   const userService = new UserService()
 
   // estado da listagem de usuários
-  const [listUsers, setListUsers] = useState<IUserDTO[]>([])
+  const [listUsers, setListUsers] = useState<LoadUser[]>()
 
   // etados do modal de editar, deletar e criar
   const [openModalEdit, setOpenModalEdit] = useState(false)
@@ -73,7 +83,7 @@ export function Users() {
         'Usuário deletado com sucesso!',
         ToastType.SUCCESS
       )
-      getUsers()
+      getUsersPaged()
     } catch (error) {
       const { response } = error as AxiosError
       displayNotificationMessage(
@@ -92,7 +102,7 @@ export function Users() {
         'Usuário editado com sucesso!',
         ToastType.SUCCESS
       )
-      getUsers()
+      getUsersPaged()
     } catch (error) {
       const { response } = error as AxiosError
       displayNotificationMessage(
@@ -103,25 +113,21 @@ export function Users() {
   }
   /*****************************************/
 
-  async function getUsers() {
-    setLoading(true)
-    try {
-      const response = await userService.loadAll()
-      setListUsers(response)
-    } catch (error) {
-      const { response } = error as AxiosError
-      displayNotificationMessage(
-        `Falha ao buscar usuários - ${response?.data?.message}`,
-        ToastType.ERROR
-      )
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    getUsers()
-  }, [])
+  // async function getUsers() {
+  //   setLoading(true)
+  //   try {
+  //     const response = await userService.loadAll()
+  //     setListUsers(response)
+  //   } catch (error) {
+  //     const { response } = error as AxiosError
+  //     displayNotificationMessage(
+  //       `Falha ao buscar usuários - ${response?.data?.message}`,
+  //       ToastType.ERROR
+  //     )
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
 
   /*****************************************/
   async function handleCreateNewUser() {
@@ -132,7 +138,7 @@ export function Users() {
         'Usuário criado com sucesso!',
         ToastType.SUCCESS
       )
-      getUsers()
+      getUsersPaged()
     } catch (error) {
       const { response } = error as AxiosError
       displayNotificationMessage(
@@ -149,19 +155,42 @@ export function Users() {
     })
   }
 
+  const [totalPage, setTotalPage] = useState(1)
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const search = useMemo(() => {
-    return searchParams.get('search') || ''
-  }, [searchParams])
+  function handleChangePage(page: number) {
+    console.log('caiu')
+    setSearchParams({ page: page.toString() }, { replace: true })
+  }
 
   const page = useMemo(() => {
     return searchParams.get('page') || '1'
   }, [searchParams])
 
-  function handleChangePage(page: number) {
-    setSearchParams({ search, page: page.toString() }, { replace: true })
+  async function getUsersPaged(page?: string) {
+    setLoading(true)
+    try {
+      const response = await userService.loadAllPaged(
+        variables.LIMIT_TABLE_ROWS,
+        Number(page)
+      )
+      setListUsers(response.instances ?? [])
+      setTotalPage(parseInt(response.totalPages.toString()))
+    } catch (error) {
+      const { response } = error as AxiosError
+      displayNotificationMessage(
+        `Falha ao buscar usuários - ${response?.data?.message}`,
+        ToastType.ERROR
+      )
+    } finally {
+      setLoading(false)
+    }
   }
+
+  useEffect(() => {
+    // getUsers()
+    getUsersPaged(page)
+  }, [page])
 
   /*****************************************/
 
@@ -183,7 +212,7 @@ export function Users() {
             />
           ) : (
             <>
-              {listUsers.length === 0 ? (
+              {listUsers?.length === 0 ? (
                 <Message>
                   <EmptyItem message="Nenhum usuário encontrado 😢" />
                 </Message>
@@ -214,7 +243,7 @@ export function Users() {
                     </thead>
 
                     <tbody>
-                      {listUsers.map(user => (
+                      {listUsers?.map(user => (
                         <tr key={user.id}>
                           <td>{user.name}</td>
                           <td>{user.email}</td>
@@ -246,8 +275,8 @@ export function Users() {
                     </tbody>
                   </table>
                   <Pagination
-                    count={3}
-                    page={1}
+                    count={totalPage}
+                    page={Number(page)}
                     onChange={(_, newPage) => handleChangePage(newPage)}
                   />
                 </>
