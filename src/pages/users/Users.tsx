@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { BaseLayout } from '../../layout/BaseLayout'
 import UserService from '../../services/UserService'
 import EditIcon from '@mui/icons-material/Edit'
@@ -15,6 +15,8 @@ import { EmptyItem } from '../../components/EmptyItem'
 import { Button } from '../../components/Button'
 import { ContentButton } from '../games/styles'
 import { DialogCreateUser } from './DialogCreateUser'
+import { Pagination } from '../../components/Pagination'
+import { useSearchParams } from 'react-router-dom'
 
 interface IMessageAlert {
   message: string
@@ -146,6 +148,21 @@ export function Users() {
       password: ''
     })
   }
+
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  const search = useMemo(() => {
+    return searchParams.get('search') || ''
+  }, [searchParams])
+
+  const page = useMemo(() => {
+    return searchParams.get('page') || '1'
+  }, [searchParams])
+
+  function handleChangePage(page: number) {
+    setSearchParams({ search, page: page.toString() }, { replace: true })
+  }
+
   /*****************************************/
 
   return (
@@ -228,6 +245,11 @@ export function Users() {
                       ))}
                     </tbody>
                   </table>
+                  <Pagination
+                    count={3}
+                    page={1}
+                    onChange={(_, newPage) => handleChangePage(newPage)}
+                  />
                 </>
               )}
             </>
