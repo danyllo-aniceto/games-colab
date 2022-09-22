@@ -1,5 +1,6 @@
 import { Header } from '../../components/Header'
 import { Menu } from '../../components/Menu'
+import { useAuth } from '../../hooks/useAuth'
 import { Container, ContentChildren } from './styles'
 
 interface IBaseLayoutProps {
@@ -7,6 +8,12 @@ interface IBaseLayoutProps {
 }
 
 export function BaseLayout({ children }: IBaseLayoutProps) {
+  const auth = useAuth()
+
+  if (!auth.token) {
+    return <h1>Você não possui acesso!</h1>
+  }
+
   return (
     <>
       <Header />

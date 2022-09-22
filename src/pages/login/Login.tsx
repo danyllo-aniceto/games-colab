@@ -13,7 +13,7 @@ import {
   ButtonNewRegister
 } from './styles'
 import logoImg from '../../assets/logo.png'
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
 import UserService from '../../services/UserService'
 
 import { IUserDTO } from '../../dtos/IUserDTO'
@@ -21,6 +21,8 @@ import { IMessageAlert, ToastType } from '../../components/Toast/enum'
 import { DialogCreateUser } from '../users/DialogCreateUser'
 import { AxiosError } from 'axios'
 import { Toast } from '../../components/Toast'
+import { useAuth } from '../../hooks/useAuth'
+import { useNavigate } from 'react-router-dom'
 
 export function Login() {
   // constante da instância da service
@@ -78,6 +80,23 @@ export function Login() {
     })
   }
 
+  const auth = useAuth()
+  const navigate = useNavigate()
+
+  async function onFinish(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    try {
+      await auth.authenticate(user.email, user.password)
+      navigate('/dashboard')
+    } catch (error) {
+      const { response } = error as AxiosError
+      displayNotificationMessage(
+        `Senha ou email inválido - ${response?.data?.message}`,
+        ToastType.ERROR
+      )
+    }
+  }
+
   return (
     <>
       <Toast
@@ -87,7 +106,7 @@ export function Login() {
         message={messageAlert.message}
       />
       <Container>
-        <Form>
+        <Form onSubmit={onFinish}>
           <UserCard>
             <CardTop>
               <Img src={logoImg}></Img>
@@ -95,9 +114,21 @@ export function Login() {
             </CardTop>
             <CardGroup>
               <Label>Email: </Label>
-              <UserEmail type="email" placeholder="Digite seu email" />
+              <UserEmail
+                value={user.email}
+                name="email"
+                onChange={handleChange}
+                type="email"
+                placeholder="Digite seu email"
+              />
               <Label>Senha: </Label>
-              <UserPassword type="password" placeholder="Digite sua senha" />
+              <UserPassword
+                value={user.password}
+                name="password"
+                onChange={handleChange}
+                type="password"
+                placeholder="Digite sua senha"
+              />
               <ButtonRegister type="submit">Login</ButtonRegister>
               <ButtonNewRegister
                 type="button"

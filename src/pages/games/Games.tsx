@@ -64,7 +64,6 @@ export function Games() {
   const navigate = useNavigate()
 
   const top100Films = []
-
   function displayNotificationMessage(message: string, type: ToastType) {
     setOpenAlert(true)
     setMessageAlert({ message, type })
@@ -176,9 +175,10 @@ export function Games() {
                       options={top100Films}
                       sx={{ width: 300 }}
                       renderInput={params => (
-                        <TextField {...params} label="Movie" />
+                        <TextField {...params} label="Buscar Jogos" />
                       )}
                     />
+
                     <Button
                       onClick={() => {
                         setGame({

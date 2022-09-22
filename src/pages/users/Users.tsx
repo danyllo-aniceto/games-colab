@@ -113,22 +113,6 @@ export function Users() {
   }
   /*****************************************/
 
-  // async function getUsers() {
-  //   setLoading(true)
-  //   try {
-  //     const response = await userService.loadAll()
-  //     setListUsers(response)
-  //   } catch (error) {
-  //     const { response } = error as AxiosError
-  //     displayNotificationMessage(
-  //       `Falha ao buscar usuários - ${response?.data?.message}`,
-  //       ToastType.ERROR
-  //     )
-  //   } finally {
-  //     setLoading(false)
-  //   }
-  // }
-
   /*****************************************/
   async function handleCreateNewUser() {
     try {
@@ -188,7 +172,6 @@ export function Users() {
   }
 
   useEffect(() => {
-    // getUsers()
     getUsersPaged(page)
   }, [page])
 
