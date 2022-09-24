@@ -6,11 +6,16 @@ export const Container = styled.div`
   height: 85vh;
   position: fixed;
 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
   nav {
     display: flex;
     flex-direction: column;
     margin-left: 30px;
     margin-top: 20px;
+    margin-bottom: 20px;
     gap: 2rem;
   }
 

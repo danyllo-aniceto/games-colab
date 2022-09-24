@@ -3,9 +3,13 @@ import homeImg from '../../assets/home.svg'
 import gameImg from '../../assets/game.svg'
 import platformImg from '../../assets/consoles.svg'
 import usersImg from '../../assets/users.svg'
+import arrowImg from '../../assets/arrow.svg'
 import { Link } from 'react-router-dom'
+import { useAuth } from '../../hooks/useAuth'
 
 export function Menu() {
+  const { logout } = useAuth()
+
   return (
     <>
       <Container>
@@ -21,6 +25,12 @@ export function Menu() {
           </Link>
           <Link to="/users">
             <img src={usersImg} alt="" /> Usuários
+          </Link>
+        </nav>
+
+        <nav>
+          <Link to="/" onClick={logout}>
+            <img src={arrowImg} alt="" /> Sair
           </Link>
         </nav>
       </Container>

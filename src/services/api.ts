@@ -9,7 +9,7 @@ api.interceptors.request.use(
   config => {
     const user = getUserLocalStorage()
 
-    if (config.headers) config.headers.Authorization = user?.token
+    if (config.headers) config.headers.Authorization = `Bearer ${user?.token}`
 
     return config
   },
