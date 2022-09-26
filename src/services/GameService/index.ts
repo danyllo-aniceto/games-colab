@@ -3,6 +3,7 @@ import {
   ICreateGameDTORequest,
   ICreateGameDTOResponse
 } from './dtos/ICreateGameDTO'
+
 import { IDeleteGameDTOResponse } from './dtos/IDeleteGameDTO'
 import { ILoadByIdGameDTOResponse } from './dtos/ILoadByIdGameDTO'
 import { ILoadGameDTOResponse } from './dtos/ILoadGameDTO'
@@ -21,6 +22,31 @@ export default class GameService {
       this.route,
       dataRequest
     )
+    return data
+  }
+
+  public async createUpload(
+    dataForm: ICreateGameDTORequest
+  ): Promise<ICreateGameDTOResponse> {
+    const formData = new FormData()
+    formData.append('name', dataForm.name)
+    formData.append('developer', dataForm.developer)
+    formData.append('summary', dataForm.summary)
+    formData.append('genre', dataForm.genre)
+    formData.append('image', dataForm.image)
+    formData.append('file', dataForm.file)
+    formData.append('idPlatform', '[1]')
+
+    const { data } = await api.post<ICreateGameDTOResponse>(
+      `${this.route}/upload`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    )
+
     return data
   }
 

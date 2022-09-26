@@ -48,10 +48,11 @@ export function GameDisplay() {
     name: '',
     developer: '',
     summary: '',
-    platform: '',
+    idPlatform: [],
     genre: '',
     image: '',
-    rating: 0
+    rating: 0,
+    file: ''
   })
   const { id } = useParams<'id'>()
   const navigate = useNavigate()
@@ -181,7 +182,7 @@ export function GameDisplay() {
                           <tr>
                             <td>{game?.developer}</td>
                             <td>{game?.genre}</td>
-                            <td>{game?.platform}</td>
+                            <td>{game?.idPlatform}</td>
                             <td>{game?.rating}</td>
                           </tr>
                         </tbody>
@@ -202,12 +203,13 @@ export function GameDisplay() {
                         setGame({
                           id: game.id,
                           name: game.name,
-                          platform: game.platform,
+                          idPlatform: game.idPlatform,
                           developer: game.developer,
                           genre: game.genre,
                           image: game.image,
                           rating: game.rating,
-                          summary: game.summary
+                          summary: game.summary,
+                          file: game.file
                         })
                         setOpenModalEdit(true)
                       }}

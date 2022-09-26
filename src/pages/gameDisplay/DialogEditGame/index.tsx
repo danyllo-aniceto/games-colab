@@ -46,12 +46,13 @@ export function DialogEditGame({
           onChange={onChange}
           value={game.developer}
         />
-        <InputField
+        {/** Problema de tipagem: Input não pode receber array trocar por um selector */}
+        {/* <InputField
           label="Plataforma"
-          name="platform"
+          name="idPlatform"
           onChange={onChange}
-          value={game.platform}
-        />
+          value={game.idPlatform}
+        /> */}
         <InputField
           label="Gênero"
           name="genre"

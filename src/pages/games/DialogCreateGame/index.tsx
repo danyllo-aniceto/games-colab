@@ -5,9 +5,10 @@ import {
   DialogActions,
   Button
 } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import { InputField } from '../../../components/InputField'
 import { IGameDTO } from '../../../dtos/IGameDTO'
+import { ContentRadio } from './styles'
 
 interface IDialogCreateGame {
   game: IGameDTO
@@ -24,6 +25,8 @@ export function DialogCreateGame({
   onClose,
   onSubmitCreate
 }: IDialogCreateGame) {
+  const [showInputUpload, setShowInputUpload] = useState(false)
+
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Cadastrar Jogo</DialogTitle>
@@ -52,18 +55,54 @@ export function DialogCreateGame({
           label="Gênero"
           name={'genre'}
         />
-        <InputField
-          value={game.platform}
-          onChange={onChange}
+        {/** Problema de tipagem: Input não pode receber array trocar por um selector */}
+        {/* <InputField
           label="Plataforma"
-          name={'platform'}
-        />
-        <InputField
-          value={game.image}
+          name="idPlatform"
           onChange={onChange}
-          label="Imagem"
-          name={'image'}
-        />
+          value={game.idPlatform}
+        /> */}
+
+        <ContentRadio>
+          <label>
+            <input
+              type="radio"
+              name="radio_image"
+              value="upload"
+              onChange={onChange}
+              onClick={() => setShowInputUpload(true)}
+            />
+            Upload
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="radio_image"
+              value="link"
+              onChange={onChange}
+              onClick={() => setShowInputUpload(false)}
+            />
+            Link
+          </label>
+        </ContentRadio>
+
+        {showInputUpload ? (
+          <InputField
+            value={game.file}
+            type="file"
+            onChange={onChange}
+            label="Link da imagem"
+            name="file"
+          />
+        ) : (
+          <InputField
+            value={game.image}
+            onChange={onChange}
+            label="Link da imagem"
+            name="image"
+          />
+        )}
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancelar</Button>

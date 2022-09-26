@@ -3,10 +3,11 @@ export interface IUpdateGameDTORequest {
   name?: string
   developer?: string
   summary?: string
-  platform?: string
+  idPlatform?: Array<number>
   genre?: string
   image?: string
   rating?: number
+  file?: File | string
 }
 
 export interface IUpdateGameDTOResponse {

@@ -1,7 +1,7 @@
 import { TextField } from '@mui/material'
 
 interface IInputFieldProps {
-  value: string
+  value: string | File
   name: string
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
   label: React.ReactNode

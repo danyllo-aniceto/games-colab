@@ -39,10 +39,12 @@ export function Games() {
     name: '',
     developer: '',
     summary: '',
-    platform: '',
+    idPlatform: [],
     genre: '',
     image: '',
-    rating: 0
+    rating: 0,
+    radio_image: 'link',
+    file: ''
   })
 
   // estado do loading
@@ -98,17 +100,39 @@ export function Games() {
 
   /*************************************************************************/
   async function handleCreateNewGame() {
-    try {
-      await gameService.create(game)
-      setOpenModalNewGame(false)
-      displayNotificationMessage('Jogo criado com sucesso!', ToastType.SUCCESS)
-      getGames()
-    } catch (error) {
-      const { response } = error as AxiosError
-      displayNotificationMessage(
-        `Falha ao criar jogo - ${response?.data?.message}`,
-        ToastType.ERROR
-      )
+    console.log(game)
+    if (game.file) {
+      try {
+        await gameService.createUpload(game)
+        setOpenModalNewGame(false)
+        displayNotificationMessage(
+          'Jogo criado com sucesso!',
+          ToastType.SUCCESS
+        )
+        getGames()
+      } catch (error) {
+        const { response } = error as AxiosError
+        displayNotificationMessage(
+          `Falha ao criar jogo - ${response?.data?.message}`,
+          ToastType.ERROR
+        )
+      }
+    } else {
+      try {
+        await gameService.create(game)
+        setOpenModalNewGame(false)
+        displayNotificationMessage(
+          'Jogo criado com sucesso!',
+          ToastType.SUCCESS
+        )
+        getGames()
+      } catch (error) {
+        const { response } = error as AxiosError
+        displayNotificationMessage(
+          `Falha ao criar jogo - ${response?.data?.message}`,
+          ToastType.ERROR
+        )
+      }
     }
 
     setGame({
@@ -116,10 +140,12 @@ export function Games() {
       name: '',
       developer: '',
       summary: '',
-      platform: '',
+      idPlatform: [],
       genre: '',
       image: '',
-      rating: 0
+      rating: 0,
+      radio_image: 'link',
+      file: ''
     })
   }
 
@@ -154,10 +180,11 @@ export function Games() {
                           name: '',
                           developer: '',
                           summary: '',
-                          platform: '',
+                          idPlatform: [],
                           genre: '',
                           image: '',
-                          rating: 0
+                          rating: 0,
+                          file: ''
                         })
                         setOpenModalNewGame(true)
                       }}
@@ -186,10 +213,11 @@ export function Games() {
                           name: '',
                           developer: '',
                           summary: '',
-                          platform: '',
+                          idPlatform: [],
                           genre: '',
                           image: '',
-                          rating: 0
+                          rating: 0,
+                          file: ''
                         })
                         setOpenModalNewGame(true)
                       }}
@@ -214,7 +242,7 @@ export function Games() {
                               {game.developer}
                             </span>
                             <span className="console-game">
-                              {game.platform}
+                              {game.idPlatform}
                             </span>
                           </Info>
                         </Item>

@@ -3,8 +3,10 @@ export interface IGameDTO {
   name: string
   developer: string
   summary: string
-  platform: string
+  idPlatform: Array<number>
   genre: string
-  image: string
   rating: number
+  image: string
+  file: File | string
+  radio_image?: string
 }
