@@ -1,8 +1,10 @@
 import axios from 'axios'
 import { getUserLocalStorage } from '../contexts/util'
 
+const baseURL = process.env.REACT_APP_URL
+
 export const api = axios.create({
-  baseURL: 'http://localhost:4000'
+  baseURL
 })
 
 api.interceptors.request.use(
