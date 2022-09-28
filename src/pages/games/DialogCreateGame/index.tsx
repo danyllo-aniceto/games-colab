@@ -5,6 +5,8 @@ import { IGameDTO } from '../../../dtos/IGameDTO'
 import { ContentRadio, StyledDialog, Image, Title, Label } from './styles'
 import sonicImg from './../../../assets/sonic-videogame.png'
 
+// teste
+
 interface IDialogCreateGame {
   game: IGameDTO
   open: boolean
