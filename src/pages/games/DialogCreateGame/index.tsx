@@ -1,14 +1,9 @@
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button
-} from '@mui/material'
+import { DialogContent, DialogActions, Button } from '@mui/material'
 import React, { useState } from 'react'
 import { InputField } from '../../../components/InputField'
 import { IGameDTO } from '../../../dtos/IGameDTO'
-import { ContentRadio } from './styles'
+import { ContentRadio, StyledDialog, Image, Title, Label } from './styles'
+import sonicImg from './../../../assets/sonic-videogame.png'
 
 interface IDialogCreateGame {
   game: IGameDTO
@@ -28,8 +23,12 @@ export function DialogCreateGame({
   const [showInputUpload, setShowInputUpload] = useState(false)
 
   return (
-    <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Cadastrar Jogo</DialogTitle>
+    <StyledDialog open={open} onClose={onClose}>
+      <Title>
+        <h1>Cadastrar Jogo</h1>
+
+        <Image src={sonicImg} />
+      </Title>
       <DialogContent>
         <InputField
           value={game.name}
@@ -64,7 +63,7 @@ export function DialogCreateGame({
         /> */}
 
         <ContentRadio>
-          <label>
+          <Label>
             <input
               type="radio"
               name="radio_image"
@@ -73,7 +72,7 @@ export function DialogCreateGame({
               onClick={() => setShowInputUpload(true)}
             />
             Upload
-          </label>
+          </Label>
 
           <label>
             <input
@@ -108,6 +107,6 @@ export function DialogCreateGame({
         <Button onClick={onClose}>Cancelar</Button>
         <Button onClick={onSubmitCreate}>Cadastrar</Button>
       </DialogActions>
-    </Dialog>
+    </StyledDialog>
   )
 }
