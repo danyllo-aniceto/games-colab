@@ -1,10 +1,5 @@
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button
-} from '@mui/material'
+import { DialogContent, DialogActions, Button } from '@mui/material'
+import { Dialog } from '../../../components/StyledDialog'
 
 interface IDialogDeleteGameProps {
   open: boolean
@@ -18,13 +13,14 @@ export function DialogDeleteGame({
   onSubmitDelete
 }: IDialogDeleteGameProps) {
   return (
-    <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Deletar Jogo</DialogTitle>
-      <DialogContent>Tem certeza que deseja excluir este jogo?</DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>Cancelar</Button>
-        <Button onClick={onSubmitDelete}>Deletar</Button>
-      </DialogActions>
+    <Dialog open={open} onClose={onClose} title="Deletar Jogo">
+      <>
+        <DialogContent>Tem certeza que deseja excluir este jogo?</DialogContent>
+        <DialogActions>
+          <Button onClick={onClose}>Cancelar</Button>
+          <Button onClick={onSubmitDelete}>Deletar</Button>
+        </DialogActions>
+      </>
     </Dialog>
   )
 }
