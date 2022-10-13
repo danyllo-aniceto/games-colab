@@ -15,9 +15,6 @@ import { Button } from '../../components/Button'
 import { ContentDefault } from '../../styles/global'
 import { EmptyItem } from '../../components/EmptyItem'
 
-import TextField from '@mui/material/TextField'
-import Autocomplete from '@mui/material/Autocomplete'
-
 export function Games() {
   const settings: SliderProps = {
     spaceBetween: 50,

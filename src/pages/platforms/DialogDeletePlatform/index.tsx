@@ -1,11 +1,5 @@
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button
-} from '@mui/material'
-
+import { DialogContent, DialogActions, Button } from '@mui/material'
+import { Dialog } from '../../../components/StyledDialog'
 interface IDialogDeletePlatformProps {
   open: boolean
   onClose: () => void
@@ -18,15 +12,16 @@ export function DialogDeletePlatform({
   onSubmitDelete
 }: IDialogDeletePlatformProps) {
   return (
-    <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Deletar Usuário</DialogTitle>
-      <DialogContent>
-        Tem certeza que deseja excluir este console?
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>Cancelar</Button>
-        <Button onClick={onSubmitDelete}>Deletar</Button>
-      </DialogActions>
+    <Dialog open={open} onClose={onClose} title="Deletar Plataforma">
+      <>
+        <DialogContent>
+          Tem certeza que deseja excluir esta plataforma?
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={onClose}>Cancelar</Button>
+          <Button onClick={onSubmitDelete}>Deletar</Button>
+        </DialogActions>
+      </>
     </Dialog>
   )
 }

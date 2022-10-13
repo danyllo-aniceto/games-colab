@@ -11,16 +11,17 @@ export const Title = styled(DialogTitle)`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  gap: 25px;
 
   h1 {
     font-family: 'Righteous', cursive;
-    font-size: 50px;
+    font-size: 30px;
     color: var(--header-color-blue);
   }
 `
 
 export const Image = styled.img`
-  max-width: 120px;
+  max-width: 80px;
   border-radius: 50px;
-  box-shadow: 0px 2px 15px 3px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 0px 5px 4px rgba(0, 0, 0, 0.51);
 `

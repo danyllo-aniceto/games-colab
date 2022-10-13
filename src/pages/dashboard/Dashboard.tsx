@@ -1,4 +1,10 @@
+import { AxiosError } from 'axios'
+import { useEffect, useState } from 'react'
+import { IMessageAlert, ToastType } from '../../components/Toast/enum'
+import { IGameDTO } from '../../dtos/IGameDTO'
 import { BaseLayout } from '../../layout/BaseLayout'
+import GameService from '../../services/GameService'
+import { ILoadTopThreeGamesDTOResponse } from '../../services/GameService/dtos/ILoadTopThreeGamesDTO'
 import {
   Box,
   Card,
@@ -10,6 +16,58 @@ import {
 } from './styles'
 
 export function Dashboard() {
+  // constante da instância da service
+  const gameService = new GameService()
+  // estado do loading
+  const [loading, setLoading] = useState(false)
+
+  // estados do ToastAlert
+  const [openAlert, setOpenAlert] = useState(false)
+  const [messageAlert, setMessageAlert] = useState<IMessageAlert>({
+    type: ToastType.SUCCESS,
+    message: ''
+  })
+
+  const [game, setGame] = useState<ILoadTopThreeGamesDTOResponse>({
+    name: '',
+    sum: 0,
+    image: ''
+  })
+  // estado de listagem de jogos
+  const [listGames, setListGames] = useState<ILoadTopThreeGamesDTOResponse[]>(
+    []
+  )
+
+  function displayNotificationMessage(message: string, type: ToastType) {
+    setOpenAlert(true)
+    setMessageAlert({ message, type })
+  }
+
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const { name } = event.target
+    const { value } = event.target
+    setGame(values => ({ ...values, [name]: value }))
+  }
+
+  async function getTopThreeGames() {
+    setLoading(true)
+    try {
+      const response = await gameService.getTopThreeGames()
+      console.log(response)
+      setListGames(response)
+    } catch (error) {
+      const { response } = error as AxiosError
+      displayNotificationMessage(
+        `Falha ao buscar os três melhores jogos - ${response?.data?.message}`,
+        ToastType.ERROR
+      )
+    } finally {
+      setLoading(false)
+    }
+  }
+  useEffect(() => {
+    getTopThreeGames()
+  }, [])
   return (
     <BaseLayout>
       <Container>
@@ -20,6 +78,7 @@ export function Dashboard() {
             jogos
           </h3>
         </Header>
+
         <ContentTopGames>
           <Text>
             <p>
@@ -35,45 +94,16 @@ export function Dashboard() {
             </p>
             <h1>TOP 3 JOGOS 🎮</h1>
           </Text>
-          <Card>
-            <Box>
-              <Content>
-                <h2>1º</h2>
-                <h3>God Of War</h3>
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Labore, totam velit? Iure nemo labore inventore
-                </p>
-                <a href="#">Veja mais</a>
-              </Content>
-            </Box>
-          </Card>
-          <Card>
-            <Box>
-              <Content>
-                <h2>2º</h2>
-                <h3>God Of War</h3>
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Labore, totam velit? Iure nemo labore inventore
-                </p>
-                <a href="#">Veja mais</a>
-              </Content>
-            </Box>
-          </Card>
-          <Card>
-            <Box>
-              <Content>
-                <h2>3º</h2>
-                <h3>God Of War</h3>
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Labore, totam velit? Iure nemo labore inventore
-                </p>
-                <a href="#">Veja mais</a>
-              </Content>
-            </Box>
-          </Card>
+
+          {listGames.map((game, index) => (
+            <Card key={game.name}>
+              <Box url={game.image}>
+                <Content>
+                  <h2>{index + 1}º</h2>
+                </Content>
+              </Box>
+            </Card>
+          ))}
         </ContentTopGames>
       </Container>
     </BaseLayout>

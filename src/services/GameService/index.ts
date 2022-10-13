@@ -7,6 +7,7 @@ import {
 import { IDeleteGameDTOResponse } from './dtos/IDeleteGameDTO'
 import { ILoadByIdGameDTOResponse } from './dtos/ILoadByIdGameDTO'
 import { ILoadGameDTOResponse } from './dtos/ILoadGameDTO'
+import { ILoadTopThreeGamesDTOResponse } from './dtos/ILoadTopThreeGamesDTO'
 import {
   IUpdateGameDTORequest,
   IUpdateGameDTOResponse
@@ -75,6 +76,13 @@ export default class GameService {
   public async deleteById(id: number): Promise<IDeleteGameDTOResponse> {
     const { data } = await api.delete<IDeleteGameDTOResponse>(
       `${this.route}/${id}`
+    )
+    return data
+  }
+
+  public async getTopThreeGames(): Promise<ILoadTopThreeGamesDTOResponse[]> {
+    const { data } = await api.get<ILoadTopThreeGamesDTOResponse[]>(
+      `/getTopThreeGames`
     )
     return data
   }

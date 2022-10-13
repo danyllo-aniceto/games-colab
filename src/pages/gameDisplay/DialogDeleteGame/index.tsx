@@ -1,5 +1,5 @@
 import { DialogContent, DialogActions, Button } from '@mui/material'
-import { Dialog } from '../../../components/StyledDialog'
+import { DialogContainer } from './styles'
 
 interface IDialogDeleteGameProps {
   open: boolean
@@ -13,7 +13,7 @@ export function DialogDeleteGame({
   onSubmitDelete
 }: IDialogDeleteGameProps) {
   return (
-    <Dialog open={open} onClose={onClose} title="Deletar Jogo">
+    <DialogContainer open={open} onClose={onClose} title="Deletar Jogo">
       <>
         <DialogContent>Tem certeza que deseja excluir este jogo?</DialogContent>
         <DialogActions>
@@ -21,6 +21,6 @@ export function DialogDeleteGame({
           <Button onClick={onSubmitDelete}>Deletar</Button>
         </DialogActions>
       </>
-    </Dialog>
+    </DialogContainer>
   )
 }

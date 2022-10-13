@@ -1,10 +1,5 @@
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button
-} from '@mui/material'
+import { DialogContent, DialogActions, Button } from '@mui/material'
+import { Dialog } from '../../../components/StyledDialog'
 
 interface IDialogDeleteUserProps {
   open: boolean
@@ -18,15 +13,16 @@ export function DialogDeleteUser({
   onSubmitDelete
 }: IDialogDeleteUserProps) {
   return (
-    <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Deletar Usuário</DialogTitle>
-      <DialogContent>
-        Tem certeza que deseja excluir este usuário?
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>Cancelar</Button>
-        <Button onClick={onSubmitDelete}>Deletar</Button>
-      </DialogActions>
+    <Dialog open={open} onClose={onClose} title="Deletar Usuário">
+      <>
+        <DialogContent>
+          Tem certeza que deseja excluir este usuário?
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={onClose}>Cancelar</Button>
+          <Button onClick={onSubmitDelete}>Deletar</Button>
+        </DialogActions>
+      </>
     </Dialog>
   )
 }
