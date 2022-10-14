@@ -59,7 +59,7 @@ export const Card = styled.div`
   margin: 30px;
   margin-bottom: 15px;
   transition: 0.5s;
-
+  cursor: pointer;
   :nth-child(1) a {
     background: #2196f3;
   }
