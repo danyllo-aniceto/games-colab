@@ -36,6 +36,15 @@ export default class EvaluationService {
     return data
   }
 
+  public async loadByIdGame(
+    idGame: number
+  ): Promise<ILoadEvaluationResponse[]> {
+    const { data } = await api.get<ILoadEvaluationResponse[]>(
+      `/evaluationByIdGame/${idGame}`
+    )
+    return data
+  }
+
   public async updateById(
     dataRequest: IUpdateEvaluationRequest
   ): Promise<IUpdateEvaluationResponse> {
