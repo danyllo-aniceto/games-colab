@@ -55,6 +55,18 @@ export function GameDisplay() {
     rating: 0,
     file: ''
   })
+
+  const [gameModal, setGameModal] = useState<IGameDTO>({
+    id: null,
+    name: '',
+    developer: '',
+    summary: '',
+    idPlatform: [],
+    genre: '',
+    image: '',
+    rating: null,
+    file: ''
+  })
   const { id } = useParams<'id'>()
   const navigate = useNavigate()
   const gameService = new GameService()
@@ -85,7 +97,7 @@ export function GameDisplay() {
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name } = event.target
     const { value } = event.target
-    setGame(values => ({ ...values, [name]: value }))
+    setGameModal(values => ({ ...values, [name]: value }))
   }
 
   /****************************************************/
@@ -95,6 +107,7 @@ export function GameDisplay() {
     try {
       const response = await gameService.loadById(id)
       setGame(response)
+      setGameModal(response)
     } catch (err) {
       const { response } = err as AxiosError
       displayNotificationMessage(
@@ -135,10 +148,10 @@ export function GameDisplay() {
   /****************************************************/
   async function editGame() {
     try {
-      await gameService.updateById(game)
+      await gameService.updateById(gameModal)
       setOpenModalEdit(false)
       displayNotificationMessage('Jogo editado com sucesso', ToastType.SUCCESS)
-      getGameById(game.id)
+      getGameById(gameModal.id)
     } catch (error) {
       const { response } = error as AxiosError
       displayNotificationMessage(
@@ -318,7 +331,7 @@ export function GameDisplay() {
           onClose={() => setOpenModalEdit(false)}
           onChange={handleChange}
           onSubmitEdit={editGame}
-          game={game}
+          game={gameModal}
         />
 
         <DialogDeleteGame

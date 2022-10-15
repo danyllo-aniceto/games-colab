@@ -13,7 +13,7 @@ export const Title = styled(DialogTitle)`
   align-items: center;
   gap: 25px;
 
-  h1 {
+  span {
     font-family: 'Righteous', cursive;
     font-size: 30px;
     color: var(--header-color-blue);

@@ -13,7 +13,7 @@ export function Dialog({ title, open, onClose, children }: IDialog) {
     <>
       <StyledDialog open={open} onClose={onClose}>
         <Title>
-          <h1>{title}</h1>
+          <span>{title}</span>
 
           <Image src={sonicImg} />
         </Title>
