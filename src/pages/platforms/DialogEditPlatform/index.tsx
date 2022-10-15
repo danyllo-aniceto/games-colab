@@ -1,13 +1,8 @@
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button
-} from '@mui/material'
+import { DialogContent, DialogActions, Button } from '@mui/material'
 import React from 'react'
 import { InputField } from '../../../components/InputField'
 import { IPlatformDTO } from '../../../dtos/IPlatformDTO'
+import { Dialog } from '../../../components/StyledDialog'
 
 interface IDialogEditPlatform {
   platform: IPlatformDTO
@@ -25,27 +20,28 @@ export function DialogEditPlatform({
   onSubmitEdit
 }: IDialogEditPlatform) {
   return (
-    <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Dados do Console</DialogTitle>
-      <DialogContent>
-        <InputField
-          label="Nome"
-          name="name"
-          onChange={onChange}
-          value={platform.name}
-        />
+    <Dialog open={open} onClose={onClose} title="Dados da Plataforma">
+      <>
+        <DialogContent>
+          <InputField
+            label="Nome"
+            name="name"
+            onChange={onChange}
+            value={platform.name}
+          />
 
-        <InputField
-          label="Imagem"
-          name="image"
-          onChange={onChange}
-          value={platform.image}
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>Cancelar</Button>
-        <Button onClick={onSubmitEdit}>Editar</Button>
-      </DialogActions>
+          <InputField
+            label="Imagem"
+            name="image"
+            onChange={onChange}
+            value={platform.image}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={onClose}>Cancelar</Button>
+          <Button onClick={onSubmitEdit}>Editar</Button>
+        </DialogActions>
+      </>
     </Dialog>
   )
 }

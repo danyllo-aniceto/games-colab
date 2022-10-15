@@ -2,6 +2,10 @@ import styled from 'styled-components'
 
 import godOfWarImg from '../../assets/godOfWar.jpg'
 
+interface IBox {
+  url: string
+}
+
 export const Container = styled.div`
   background: #dee9ffd1;
   height: auto;
@@ -55,7 +59,7 @@ export const Card = styled.div`
   margin: 30px;
   margin-bottom: 15px;
   transition: 0.5s;
-
+  cursor: pointer;
   :nth-child(1) a {
     background: #2196f3;
   }
@@ -66,13 +70,13 @@ export const Card = styled.div`
     background: #23c186;
   }
 `
-export const Box = styled.div`
+export const Box = styled.div<IBox>`
   position: absolute;
   top: 20px;
   left: 20px;
   right: 20px;
   bottom: 20px;
-  background-image: url(${godOfWarImg});
+  background-image: url(${props => props.url ?? godOfWarImg});
   background-size: cover;
   border-radius: 15px;
   display: flex;

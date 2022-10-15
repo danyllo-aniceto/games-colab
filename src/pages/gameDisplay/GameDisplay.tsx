@@ -35,10 +35,11 @@ import {
 import Rating from '@mui/material/Rating'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
-import TextField from '@mui/material/TextField'
 
 import React from 'react'
 import { InputField } from '../../components/InputField'
+import EvaluationService from '../../services/EvaluationService'
+import { ILoadEvaluationResponse } from '../../services/EvaluationService/dtos/ILoadEvaluationDTO'
 
 export function GameDisplay() {
   const [value, setValue] = React.useState<number | null>(0)
@@ -57,6 +58,12 @@ export function GameDisplay() {
   const { id } = useParams<'id'>()
   const navigate = useNavigate()
   const gameService = new GameService()
+  const evaluationService = new EvaluationService()
+
+  // estado de listagem de jogos
+  const [listEvaluations, setListEvaluations] = useState<
+    ILoadEvaluationResponse[]
+  >([])
 
   const [comment, setComment] = useState('')
 
@@ -140,6 +147,29 @@ export function GameDisplay() {
       )
     }
   }
+
+  /****************************************************/
+  async function getEvaluations(idGame: number) {
+    setLoading(true)
+    try {
+      const response = await evaluationService.loadByIdGame(idGame)
+
+      setListEvaluations(response)
+      console.log(response)
+    } catch (error) {
+      const { response } = error as AxiosError
+      displayNotificationMessage(
+        `Falha ao buscar avaliações - ${response?.data?.message}`,
+        ToastType.ERROR
+      )
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    getEvaluations(Number(id))
+  }, [])
 
   return (
     <BaseLayout>
@@ -268,39 +298,17 @@ export function GameDisplay() {
                   </Evaluation>
                 </EvaluationContent>
                 <SubTitle>Avaliações</SubTitle>
-
-                <CommentContent>
-                  <Comment>&nbsp;Legal 😀</Comment>
-                  <ItemsComment>
-                    <ContentRaiting>
-                      <Rating name="read-only" value={game.rating} readOnly />
-                    </ContentRaiting>
-                    <DeleteIcon color="warning" />
-                  </ItemsComment>
-                </CommentContent>
-
-                <CommentContent>
-                  <Comment>&nbsp;Muito Bom!</Comment>
-                  <ItemsComment>
-                    <ContentRaiting>
-                      <Rating name="read-only" value={game.rating} readOnly />
-                    </ContentRaiting>
-                    <DeleteIcon color="warning" />
-                  </ItemsComment>
-                </CommentContent>
-
-                <CommentContent>
-                  <Comment>
-                    &nbsp;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-                    &nbsp;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-                  </Comment>
-                  <ItemsComment>
-                    <ContentRaiting>
-                      <Rating name="read-only" value={game.rating} readOnly />
-                    </ContentRaiting>
-                    <DeleteIcon color="warning" />
-                  </ItemsComment>
-                </CommentContent>
+                {listEvaluations.map(eva => (
+                  <CommentContent key={eva.id}>
+                    <Comment>&nbsp;{eva.comment}</Comment>
+                    <ItemsComment>
+                      <ContentRaiting>
+                        <Rating name="read-only" value={eva.rating} readOnly />
+                      </ContentRaiting>
+                      <DeleteIcon color="warning" />
+                    </ItemsComment>
+                  </CommentContent>
+                ))}
               </Content>
             </>
           )}

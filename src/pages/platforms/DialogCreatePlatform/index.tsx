@@ -1,13 +1,8 @@
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button
-} from '@mui/material'
+import { DialogContent, DialogActions, Button } from '@mui/material'
 import React from 'react'
 import { InputField } from '../../../components/InputField'
 import { IPlatformDTO } from '../../../dtos/IPlatformDTO'
+import { Dialog } from '../../../components/StyledDialog'
 
 interface IDialogCreatePlatform {
   platform: IPlatformDTO
@@ -25,26 +20,27 @@ export function DialogCreatePlatform({
   onSubmitCreate
 }: IDialogCreatePlatform) {
   return (
-    <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Cadastrar Console</DialogTitle>
-      <DialogContent>
-        <InputField
-          value={platform.name}
-          onChange={onChange}
-          label="Nome"
-          name={'name'}
-        />
-        <InputField
-          value={platform.image}
-          onChange={onChange}
-          label="Imagem"
-          name={'image'}
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>Cancelar</Button>
-        <Button onClick={onSubmitCreate}>Cadastrar</Button>
-      </DialogActions>
+    <Dialog open={open} onClose={onClose} title="Cadastrar Plataforma">
+      <>
+        <DialogContent>
+          <InputField
+            value={platform.name}
+            onChange={onChange}
+            label="Nome"
+            name={'name'}
+          />
+          <InputField
+            value={platform.image}
+            onChange={onChange}
+            label="Imagem"
+            name={'image'}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={onClose}>Cancelar</Button>
+          <Button onClick={onSubmitCreate}>Cadastrar</Button>
+        </DialogActions>
+      </>
     </Dialog>
   )
 }
