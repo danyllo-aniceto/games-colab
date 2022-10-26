@@ -40,6 +40,8 @@ import React from 'react'
 import { InputField } from '../../components/InputField'
 import EvaluationService from '../../services/EvaluationService'
 import { ILoadEvaluationResponse } from '../../services/EvaluationService/dtos/ILoadEvaluationDTO'
+import { ICreateEvaluationDTOResponse } from '../../services/EvaluationService/dtos/ICreateEvaluationDTO'
+import { IEvaluationDTO } from '../../dtos/IEvaluationDTO'
 
 export function GameDisplay() {
   const [value, setValue] = React.useState<number | null>(0)
@@ -67,6 +69,14 @@ export function GameDisplay() {
     rating: null,
     file: ''
   })
+
+  const [evaluation, setEvaluation] = useState<IEvaluationDTO>({
+    id: null,
+    idUser: null,
+    idGame: null,
+    rating: 0,
+    comment: ''
+  })
   const { id } = useParams<'id'>()
   const navigate = useNavigate()
   const gameService = new GameService()
@@ -76,8 +86,6 @@ export function GameDisplay() {
   const [listEvaluations, setListEvaluations] = useState<
     ILoadEvaluationResponse[]
   >([])
-
-  const [comment, setComment] = useState('')
 
   // estados do ToastAlert
   const [openAlert, setOpenAlert] = useState(false)
@@ -98,6 +106,11 @@ export function GameDisplay() {
     const { name } = event.target
     const { value } = event.target
     setGameModal(values => ({ ...values, [name]: value }))
+  }
+  function handleChangeEvaluation(event: React.ChangeEvent<HTMLInputElement>) {
+    const { name } = event.target
+    const { value } = event.target
+    setEvaluation(values => ({ ...values, [name]: value }))
   }
 
   /****************************************************/
@@ -183,6 +196,33 @@ export function GameDisplay() {
   useEffect(() => {
     getEvaluations(Number(id))
   }, [])
+
+  /****************************************************/
+  async function createEvaluation() {
+    try {
+      await evaluationService.create(evaluation)
+      displayNotificationMessage(
+        'Avaliação criada com sucesso!',
+        ToastType.SUCCESS
+      )
+      getEvaluations(Number(id))
+    } catch (error) {
+      const { response } = error as AxiosError
+      displayNotificationMessage(
+        `Falha ao criar avaliação - ${response?.data?.message}`,
+        ToastType.ERROR
+      )
+    }
+
+    setEvaluation({
+      id: null,
+      idUser: null,
+      idGame: null,
+      rating: 0,
+      comment: ''
+    })
+    console.log('teste - ', evaluation)
+  }
 
   return (
     <BaseLayout>
@@ -285,9 +325,9 @@ export function GameDisplay() {
                         {/* <TextField fullWidth label="Comentário" /> */}
                         <InputField
                           label="Comentário"
-                          name="comentary"
-                          onChange={e => setComment(e.target.value)}
-                          value={comment}
+                          name={'comment'}
+                          onChange={handleChangeEvaluation}
+                          value={evaluation.comment}
                           variant="outlined"
                           isTextArea
                         />
@@ -297,15 +337,23 @@ export function GameDisplay() {
                       <div>
                         <Typography component="legend">Nota</Typography>
                         <Rating
-                          name="simple-controlled"
-                          value={value}
-                          onChange={(event, newValue) => {
-                            setValue(newValue)
-                          }}
+                          name={'rating'}
+                          value={evaluation.rating}
+                          onChange={(event, newValue) =>
+                            setEvaluation(valuesEval => ({
+                              ...valuesEval,
+                              rating: newValue
+                            }))
+                          }
                         />
                       </div>
                       <ContentButtons>
-                        <Button>Avaliar</Button>
+                        <Button
+                          onClick={createEvaluation}
+                          onChange={handleChangeEvaluation}
+                        >
+                          Avaliar
+                        </Button>
                       </ContentButtons>
                     </RatingAndEvaluation>
                   </Evaluation>

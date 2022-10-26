@@ -1,4 +1,11 @@
-import { Container, Info, Item, ContentButton, Message } from './styles'
+import {
+  Container,
+  Info,
+  Item,
+  ContentButton,
+  Message,
+  LogoPlatforms
+} from './styles'
 
 import { useEffect, useState } from 'react'
 import { BaseLayout } from '../../layout/BaseLayout'
@@ -228,9 +235,24 @@ export function Games() {
                             <span className="developer-game">
                               {game.developer}
                             </span>
-                            <span className="console-game">
-                              {game.idPlatform}
-                            </span>
+                            <LogoPlatforms>
+                              {game.PlatformGame.map(item => (
+                                <img
+                                  key={item.Platform.id}
+                                  src={item.Platform.image}
+                                  alt={item.Platform.name}
+                                />
+                              ))}
+                            </LogoPlatforms>
+                            {/* <span className="console-game">
+                              {game.PlatformGame.map(item => (
+                                <img
+                                  key={item.id}
+                                  src={item.image}
+                                  alt={item.name}
+                                />
+                              ))}
+                            </span> */}
                           </Info>
                         </Item>
                       </Slide>

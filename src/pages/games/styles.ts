@@ -32,6 +32,21 @@ export const Item = styled.div`
     object-fit: cover;
   }
 `
+export const LogoPlatforms = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  /* display: grid;
+  grid-template-columns: auto auto auto; */
+  gap: 5px;
+
+  img {
+    height: 25px;
+    width: 40px;
+  }
+`
+
 export const Info = styled.div`
   height: 140px;
   display: flex;
