@@ -13,6 +13,14 @@ export const Container = styled.div`
     color: var(--header-color-blue);
     -webkit-text-stroke-width: 0.1px;
     -webkit-text-stroke-color: var(--text-title);
+
+    @media (max-width: 675px) {
+      font-size: 30px;
+    }
+
+    @media (max-width: 380px) {
+      font-size: 20px;
+    }
   }
 `
 
@@ -21,6 +29,14 @@ export const ContentPlatforms = styled.div`
   grid-template-columns: auto auto auto;
   padding: 20px;
   gap: 3rem;
+
+  @media (max-width: 1000px) {
+    grid-template-columns: auto auto;
+  }
+
+  @media (max-width: 675px) {
+    grid-template-columns: auto;
+  }
 `
 
 export const Platform = styled.div`
@@ -117,6 +133,11 @@ export const Platform = styled.div`
       color: #000;
     }
   }
+
+  @media (max-width: 330px) {
+    width: 220px;
+    height: 320px;
+  }
 `
 export const ContentAction = styled.div`
   z-index: 30;
@@ -127,4 +148,8 @@ export const ContentAction = styled.div`
   padding: 10px;
   padding-top: 30px;
   gap: 200px;
+
+  @media (max-width: 330px) {
+    gap: 150px;
+  }
 `
