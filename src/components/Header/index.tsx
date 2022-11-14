@@ -1,4 +1,11 @@
-import { Container, Content, LogoTitulo, Titulo } from './styles'
+import {
+  Container,
+  Content,
+  LogoTitulo,
+  Titulo,
+  MobileMenu,
+  Line
+} from './styles'
 
 import logoImg from '../../assets/logo.png'
 
@@ -15,7 +22,12 @@ export function Header() {
             <h1>Meu Game Favorito</h1>
           </Titulo>
         </LogoTitulo>
-        <button>Logar</button>
+        <MobileMenu>
+          <Line></Line>
+          <Line></Line>
+          <Line></Line>
+        </MobileMenu>
+        {/* <button>Logar</button> */}
       </Content>
     </Container>
   )

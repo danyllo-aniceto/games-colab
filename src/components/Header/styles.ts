@@ -31,6 +31,14 @@ export const Content = styled.div`
       filter: brightness(0.9);
     }
   }
+
+  @media (max-width: 954px) {
+    padding: 0.4rem 6rem 0.4rem;
+  }
+
+  @media (max-width: 424px) {
+    padding-left: 10vw;
+  }
 `
 
 export const LogoTitulo = styled.div`
@@ -41,6 +49,14 @@ export const LogoTitulo = styled.div`
 
   img {
     width: 6rem;
+  }
+
+  @media (max-width: 424px) {
+    margin: 0px;
+    gap: 0.5rem;
+    img {
+      width: 4rem;
+    }
   }
 `
 
@@ -59,4 +75,36 @@ export const Titulo = styled.div`
   img {
     width: 2.6rem;
   }
+
+  @media (max-width: 806px) {
+    h1 {
+      font-size: 2rem;
+    }
+
+    img {
+      width: 2rem;
+    }
+  }
+
+  @media (max-width: 424px) {
+    h1 {
+      font-size: 1.5rem;
+    }
+
+    img {
+      width: 1.5rem;
+    }
+  }
+`
+
+export const MobileMenu = styled.div`
+  cursor: pointer;
+  display: none;
+`
+
+export const Line = styled.div`
+  width: 32px;
+  height: 2px;
+  background: #fff;
+  margin: 8px;
 `

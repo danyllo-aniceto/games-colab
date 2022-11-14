@@ -14,4 +14,8 @@ export const ContentChildren = styled.section`
   /* &::-webkit-scrollbar {
     display: none;
   } */
+
+  @media (max-width: 1257px) {
+    margin-left: 0;
+  }
 `

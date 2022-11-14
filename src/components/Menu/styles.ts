@@ -41,4 +41,8 @@ export const Container = styled.div`
       filter: brightness(2.5);
     }
   }
+
+  @media (max-width: 1257px) {
+    display: none;
+  }
 `

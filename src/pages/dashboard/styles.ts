@@ -69,6 +69,11 @@ export const Card = styled.div`
   :nth-child(3) a {
     background: #23c186;
   }
+
+  @media (max-width: 400px) {
+    min-width: 250px;
+    height: 320px;
+  }
 `
 export const Box = styled.div<IBox>`
   position: absolute;
