@@ -30,6 +30,10 @@ export const Content = styled.div`
 
 export const Img = styled.img`
   max-width: 300px;
+
+  @media (max-width: 990px) {
+    max-width: 200px;
+  }
 `
 
 export const MainContent = styled.div`
@@ -37,6 +41,37 @@ export const MainContent = styled.div`
   flex-direction: row;
   gap: 20px;
   margin-inline: 25px;
+
+  @media (max-width: 990px) {
+    margin-inline: 80px;
+  }
+
+  @media (max-width: 880px) {
+    gap: 10px;
+    margin-inline: 120px;
+  }
+
+  @media (max-width: 800px) {
+    margin-inline: 180px;
+  }
+
+  @media (max-width: 680px) {
+    margin-inline: 250px;
+  }
+
+  @media (max-width: 542px) {
+    flex-direction: column;
+    align-items: center;
+    margin-inline: 300px;
+    gap: 30px;
+  }
+
+  @media (max-width: 410px) {
+    margin-inline: 350px;
+  }
+  @media (max-width: 410px) {
+    margin-inline: 400px;
+  }
 `
 
 export const SubTitle = styled.h1`
@@ -52,10 +87,17 @@ export const SubTitle = styled.h1`
 export const Summary = styled.div`
   h1 {
     line-height: 1.5rem;
+
+    @media (max-width: 990px) {
+      margin-inline: 20px;
+    }
   }
 
   p {
     margin-top: 30px;
+    @media (max-width: 990px) {
+      margin-inline: 20px;
+    }
   }
 `
 export const TableContent = styled.div`
@@ -68,6 +110,10 @@ export const TableContent = styled.div`
     td {
       padding: 1rem 2rem;
       border: 0;
+
+      @media (max-width: 990px) {
+        padding: 0.5rem 1rem;
+      }
     }
 
     thead {
@@ -97,6 +143,10 @@ export const TableContent = styled.div`
       }
     }
   }
+
+  @media (max-width: 800px) {
+    display: none;
+  }
 `
 
 export const ContentButtons = styled.div`
@@ -114,14 +164,18 @@ export const SecondaryContent = styled.div`
   align-items: center;
 `
 export const EvaluationContent = styled.div`
-  padding: 25px;
-  margin-inline: 25px;
-  margin-top: 10px;
   display: flex;
   flex-direction: column;
   gap: 25px;
+  padding: 25px;
+  margin-inline: 25px;
+  margin-top: 10px;
   align-items: center;
   background-color: #b2caf5;
+
+  @media (max-width: 990px) {
+    margin-inline: 80px;
+  }
 `
 export const Evaluation = styled.div`
   display: flex;
@@ -152,6 +206,10 @@ export const CommentContent = styled.div`
   flex-direction: column;
   gap: 12px;
   background-color: #b2caf5;
-
+  margin-inline: 20px;
   padding-block: 5px;
+
+  @media (max-width: 990px) {
+    margin-inline: 180px;
+  }
 `

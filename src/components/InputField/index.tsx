@@ -31,7 +31,6 @@ export function InputField({
       type={type}
       fullWidth
       variant={variant}
-      autoFocus
       margin="dense"
       multiline={isTextArea}
       rows={isTextArea ? 4 : undefined}

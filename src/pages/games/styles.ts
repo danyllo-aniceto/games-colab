@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Button } from '../../components/Button'
+
 import { MessageDefault } from '../../styles/global'
 
 export const Container = styled.div`
@@ -11,10 +11,21 @@ export const ContentButton = styled.div`
   display: flex;
   justify-content: flex-end;
 
+  @media (max-width: 600px) {
+    margin-bottom: 5px;
+    margin-right: 0;
+  }
+
   button {
     font-size: 1.8rem;
     padding: 0 2rem;
     height: 4rem;
+
+    @media (max-width: 600px) {
+      padding: 5px;
+      font-size: 1rem;
+      height: 2.5rem;
+    }
   }
 `
 
@@ -31,6 +42,7 @@ export const Item = styled.div`
     width: 100%;
     object-fit: cover;
   }
+  cursor: pointer;
 `
 export const LogoPlatforms = styled.div`
   display: flex;

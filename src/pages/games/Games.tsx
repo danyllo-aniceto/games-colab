@@ -21,6 +21,7 @@ import { useNavigate } from 'react-router-dom'
 import { Button } from '../../components/Button'
 import { ContentDefault } from '../../styles/global'
 import { EmptyItem } from '../../components/EmptyItem'
+import { Theme, useMediaQuery, useTheme } from '@mui/material'
 
 export function Games() {
   const settings: SliderProps = {
@@ -153,6 +154,9 @@ export function Games() {
     })
   }
 
+  const theme = useTheme()
+  const mobile = useMediaQuery(theme.breakpoints.down('sm'))
+
   return (
     <BaseLayout>
       <>
@@ -219,9 +223,8 @@ export function Games() {
                       Novo Jogo
                     </Button>
                   </ContentButton>
-
-                  <Slider settings={settings}>
-                    {listGames.map(game => (
+                  {mobile ? (
+                    listGames.map(game => (
                       <Slide
                         onClick={() => navigate(`/gameDisplay/${game.id}`)}
                         key={game.id}
@@ -256,8 +259,47 @@ export function Games() {
                           </Info>
                         </Item>
                       </Slide>
-                    ))}
-                  </Slider>
+                    ))
+                  ) : (
+                    <Slider settings={settings}>
+                      {listGames.map(game => (
+                        <Slide
+                          onClick={() => navigate(`/gameDisplay/${game.id}`)}
+                          key={game.id}
+                        >
+                          <Item key={game.id}>
+                            <div className="image">
+                              <img src={game.image} alt={game.name} />
+                            </div>
+                            <Info>
+                              <span className="name-game">{game.name}</span>
+                              <span className="developer-game">
+                                {game.developer}
+                              </span>
+                              <LogoPlatforms>
+                                {game.PlatformGame.map(item => (
+                                  <img
+                                    key={item.Platform.id}
+                                    src={item.Platform.image}
+                                    alt={item.Platform.name}
+                                  />
+                                ))}
+                              </LogoPlatforms>
+                              {/* <span className="console-game">
+                              {game.PlatformGame.map(item => (
+                                <img
+                                  key={item.id}
+                                  src={item.image}
+                                  alt={item.name}
+                                />
+                              ))}
+                            </span> */}
+                            </Info>
+                          </Item>
+                        </Slide>
+                      ))}
+                    </Slider>
+                  )}
                 </>
               )}
             </>

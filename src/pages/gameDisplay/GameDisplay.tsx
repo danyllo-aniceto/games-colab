@@ -317,7 +317,7 @@ export function GameDisplay() {
                   <Evaluation>
                     <Box
                       sx={{
-                        width: 900,
+                        width: 800,
                         maxWidth: '100%'
                       }}
                     >

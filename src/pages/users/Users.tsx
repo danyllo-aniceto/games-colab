@@ -3,7 +3,7 @@ import { BaseLayout } from '../../layout/BaseLayout'
 import UserService from '../../services/UserService'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { Container, ContentAction, Message } from './styles'
+import { Container, ContentAction, Message, TableContainer } from './styles'
 import { Toast } from '../../components/Toast'
 import { AxiosError } from 'axios'
 import { ToastType } from '../../components/Toast/enum'
@@ -216,47 +216,49 @@ export function Users() {
                       Novo Usuário
                     </Button>
                   </ContentButton>
-                  <table>
-                    <thead>
-                      <tr>
-                        <td>Nome</td>
-                        <td>E-mail</td>
-                        <td>Ações</td>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {listUsers?.map(user => (
-                        <tr key={user.id}>
-                          <td>{user.name}</td>
-                          <td>{user.email}</td>
-                          <td>
-                            <ContentAction>
-                              <EditIcon
-                                color="action"
-                                onClick={() => {
-                                  setUser({
-                                    id: user.id,
-                                    name: user.name,
-                                    email: user.email,
-                                    password: user.password
-                                  })
-                                  setOpenModalEdit(true)
-                                }}
-                              />
-                              <DeleteIcon
-                                color="warning"
-                                onClick={() => {
-                                  setUser({ id: user.id, ...user })
-                                  setOpenModalDelete(true)
-                                }}
-                              />
-                            </ContentAction>
-                          </td>
+                  <TableContainer>
+                    <table>
+                      <thead>
+                        <tr>
+                          <td>Nome</td>
+                          <td>E-mail</td>
+                          <td>Ações</td>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+
+                      <tbody>
+                        {listUsers?.map(user => (
+                          <tr key={user.id}>
+                            <td>{user.name}</td>
+                            <td>{user.email}</td>
+                            <td>
+                              <ContentAction>
+                                <EditIcon
+                                  color="action"
+                                  onClick={() => {
+                                    setUser({
+                                      id: user.id,
+                                      name: user.name,
+                                      email: user.email,
+                                      password: user.password
+                                    })
+                                    setOpenModalEdit(true)
+                                  }}
+                                />
+                                <DeleteIcon
+                                  color="warning"
+                                  onClick={() => {
+                                    setUser({ id: user.id, ...user })
+                                    setOpenModalDelete(true)
+                                  }}
+                                />
+                              </ContentAction>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </TableContainer>
                   <Pagination
                     count={totalPage}
                     page={Number(page)}

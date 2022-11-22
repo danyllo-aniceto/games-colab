@@ -47,3 +47,6 @@ export const ContentAction = styled.div``
 export const Message = styled(MessageDefault)`
   margin-top: 35vh;
 `
+export const TableContainer = styled.div`
+  overflow-x: auto;
+`

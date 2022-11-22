@@ -23,12 +23,11 @@ import { AxiosError } from 'axios'
 import { Toast } from '../../components/Toast'
 import { useAuth } from '../../hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
+import { LoadingComponent } from '../../components/Loading'
 
 export function Login() {
-  // constante da instância da service
   const userService = new UserService()
 
-  // estado do objeto usuário
   const [user, setUser] = useState<IUserDTO>({
     id: null,
     name: '',
@@ -38,7 +37,6 @@ export function Login() {
 
   const [openModalNewUser, setOpenModalNewUser] = useState(false)
 
-  // estados do ToastAlert
   const [openAlert, setOpenAlert] = useState(false)
   const [messageAlert, setMessageAlert] = useState<IMessageAlert>({
     type: ToastType.SUCCESS,
@@ -83,7 +81,10 @@ export function Login() {
   const auth = useAuth()
   const navigate = useNavigate()
 
+  const [loading, setLoading] = useState(false)
+
   async function onFinish(event: FormEvent<HTMLFormElement>) {
+    setLoading(true)
     event.preventDefault()
     try {
       await auth.authenticate(user.email, user.password)
@@ -94,6 +95,8 @@ export function Login() {
         `Senha ou email inválido - ${response?.data?.message}`,
         ToastType.ERROR
       )
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -105,6 +108,9 @@ export function Login() {
         type={messageAlert.type}
         message={messageAlert.message}
       />
+
+      <LoadingComponent open={loading} onClose={() => setLoading(false)} />
+
       <Container>
         <Form onSubmit={onFinish}>
           <UserCard>
@@ -120,6 +126,7 @@ export function Login() {
                 onChange={handleChange}
                 type="email"
                 placeholder="Digite seu email"
+                disabled={loading}
               />
               <Label>Senha: </Label>
               <UserPassword
@@ -128,11 +135,15 @@ export function Login() {
                 onChange={handleChange}
                 type="password"
                 placeholder="Digite sua senha"
+                disabled={loading}
               />
-              <ButtonRegister type="submit">Login</ButtonRegister>
+              <ButtonRegister type="submit" disabled={loading}>
+                Login
+              </ButtonRegister>
               <ButtonNewRegister
                 type="button"
                 onClick={() => setOpenModalNewUser(true)}
+                disabled={loading}
               >
                 Registrar-se
               </ButtonNewRegister>
