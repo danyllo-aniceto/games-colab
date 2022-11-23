@@ -29,7 +29,8 @@ import {
   CommentContent,
   SubTitle,
   GameTitle,
-  Img
+  Img,
+  MobileGameInformation
 } from './styles'
 
 import Rating from '@mui/material/Rating'
@@ -249,7 +250,13 @@ export function GameDisplay() {
 
                   <Summary>
                     <SubTitle>Resumo</SubTitle>
-                    <p>&nbsp;{game?.summary}</p>
+                    <p>
+                      &nbsp;{game?.summary}
+                      <MobileGameInformation>
+                        &nbsp;O jogo foi desenvolvido por {game?.developer} e
+                        apresenta o gênero(s) de {game?.genre}
+                      </MobileGameInformation>
+                    </p>
 
                     <TableContent>
                       <table>

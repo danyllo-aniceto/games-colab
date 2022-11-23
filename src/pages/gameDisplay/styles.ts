@@ -152,6 +152,17 @@ export const TableContent = styled.div`
 export const ContentButtons = styled.div`
   button {
     padding: 10px;
+
+    @media (max-width: 542px) {
+      padding: 6px;
+    }
+  }
+
+  @media (max-width: 542px) {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    height: 2rem;
   }
 `
 export const ContentRaiting = styled.div``
@@ -162,6 +173,15 @@ export const SecondaryContent = styled.div`
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
+
+  @media (max-width: 765px) {
+    margin-inline: 200px;
+  }
+
+  @media (max-width: 542px) {
+    margin-bottom: 80px;
+    margin-inline: 360px;
+  }
 `
 export const EvaluationContent = styled.div`
   display: flex;
@@ -211,5 +231,13 @@ export const CommentContent = styled.div`
 
   @media (max-width: 990px) {
     margin-inline: 180px;
+  }
+`
+export const MobileGameInformation = styled.div`
+  display: none;
+
+  @media (max-width: 800px) {
+    display: flex;
+    margin-top: 5px;
   }
 `
