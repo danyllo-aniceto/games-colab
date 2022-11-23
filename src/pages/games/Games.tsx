@@ -106,52 +106,52 @@ export function Games() {
   /*************************************************************************/
   async function handleCreateNewGame() {
     console.log(game)
-    if (game.file) {
-      try {
-        await gameService.createUpload(game)
-        setOpenModalNewGame(false)
-        displayNotificationMessage(
-          'Jogo criado com sucesso!',
-          ToastType.SUCCESS
-        )
-        getGames()
-      } catch (error) {
-        const { response } = error as AxiosError
-        displayNotificationMessage(
-          `Falha ao criar jogo - ${response?.data?.message}`,
-          ToastType.ERROR
-        )
-      }
-    } else {
-      try {
-        await gameService.create(game)
-        setOpenModalNewGame(false)
-        displayNotificationMessage(
-          'Jogo criado com sucesso!',
-          ToastType.SUCCESS
-        )
-        getGames()
-      } catch (error) {
-        const { response } = error as AxiosError
-        displayNotificationMessage(
-          `Falha ao criar jogo - ${response?.data?.message}`,
-          ToastType.ERROR
-        )
-      }
-    }
+    // if (game.file) {
+    //   try {
+    //     await gameService.createUpload(game)
+    //     setOpenModalNewGame(false)
+    //     displayNotificationMessage(
+    //       'Jogo criado com sucesso!',
+    //       ToastType.SUCCESS
+    //     )
+    //     getGames()
+    //   } catch (error) {
+    //     const { response } = error as AxiosError
+    //     displayNotificationMessage(
+    //       `Falha ao criar jogo - ${response?.data?.message}`,
+    //       ToastType.ERROR
+    //     )
+    //   }
+    // } else {
+    //   try {
+    //     await gameService.create(game)
+    //     setOpenModalNewGame(false)
+    //     displayNotificationMessage(
+    //       'Jogo criado com sucesso!',
+    //       ToastType.SUCCESS
+    //     )
+    //     getGames()
+    //   } catch (error) {
+    //     const { response } = error as AxiosError
+    //     displayNotificationMessage(
+    //       `Falha ao criar jogo - ${response?.data?.message}`,
+    //       ToastType.ERROR
+    //     )
+    //   }
+    // }
 
-    setGame({
-      id: null,
-      name: '',
-      developer: '',
-      summary: '',
-      idPlatform: [],
-      genre: '',
-      image: '',
-      rating: 0,
-      radio_image: 'link',
-      file: ''
-    })
+    // setGame({
+    //   id: null,
+    //   name: '',
+    //   developer: '',
+    //   summary: '',
+    //   idPlatform: [],
+    //   genre: '',
+    //   image: '',
+    //   rating: 0,
+    //   radio_image: 'link',
+    //   file: ''
+    // })
   }
 
   const theme = useTheme()

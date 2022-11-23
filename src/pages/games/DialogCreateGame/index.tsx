@@ -1,10 +1,11 @@
 import { DialogContent, DialogActions, Button } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { InputField } from '../../../components/InputField'
 import { IGameDTO } from '../../../dtos/IGameDTO'
 import { ContentRadio, StyledDialog, Image, Title, Label } from './styles'
 import sonicImg from './../../../assets/sonic-videogame.png'
 import { Dialog } from '../../../components/StyledDialog'
+import { Select } from '../../../components/Select'
 
 // teste
 
@@ -53,13 +54,14 @@ export function DialogCreateGame({
             label="Gênero"
             name={'genre'}
           />
-          {/** Problema de tipagem: Input não pode receber array trocar por um selector */}
-          {/* <InputField
-          label="Plataforma"
-          name="idPlatform"
-          onChange={onChange}
-          value={game.idPlatform}
-        /> */}
+          <Select
+            label="Plataforma"
+            array={game?.PlatformGame?.map(item => item.Platform)}
+            name="idPlatform"
+            onChange={onChange}
+            value={''}
+            setId
+          />
 
           <ContentRadio>
             <Label>
