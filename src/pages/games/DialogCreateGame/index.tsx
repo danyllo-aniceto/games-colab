@@ -59,7 +59,8 @@ export function DialogCreateGame({
             array={game?.PlatformGame?.map(item => item.Platform)}
             name="idPlatform"
             onChange={onChange}
-            value={''}
+            value={game.idPlatform}
+            isMultiple
             setId
           />
 

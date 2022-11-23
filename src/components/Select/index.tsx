@@ -11,7 +11,7 @@ import { useState } from 'react'
 
 interface SelectProps {
   name: string
-  value: string | number
+  value: string | number | string[] | number[]
   array: any[]
   label: React.ReactNode
   required?: boolean
@@ -39,9 +39,7 @@ export function Select({
   const [personName, setPersonName] = useState<string[]>([])
 
   const handleChange = (event: SelectChangeEvent<typeof personName>) => {
-    const {
-      target: { value }
-    } = event
+    const value = event.target.value
     setPersonName(
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value
@@ -70,13 +68,16 @@ export function Select({
         </MenuItem>
         {array?.map(item =>
           isMultiple ? (
-            <MenuItem key={name} value={name}>
-              <Checkbox checked={personName.indexOf(name) > -1} />
-              <ListItemText primary={name} />
+            <MenuItem
+              key={item.id ?? item.name}
+              value={setId ? item.id : item.name}
+            >
+              <Checkbox checked={personName.indexOf(item.name) > -1} />
+              <ListItemText primary={item.name} />
             </MenuItem>
           ) : (
             <MenuItem
-              key={item.id ? item.id : item.name}
+              key={item.id ?? item.name}
               value={setId ? item.id : item.name}
               id={setId ? item.id : item.name}
             >
