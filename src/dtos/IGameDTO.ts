@@ -19,6 +19,7 @@ export interface IGameDTO {
   developer: string
   summary: string
   idPlatform: Array<number>
+  idPlatformForm?: Array<string>
   genre: string
   rating: number
   image: string

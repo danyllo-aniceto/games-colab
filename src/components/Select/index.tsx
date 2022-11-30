@@ -7,11 +7,11 @@ import {
   Select as MuiSelect,
   SelectChangeEvent
 } from '@mui/material'
-import { useState } from 'react'
 
 interface SelectProps {
   name: string
-  value: string | number | string[] | number[]
+  value: string | number | string[]
+  stateMultiple: string[]
   array: any[]
   label: React.ReactNode
   required?: boolean
@@ -34,18 +34,9 @@ export function Select({
   setId,
   value,
   onChange,
+  stateMultiple,
   isMultiple
 }: SelectProps) {
-  const [personName, setPersonName] = useState<string[]>([])
-
-  const handleChange = (event: SelectChangeEvent<typeof personName>) => {
-    const value = event.target.value
-    setPersonName(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value
-    )
-  }
-
   return (
     <FormControl
       fullWidth
@@ -56,9 +47,9 @@ export function Select({
       <InputLabel>{label}</InputLabel>
       <MuiSelect
         name={name}
-        value={value}
+        value={isMultiple ? value || [] : value || ''}
         label={label}
-        onChange={isMultiple ? handleChange : onChange}
+        onChange={onChange}
         onBlur={onBlur}
         onClose={onClose}
         multiple={isMultiple}
@@ -66,25 +57,26 @@ export function Select({
         <MenuItem value="">
           <em>Selecione</em>
         </MenuItem>
-        {array?.map(item =>
-          isMultiple ? (
-            <MenuItem
-              key={item.id ?? item.name}
-              value={setId ? item.id : item.name}
-            >
-              <Checkbox checked={personName.indexOf(item.name) > -1} />
-              <ListItemText primary={item.name} />
-            </MenuItem>
-          ) : (
-            <MenuItem
-              key={item.id ?? item.name}
-              value={setId ? item.id : item.name}
-              id={setId ? item.id : item.name}
-            >
-              {item.name}
-            </MenuItem>
-          )
-        )}
+        {array.length &&
+          array?.map(item =>
+            isMultiple ? (
+              <MenuItem
+                key={item.id ?? item.name}
+                value={setId ? item.id.toString() : item.name}
+              >
+                <Checkbox checked={stateMultiple?.indexOf(item.name) > -1} />
+                <ListItemText primary={item.name} />
+              </MenuItem>
+            ) : (
+              <MenuItem
+                key={item.id ?? item.name}
+                value={setId ? item.id : item.name}
+                id={setId ? item.id : item.name}
+              >
+                {item.name}
+              </MenuItem>
+            )
+          )}
       </MuiSelect>
     </FormControl>
   )

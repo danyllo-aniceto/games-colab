@@ -21,7 +21,8 @@ import { useNavigate } from 'react-router-dom'
 import { Button } from '../../components/Button'
 import { ContentDefault } from '../../styles/global'
 import { EmptyItem } from '../../components/EmptyItem'
-import { Theme, useMediaQuery, useTheme } from '@mui/material'
+import { SelectChangeEvent, useMediaQuery, useTheme } from '@mui/material'
+import { usePlatform } from '../../hooks/network/usePlatform'
 
 export function Games() {
   const settings: SliderProps = {
@@ -45,6 +46,7 @@ export function Games() {
     developer: '',
     summary: '',
     idPlatform: [],
+    idPlatformForm: [],
     genre: '',
     image: '',
     rating: 0,
@@ -82,6 +84,17 @@ export function Games() {
     setGame(values => ({ ...values, [name]: value }))
   }
 
+  const handleChangeSelect = (
+    event: SelectChangeEvent<typeof game.idPlatformForm>
+  ) => {
+    const value = event.target.value
+    const name = event.target.name
+    setGame(values => ({
+      ...values,
+      [name]: typeof value === 'string' ? value.split(',') : value
+    }))
+  }
+
   /*************************************************************************/
   async function getGames() {
     setLoading(true)
@@ -99,8 +112,16 @@ export function Games() {
     }
   }
 
+  const {
+    getPlatforms,
+    allPlatformsState,
+    loadingPlatformsState,
+    setLoadingPlatformsState
+  } = usePlatform()
+
   useEffect(() => {
     getGames()
+    getPlatforms()
   }, [])
 
   /*************************************************************************/
@@ -167,10 +188,13 @@ export function Games() {
           message={messageAlert.message}
         />
         <Container>
-          {loading ? (
+          {loading || loadingPlatformsState ? (
             <LoadingComponent
-              open={loading}
-              onClose={() => setLoading(false)}
+              open={loading || loadingPlatformsState}
+              onClose={() => {
+                setLoading(false)
+                setLoadingPlatformsState(false)
+              }}
             />
           ) : (
             <>
@@ -308,8 +332,10 @@ export function Games() {
             open={openModalNewGame}
             onClose={() => setOpenModalNewGame(false)}
             onChange={handleChange}
+            onChangeSelect={handleChangeSelect}
             onSubmitCreate={handleCreateNewGame}
             game={game}
+            arrayPlatforms={allPlatformsState}
           />
         </Container>
       </>

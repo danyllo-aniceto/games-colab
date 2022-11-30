@@ -1,11 +1,16 @@
-import { DialogContent, DialogActions, Button } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import {
+  Button,
+  DialogActions,
+  DialogContent,
+  SelectChangeEvent
+} from '@mui/material'
+import React, { useState } from 'react'
 import { InputField } from '../../../components/InputField'
-import { IGameDTO } from '../../../dtos/IGameDTO'
-import { ContentRadio, StyledDialog, Image, Title, Label } from './styles'
-import sonicImg from './../../../assets/sonic-videogame.png'
-import { Dialog } from '../../../components/StyledDialog'
 import { Select } from '../../../components/Select'
+import { Dialog } from '../../../components/StyledDialog'
+import { IGameDTO } from '../../../dtos/IGameDTO'
+import { IPlatformDTO } from '../../../dtos/IPlatformDTO'
+import { ContentRadio, Label } from './styles'
 
 // teste
 
@@ -13,18 +18,23 @@ interface IDialogCreateGame {
   game: IGameDTO
   open: boolean
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  onChangeSelect: (event: SelectChangeEvent<(string | number)[]>) => void
   onClose: () => void
   onSubmitCreate: () => Promise<void>
+  arrayPlatforms: IPlatformDTO[]
 }
 
 export function DialogCreateGame({
   game,
   open,
   onChange,
+  onChangeSelect,
   onClose,
-  onSubmitCreate
+  onSubmitCreate,
+  arrayPlatforms
 }: IDialogCreateGame) {
   const [showInputUpload, setShowInputUpload] = useState(false)
+  console.log(arrayPlatforms)
 
   return (
     <Dialog onClose={onClose} open={open} title="Cadastrar Jogo">
@@ -56,10 +66,11 @@ export function DialogCreateGame({
           />
           <Select
             label="Plataforma"
-            array={game?.PlatformGame?.map(item => item.Platform)}
+            array={arrayPlatforms}
             name="idPlatform"
-            onChange={onChange}
-            value={game.idPlatform}
+            onChange={onChangeSelect}
+            value={game.idPlatformForm}
+            stateMultiple={game.idPlatformForm}
             isMultiple
             setId
           />
