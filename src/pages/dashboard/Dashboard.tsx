@@ -58,7 +58,6 @@ export function Dashboard() {
     setLoading(true)
     try {
       const response = await gameService.getTopThreeGames()
-      console.log(response)
       setListGames(response)
     } catch (error) {
       const { response } = error as AxiosError
