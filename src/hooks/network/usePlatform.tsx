@@ -39,11 +39,8 @@ export function usePlatform() {
     image: ''
   }
 
-  const [platformState, setPlatformState] = useState<IPlatformDTO>({
-    id: null,
-    name: '',
-    image: ''
-  })
+  const [platformState, setPlatformState] =
+    useState<IPlatformDTO>(initStateForm)
 
   async function getPlatforms(): Promise<void> {
     setLoadingPlatformsState(true)
@@ -138,6 +135,7 @@ export function usePlatform() {
     showModalEdit,
     showModalDelete,
     dataActionState,
+    setPlatformState,
     handleOpenModalCreate,
     handleOpenModalEdit,
     handleOpenModalDelete,
