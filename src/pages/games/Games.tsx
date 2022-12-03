@@ -1,116 +1,52 @@
-import {
-  Container,
-  Info,
-  Item,
-  ContentButton,
-  Message,
-  LogoPlatforms
-} from './styles'
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Container, ContentButton } from './styles'
 
-import { useEffect, useState } from 'react'
-import { BaseLayout } from '../../layout/BaseLayout'
-import GameService from '../../services/GameService'
-import { Slider, SliderProps, Slide } from '../../components/Slider'
-import { LoadingComponent } from '../../components/Loading'
-import { IGameDTO } from '../../dtos/IGameDTO'
-import { DialogCreateGame } from './DialogCreateGame'
-import { IMessageAlert, ToastType } from '../../components/Toast/enum'
-import { AxiosError } from 'axios'
-import { Toast } from '../../components/Toast'
-import { useNavigate } from 'react-router-dom'
-import { Button } from '../../components/Button'
-import { ContentDefault } from '../../styles/global'
-import { EmptyItem } from '../../components/EmptyItem'
 import { SelectChangeEvent, useMediaQuery, useTheme } from '@mui/material'
+import { useEffect } from 'react'
+import { Button } from '../../components/Button'
+import { EmptyState } from '../../components/EmptyState'
+import { LoadingComponent } from '../../components/Loading'
+import { useGame } from '../../hooks/network/useGame'
 import { usePlatform } from '../../hooks/network/usePlatform'
+import { BaseLayout } from '../../layout/BaseLayout'
+import { DialogCreateGame } from './components/DialogCreateGame'
+import { ShowDesktopScreenGame } from './components/ShowDesktopScreenGame'
+import { ShowMobileScrenGame } from './components/ShowMobileScrenGame'
 
 export function Games() {
-  const settings: SliderProps = {
-    spaceBetween: 50,
-    slidesPerView: 3,
-    loop: false,
-    navigation: true,
-    draggable: true,
-    pagination: {
-      clickable: true
-    }
-  }
-
-  // constante da instância da service
-  const gameService = new GameService()
-
-  // estado do objeto game
-  const [game, setGame] = useState<IGameDTO>({
-    id: null,
-    name: '',
-    developer: '',
-    summary: '',
-    idPlatform: [],
-    idPlatformForm: [],
-    genre: '',
-    image: '',
-    rating: 0,
-    radio_image: 'link',
-    file: ''
-  })
-
-  // estado do loading
-  const [loading, setLoading] = useState(false)
-
-  // estado de listagem de jogos
-  const [listGames, setListGames] = useState<IGameDTO[]>([])
-
-  // estados do modal de criar um game
-  const [openModalNewGame, setOpenModalNewGame] = useState(false)
-
-  // estados do ToastAlert
-  const [openAlert, setOpenAlert] = useState(false)
-  const [messageAlert, setMessageAlert] = useState<IMessageAlert>({
-    type: ToastType.SUCCESS,
-    message: ''
-  })
-
-  const navigate = useNavigate()
-
-  const top100Films = []
-  function displayNotificationMessage(message: string, type: ToastType) {
-    setOpenAlert(true)
-    setMessageAlert({ message, type })
-  }
-
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name } = event.target
     const { value } = event.target
-    setGame(values => ({ ...values, [name]: value }))
+    setGameState(values => ({ ...values, [name]: value }))
   }
 
   const handleChangeSelect = (
-    event: SelectChangeEvent<typeof game.idPlatformForm>
+    event: SelectChangeEvent<typeof gameState.idPlatformForm>
   ) => {
     const value = event.target.value
     const name = event.target.name
-    setGame(values => ({
+    setGameState(values => ({
       ...values,
       [name]: typeof value === 'string' ? value.split(',') : value
     }))
   }
 
-  /*************************************************************************/
-  async function getGames() {
-    setLoading(true)
-    try {
-      const response = await gameService.loadAll()
-      setListGames(response)
-    } catch (error) {
-      const { response } = error as AxiosError
-      displayNotificationMessage(
-        `Falha ao buscar jogos - ${response?.data?.message}`,
-        ToastType.ERROR
-      )
-    } finally {
-      setLoading(false)
-    }
-  }
+  const theme = useTheme()
+  const mobile = useMediaQuery(theme.breakpoints.down('sm'))
+
+  const {
+    allGamesState,
+    gameState,
+    setGameState,
+    initStateForm,
+    loadingGamesState,
+    setLoadingGamesState,
+    showModalCreate,
+    handleOpenModalCreate,
+    handleCloseModalCreate,
+    getGames,
+    handleSubmitCreateGame
+  } = useGame()
 
   const {
     getPlatforms,
@@ -124,221 +60,61 @@ export function Games() {
     getPlatforms()
   }, [])
 
-  /*************************************************************************/
-  async function handleCreateNewGame() {
-    console.log(game)
-    // if (game.file) {
-    //   try {
-    //     await gameService.createUpload(game)
-    //     setOpenModalNewGame(false)
-    //     displayNotificationMessage(
-    //       'Jogo criado com sucesso!',
-    //       ToastType.SUCCESS
-    //     )
-    //     getGames()
-    //   } catch (error) {
-    //     const { response } = error as AxiosError
-    //     displayNotificationMessage(
-    //       `Falha ao criar jogo - ${response?.data?.message}`,
-    //       ToastType.ERROR
-    //     )
-    //   }
-    // } else {
-    //   try {
-    //     await gameService.create(game)
-    //     setOpenModalNewGame(false)
-    //     displayNotificationMessage(
-    //       'Jogo criado com sucesso!',
-    //       ToastType.SUCCESS
-    //     )
-    //     getGames()
-    //   } catch (error) {
-    //     const { response } = error as AxiosError
-    //     displayNotificationMessage(
-    //       `Falha ao criar jogo - ${response?.data?.message}`,
-    //       ToastType.ERROR
-    //     )
-    //   }
-    // }
-
-    // setGame({
-    //   id: null,
-    //   name: '',
-    //   developer: '',
-    //   summary: '',
-    //   idPlatform: [],
-    //   genre: '',
-    //   image: '',
-    //   rating: 0,
-    //   radio_image: 'link',
-    //   file: ''
-    // })
-  }
-
-  const theme = useTheme()
-  const mobile = useMediaQuery(theme.breakpoints.down('sm'))
-
   return (
     <BaseLayout>
-      <>
-        <Toast
-          open={openAlert}
-          onClose={() => setOpenAlert(false)}
-          type={messageAlert.type}
-          message={messageAlert.message}
-        />
-        <Container>
-          {loading || loadingPlatformsState ? (
-            <LoadingComponent
-              open={loading || loadingPlatformsState}
-              onClose={() => {
-                setLoading(false)
-                setLoadingPlatformsState(false)
-              }}
-            />
-          ) : (
-            <>
-              {listGames.length === 0 ? (
-                <>
-                  <ContentDefault>
-                    <Message>
-                      <EmptyItem message="Nenhum jogo cadastrado 😥" />
-                    </Message>
-
-                    <Button
-                      onClick={() => {
-                        setGame({
-                          id: null,
-                          name: '',
-                          developer: '',
-                          summary: '',
-                          idPlatform: [],
-                          genre: '',
-                          image: '',
-                          rating: 0,
-                          file: ''
-                        })
-                        setOpenModalNewGame(true)
-                      }}
-                    >
-                      Novo Jogo
-                    </Button>
-                  </ContentDefault>
-                </>
-              ) : (
-                <>
-                  <ContentButton>
-                    <Button
-                      onClick={() => {
-                        setGame({
-                          id: null,
-                          name: '',
-                          developer: '',
-                          summary: '',
-                          idPlatform: [],
-                          genre: '',
-                          image: '',
-                          rating: 0,
-                          file: ''
-                        })
-                        setOpenModalNewGame(true)
-                      }}
-                    >
-                      Novo Jogo
-                    </Button>
-                  </ContentButton>
-                  {mobile ? (
-                    listGames.map(game => (
-                      <Slide
-                        onClick={() => navigate(`/gameDisplay/${game.id}`)}
-                        key={game.id}
-                      >
-                        <Item key={game.id}>
-                          <div className="image">
-                            <img src={game.image} alt={game.name} />
-                          </div>
-                          <Info>
-                            <span className="name-game">{game.name}</span>
-                            <span className="developer-game">
-                              {game.developer}
-                            </span>
-                            <LogoPlatforms>
-                              {game.PlatformGame.map(item => (
-                                <img
-                                  key={item.Platform.id}
-                                  src={item.Platform.image}
-                                  alt={item.Platform.name}
-                                />
-                              ))}
-                            </LogoPlatforms>
-                            {/* <span className="console-game">
-                              {game.PlatformGame.map(item => (
-                                <img
-                                  key={item.id}
-                                  src={item.image}
-                                  alt={item.name}
-                                />
-                              ))}
-                            </span> */}
-                          </Info>
-                        </Item>
-                      </Slide>
-                    ))
-                  ) : (
-                    <Slider settings={settings}>
-                      {listGames.map(game => (
-                        <Slide
-                          onClick={() => navigate(`/gameDisplay/${game.id}`)}
-                          key={game.id}
-                        >
-                          <Item key={game.id}>
-                            <div className="image">
-                              <img src={game.image} alt={game.name} />
-                            </div>
-                            <Info>
-                              <span className="name-game">{game.name}</span>
-                              <span className="developer-game">
-                                {game.developer}
-                              </span>
-                              <LogoPlatforms>
-                                {game.PlatformGame.map(item => (
-                                  <img
-                                    key={item.Platform.id}
-                                    src={item.Platform.image}
-                                    alt={item.Platform.name}
-                                  />
-                                ))}
-                              </LogoPlatforms>
-                              {/* <span className="console-game">
-                              {game.PlatformGame.map(item => (
-                                <img
-                                  key={item.id}
-                                  src={item.image}
-                                  alt={item.name}
-                                />
-                              ))}
-                            </span> */}
-                            </Info>
-                          </Item>
-                        </Slide>
-                      ))}
-                    </Slider>
-                  )}
-                </>
-              )}
-            </>
-          )}
-          <DialogCreateGame
-            open={openModalNewGame}
-            onClose={() => setOpenModalNewGame(false)}
-            onChange={handleChange}
-            onChangeSelect={handleChangeSelect}
-            onSubmitCreate={handleCreateNewGame}
-            game={game}
-            arrayPlatforms={allPlatformsState}
+      <Container>
+        {loadingGamesState || loadingPlatformsState ? (
+          <LoadingComponent
+            open={loadingGamesState || loadingPlatformsState}
+            onClose={() => {
+              setLoadingGamesState(false)
+              setLoadingPlatformsState(false)
+            }}
           />
-        </Container>
-      </>
+        ) : (
+          <>
+            {allGamesState.length === 0 ? (
+              <EmptyState
+                message="Nenhum jogo cadastrado 😥"
+                textButton="Novo Jogo"
+                onClickButton={() => {
+                  setGameState(initStateForm)
+                  handleOpenModalCreate()
+                }}
+              />
+            ) : (
+              <>
+                <ContentButton>
+                  <Button
+                    onClick={() => {
+                      setGameState(initStateForm)
+                      handleOpenModalCreate()
+                    }}
+                  >
+                    Novo Jogo
+                  </Button>
+                </ContentButton>
+
+                {mobile ? (
+                  <ShowMobileScrenGame allGamesState={allGamesState} />
+                ) : (
+                  <ShowDesktopScreenGame allGamesState={allGamesState} />
+                )}
+              </>
+            )}
+          </>
+        )}
+
+        <DialogCreateGame
+          open={showModalCreate}
+          onClose={handleCloseModalCreate}
+          onChange={handleChange}
+          onChangeSelect={handleChangeSelect}
+          onSubmitCreate={handleSubmitCreateGame}
+          game={gameState}
+          arrayPlatforms={allPlatformsState}
+        />
+      </Container>
     </BaseLayout>
   )
 }

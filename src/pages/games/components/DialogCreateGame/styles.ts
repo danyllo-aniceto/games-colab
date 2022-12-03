@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import { Dialog, DialogTitle } from '@mui/material'
-import { InputField } from '../../../components/InputField'
 
 export const ContentRadio = styled.div`
   margin: 30px 0 20px 0;

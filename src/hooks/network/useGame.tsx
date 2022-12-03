@@ -51,19 +51,7 @@ export function useGame() {
     radio_image: 'link'
   }
 
-  const [gameState, setGameState] = useState<IGameDTO>({
-    id: null,
-    name: '',
-    developer: '',
-    file: '',
-    genre: '',
-    image: '',
-    summary: '',
-    rating: 0,
-    idPlatform: [],
-    idPlatformForm: [],
-    radio_image: 'link'
-  })
+  const [gameState, setGameState] = useState<IGameDTO>(initStateForm)
 
   async function getGames(): Promise<void> {
     setLoadingGamesState(true)
@@ -115,25 +103,35 @@ export function useGame() {
   }
 
   async function handleSubmitCreateGame() {
-    setLoadingFormState(true)
-
-    try {
-      await gameService.create(gameState)
-      handleCloseModalCreate()
-      addToast('Game criada com sucesso!', ToastType.SUCCESS)
-      getGames()
-    } catch (error) {
-      const { response } = error as AxiosError
-      addToast(
-        `Falha ao criar game - ${response?.data?.message}`,
-        ToastType.ERROR
-      )
-    } finally {
-      setGameState(initStateForm)
-    }
+    console.log(gameState)
+    // setLoadingFormState(true)
+    // if (gameState.file) {
+    //   try {
+    //     await gameService.createUpload(gameState)
+    //     handleCloseModalCreate()
+    //     addToast('Jogo criado com sucesso!', ToastType.SUCCESS)
+    //     getGames()
+    //   } catch (error) {
+    //     const { response } = error as AxiosError
+    //     addToast(`Falha ao criar jogo - ${response?.data?.message}`, ToastType.ERROR)
+    //   }
+    // } else {
+    //   try {
+    //     await gameService.create(gameState)
+    //     handleCloseModalCreate()
+    //     addToast('Jogo criado com sucesso!', ToastType.SUCCESS)
+    //     getGames()
+    //   } catch (error) {
+    //     const { response } = error as AxiosError
+    //     addToast(`Falha ao criar jogo - ${response?.data?.message}`, ToastType.ERROR)
+    //   }
+    // }
+    // setLoadingFormState(false)
+    // setGameState(initStateForm)
   }
 
   async function handleSubmitEditGame() {
+    setLoadingFormState(true)
     try {
       await gameService.updateById(gameState)
       handleCloseModalEdit()
@@ -145,10 +143,13 @@ export function useGame() {
         `Falha ao editar game - ${response?.data?.message}`,
         ToastType.ERROR
       )
+    } finally {
+      setLoadingFormState(false)
     }
   }
 
   async function handleSubmitDeleteGame() {
+    setLoadingFormState(true)
     try {
       await gameService.deleteById(gameState.id)
       handleCloseModalDelete()
@@ -160,6 +161,8 @@ export function useGame() {
         `Falha ao deletar game - ${response?.data?.message}`,
         ToastType.ERROR
       )
+    } finally {
+      setLoadingFormState(false)
     }
   }
 
@@ -167,6 +170,7 @@ export function useGame() {
     allGamesState,
     listTopThreeGames,
     gameState,
+    setGameState,
     initStateForm,
     loadingGamesState,
     setLoadingGamesState,
