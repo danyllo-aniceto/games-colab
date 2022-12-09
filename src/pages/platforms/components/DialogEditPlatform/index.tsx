@@ -1,8 +1,8 @@
 import { DialogContent, DialogActions, Button } from '@mui/material'
 import React from 'react'
-import { InputField } from '../../../components/InputField'
-import { IPlatformDTO } from '../../../dtos/IPlatformDTO'
-import { Dialog } from '../../../components/StyledDialog'
+import { InputField } from '../../../../components/InputField'
+import { IPlatformDTO } from '../../../../dtos/IPlatformDTO'
+import { Dialog } from '../../../../components/StyledDialog'
 
 interface IDialogEditPlatform {
   platform: IPlatformDTO

@@ -1,5 +1,5 @@
 import { DialogContent, DialogActions, Button } from '@mui/material'
-import { Dialog } from '../../../components/StyledDialog'
+import { Dialog } from '../../../../components/StyledDialog'
 interface IDialogDeletePlatformProps {
   open: boolean
   onClose: () => void

@@ -5,9 +5,9 @@ import {
   Button
 } from '@mui/material'
 import React from 'react'
-import { InputField } from '../../../components/InputField'
-import { IGameDTO } from '../../../dtos/IGameDTO'
-import { Dialog } from './../../../components/StyledDialog'
+import { InputField } from '../../../../components/InputField'
+import { IGameDTO } from '../../../../dtos/IGameDTO'
+import { Dialog } from '../../../../components/StyledDialog'
 
 interface IDialogEditGame {
   game: IGameDTO

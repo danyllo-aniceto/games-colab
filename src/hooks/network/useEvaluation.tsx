@@ -35,7 +35,7 @@ export function useEvaluation() {
   const handleCloseModalEdit = () => setShowModalEdit(false)
   const handleCloseModalDelete = () => setShowModalDelete(false)
 
-  const initStateForm = {
+  const initStateFormEvaluation = {
     id: null,
     comment: '',
     idGame: null,
@@ -43,8 +43,9 @@ export function useEvaluation() {
     rating: 0
   }
 
-  const [evaluationState, setEvaluationState] =
-    useState<IEvaluationDTO>(initStateForm)
+  const [evaluationState, setEvaluationState] = useState<IEvaluationDTO>(
+    initStateFormEvaluation
+  )
 
   async function getEvaluations(): Promise<void> {
     setLoadingEvaluationsState(true)
@@ -94,7 +95,7 @@ export function useEvaluation() {
         ToastType.ERROR
       )
     } finally {
-      setEvaluationState(initStateForm)
+      setEvaluationState(initStateFormEvaluation)
     }
   }
 
@@ -131,7 +132,8 @@ export function useEvaluation() {
   return {
     allEvaluationsState,
     evaluationState,
-    initStateForm,
+    setEvaluationState,
+    initStateFormEvaluation,
     loadingEvaluationsState,
     setLoadingEvaluationsState,
     loadingFormState,
