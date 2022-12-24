@@ -86,7 +86,7 @@ export function useGame() {
     }
   }
 
-  async function getTopThreeGames() {
+  async function getTopThreeGames(): Promise<void> {
     setLoadingGamesState(true)
     try {
       const response = await gameService.getTopThreeGames()
@@ -191,6 +191,7 @@ export function useGame() {
     getTopThreeGames,
     handleSubmitCreateGame,
     handleSubmitEditGame,
-    handleSubmitDeleteGame
+    handleSubmitDeleteGame,
+    setAllGamesState
   }
 }
