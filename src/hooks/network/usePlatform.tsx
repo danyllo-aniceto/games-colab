@@ -26,7 +26,7 @@ export function usePlatform() {
   }
   const handleOpenModalDelete = (data: IPlatformDTO) => {
     setDataActionState(data)
-    setShowModalEdit(true)
+    setShowModalDelete(true)
   }
 
   const handleCloseModalCreate = () => setShowModalCreate(false)

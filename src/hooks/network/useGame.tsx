@@ -30,7 +30,7 @@ export function useGame() {
   }
   const handleOpenModalDelete = (data: IGameDTO) => {
     setDataActionState(data)
-    setShowModalEdit(true)
+    setShowModalDelete(true)
   }
 
   const handleCloseModalCreate = () => setShowModalCreate(false)

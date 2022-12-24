@@ -82,18 +82,23 @@ export function useEvaluation() {
 
   async function handleSubmitCreateEvaluation() {
     setLoadingFormState(true)
-
     try {
       await evaluationService.create(evaluationState)
+      console.log('chegou aquyi 1')
       handleCloseModalCreate()
+      console.log('chegou aq 2')
       addToast('Avaliação criada com sucesso!', ToastType.SUCCESS)
+      console.log('chegou aq 3')
       getEvaluations()
+      console.log('chegou aq 4')
     } catch (error) {
       const { response } = error as AxiosError
+      console.log('chegou aq 5')
       addToast(
         `Falha ao criar avaliação - ${response?.data?.message}`,
         ToastType.ERROR
       )
+      console.log('chegou aq 6')
     } finally {
       setEvaluationState(initStateFormEvaluation)
     }
