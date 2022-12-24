@@ -1,201 +1,69 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect } from 'react'
+import { useUser } from '../../hooks/network/useUser'
+
 import { BaseLayout } from '../../layout/BaseLayout'
-import UserService from '../../services/UserService'
-import EditIcon from '@mui/icons-material/Edit'
-import DeleteIcon from '@mui/icons-material/Delete'
-import { Container, ContentAction, Message, TableContainer } from './styles'
-import { Toast } from '../../components/Toast'
-import { AxiosError } from 'axios'
-import { ToastType } from '../../components/Toast/enum'
-import { IUserDTO } from '../../dtos/IUserDTO'
-import { DialogEditUser } from './DialogEditUser'
-import { DialogDeleteUser } from './DialogDeleteUser'
+import { DialogEditUser } from './components/DialogEditUser'
+import { DialogDeleteUser } from './components/DialogDeleteUser'
 import { LoadingComponent } from '../../components/Loading'
 import { EmptyItem } from '../../components/EmptyItem'
 import { Button } from '../../components/Button'
 import { ContentButton } from '../games/styles'
-import { DialogCreateUser } from './DialogCreateUser'
+import { DialogCreateUser } from './components/DialogCreateUser'
 import { Pagination } from '../../components/Pagination'
-import { useSearchParams } from 'react-router-dom'
-import { variables } from '../../constants/variables'
 
-interface IMessageAlert {
-  message: string
-  type: ToastType
-}
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
 
-interface LoadUser {
-  id: number
-  name: string
-  email: string
-  password: string
-  created_at: Date
-  updated_at: Date
-}
+import { Container, ContentAction, Message, TableContainer } from './styles'
 
 export function Users() {
-  // constante da instância da service
-  const userService = new UserService()
-
-  // estado da listagem de usuários
-  const [listUsers, setListUsers] = useState<LoadUser[]>()
-
-  // etados do modal de editar, deletar e criar
-  const [openModalEdit, setOpenModalEdit] = useState(false)
-  const [openModalDelete, setOpenModalDelete] = useState(false)
-  const [openModalNewUser, setOpenModalNewUser] = useState(false)
-
-  // estado do objeto usuário
-  const [user, setUser] = useState<IUserDTO>({
-    id: null,
-    name: '',
-    email: '',
-    password: ''
-  })
-
-  // estado do loading
-  const [loading, setLoading] = useState(false)
-
-  // estados do ToastAlert
-  const [openAlert, setOpenAlert] = useState(false)
-  const [messageAlert, setMessageAlert] = useState<IMessageAlert>({
-    type: ToastType.SUCCESS,
-    message: ''
-  })
-
-  function displayNotificationMessage(message: string, type: ToastType) {
-    setOpenAlert(true)
-    setMessageAlert({ message, type })
-  }
+  const {
+    loadingUsersState,
+    setLoadingUsersState,
+    allUsersState,
+    initStateForm,
+    userState,
+    setUserState,
+    handleOpenModalCreate,
+    handleOpenModalEdit,
+    handleOpenModalDelete,
+    showModalCreate,
+    showModalDelete,
+    showModalEdit,
+    handleCloseModalCreate,
+    handleCloseModalDelete,
+    handleCloseModalEdit,
+    handleSubmitCreateUser,
+    handleSubmitDeleteUser,
+    handleSubmitEditUser,
+    totalPage,
+    page,
+    handleChangePage,
+    getUsersPaged
+  } = useUser()
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name } = event.target
     const { value } = event.target
-    setUser(values => ({ ...values, [name]: value }))
-  }
-
-  /*****************************************/
-  async function deleteUser() {
-    try {
-      await userService.deleteById(user.id)
-      setOpenModalDelete(false)
-      displayNotificationMessage(
-        'Usuário deletado com sucesso!',
-        ToastType.SUCCESS
-      )
-      getUsersPaged()
-    } catch (error) {
-      const { response } = error as AxiosError
-      displayNotificationMessage(
-        `Falha ao deletar usuário - ${response?.data?.message}`,
-        ToastType.ERROR
-      )
-    }
-  }
-
-  /*****************************************/
-  async function editUser() {
-    try {
-      await userService.updateById(user)
-      setOpenModalEdit(false)
-      displayNotificationMessage(
-        'Usuário editado com sucesso!',
-        ToastType.SUCCESS
-      )
-      getUsersPaged()
-    } catch (error) {
-      const { response } = error as AxiosError
-      displayNotificationMessage(
-        `Falha ao editar usuário - ${response?.data?.message}`,
-        ToastType.ERROR
-      )
-    }
-  }
-  /*****************************************/
-
-  /*****************************************/
-  async function handleCreateNewUser() {
-    try {
-      await userService.create(user)
-      setOpenModalNewUser(false)
-      displayNotificationMessage(
-        'Usuário criado com sucesso!',
-        ToastType.SUCCESS
-      )
-      getUsersPaged()
-    } catch (error) {
-      const { response } = error as AxiosError
-      displayNotificationMessage(
-        `Falha ao criar usuário - ${response?.data?.message}`,
-        ToastType.ERROR
-      )
-    }
-
-    setUser({
-      id: null,
-      name: '',
-      email: '',
-      password: ''
-    })
-  }
-
-  const [totalPage, setTotalPage] = useState(1)
-  const [searchParams, setSearchParams] = useSearchParams()
-
-  function handleChangePage(page: number) {
-    console.log('caiu')
-    setSearchParams({ page: page.toString() }, { replace: true })
-  }
-
-  const page = useMemo(() => {
-    return searchParams.get('page') || '1'
-  }, [searchParams])
-
-  async function getUsersPaged(page?: string) {
-    setLoading(true)
-    try {
-      const response = await userService.loadAllPaged(
-        variables.LIMIT_TABLE_ROWS,
-        Number(page)
-      )
-      setListUsers(response.instances ?? [])
-      setTotalPage(parseInt(response.totalPages.toString()))
-    } catch (error) {
-      const { response } = error as AxiosError
-      displayNotificationMessage(
-        `Falha ao buscar usuários - ${response?.data?.message}`,
-        ToastType.ERROR
-      )
-    } finally {
-      setLoading(false)
-    }
+    setUserState(values => ({ ...values, [name]: value }))
   }
 
   useEffect(() => {
     getUsersPaged(page)
   }, [page])
 
-  /*****************************************/
-
   return (
     <BaseLayout>
       <>
-        <Toast
-          open={openAlert}
-          onClose={() => setOpenAlert(false)}
-          type={messageAlert.type}
-          message={messageAlert.message}
-        />
-
         <Container>
-          {loading ? (
+          {loadingUsersState ? (
             <LoadingComponent
-              open={loading}
-              onClose={() => setLoading(false)}
+              open={loadingUsersState}
+              onClose={() => setLoadingUsersState(false)}
             />
           ) : (
             <>
-              {listUsers?.length === 0 ? (
+              {allUsersState?.length === 0 ? (
                 <Message>
                   <EmptyItem message="Nenhum usuário encontrado 😢" />
                 </Message>
@@ -204,13 +72,8 @@ export function Users() {
                   <ContentButton>
                     <Button
                       onClick={() => {
-                        setUser({
-                          id: null,
-                          name: '',
-                          email: '',
-                          password: ''
-                        })
-                        setOpenModalNewUser(true)
+                        setUserState(initStateForm)
+                        handleOpenModalCreate()
                       }}
                     >
                       Novo Usuário
@@ -227,7 +90,7 @@ export function Users() {
                       </thead>
 
                       <tbody>
-                        {listUsers?.map(user => (
+                        {allUsersState?.map(user => (
                           <tr key={user.id}>
                             <td>{user.name}</td>
                             <td>{user.email}</td>
@@ -236,20 +99,20 @@ export function Users() {
                                 <EditIcon
                                   color="action"
                                   onClick={() => {
-                                    setUser({
+                                    setUserState({
                                       id: user.id,
                                       name: user.name,
                                       email: user.email,
                                       password: user.password
                                     })
-                                    setOpenModalEdit(true)
+                                    handleOpenModalEdit(userState)
                                   }}
                                 />
                                 <DeleteIcon
                                   color="warning"
                                   onClick={() => {
-                                    setUser({ id: user.id, ...user })
-                                    setOpenModalDelete(true)
+                                    setUserState({ id: user.id, ...user })
+                                    handleOpenModalDelete(userState)
                                   }}
                                 />
                               </ContentAction>
@@ -271,25 +134,25 @@ export function Users() {
         </Container>
 
         <DialogCreateUser
-          open={openModalNewUser}
-          onClose={() => setOpenModalNewUser(false)}
+          open={showModalCreate}
+          onClose={handleCloseModalCreate}
           onChange={handleChange}
-          onSubmitCreate={handleCreateNewUser}
-          user={user}
+          onSubmitCreate={handleSubmitCreateUser}
+          user={userState}
         />
 
         <DialogEditUser
-          open={openModalEdit}
-          onClose={() => setOpenModalEdit(false)}
+          open={showModalEdit}
+          onClose={handleCloseModalEdit}
           onChange={handleChange}
-          onSubmitEdit={editUser}
-          user={user}
+          onSubmitEdit={handleSubmitEditUser}
+          user={userState}
         />
 
         <DialogDeleteUser
-          open={openModalDelete}
-          onClose={() => setOpenModalDelete(false)}
-          onSubmitDelete={deleteUser}
+          open={showModalDelete}
+          onClose={handleCloseModalDelete}
+          onSubmitDelete={handleSubmitDeleteUser}
         />
       </>
     </BaseLayout>

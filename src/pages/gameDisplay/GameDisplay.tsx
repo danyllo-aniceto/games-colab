@@ -1,11 +1,21 @@
+import { useGame } from '../../hooks/network/useGame'
+import { useEvaluation } from '../../hooks/network/useEvaluation'
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import React from 'react'
+
 import { Button } from '../../components/Button'
 import { LoadingComponent } from '../../components/Loading'
 import { BaseLayout } from '../../layout/BaseLayout'
 import { DialogDeleteGame } from './components/DialogDeleteGame'
 import { DialogEditGame } from './components/DialogEditGame'
+import { InputField } from '../../components/InputField'
+
 import DeleteIcon from '@mui/icons-material/Delete'
+import Rating from '@mui/material/Rating'
+import Typography from '@mui/material/Typography'
+import Box from '@mui/material/Box'
+
 import {
   Container,
   Content,
@@ -27,13 +37,6 @@ import {
   Img,
   MobileGameInformation
 } from './styles'
-import Rating from '@mui/material/Rating'
-import Typography from '@mui/material/Typography'
-import Box from '@mui/material/Box'
-import React from 'react'
-import { InputField } from '../../components/InputField'
-import { useGame } from '../../hooks/network/useGame'
-import { useEvaluation } from '../../hooks/network/useEvaluation'
 
 export function GameDisplay() {
   const {

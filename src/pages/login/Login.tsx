@@ -18,7 +18,7 @@ import UserService from '../../services/UserService'
 
 import { IUserDTO } from '../../dtos/IUserDTO'
 import { IMessageAlert, ToastType } from '../../components/Toast/enum'
-import { DialogCreateUser } from '../users/DialogCreateUser'
+import { DialogCreateUser } from '../users/components/DialogCreateUser'
 import { AxiosError } from 'axios'
 import { Toast } from '../../components/Toast'
 import { useAuth } from '../../hooks/useAuth'

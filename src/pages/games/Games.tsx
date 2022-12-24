@@ -1,17 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Container, ContentButton } from './styles'
-
-import { SelectChangeEvent, useMediaQuery, useTheme } from '@mui/material'
 import { useEffect } from 'react'
+import { useGame } from '../../hooks/network/useGame'
+import { usePlatform } from '../../hooks/network/usePlatform'
+
 import { Button } from '../../components/Button'
 import { EmptyState } from '../../components/EmptyState'
 import { LoadingComponent } from '../../components/Loading'
-import { useGame } from '../../hooks/network/useGame'
-import { usePlatform } from '../../hooks/network/usePlatform'
 import { BaseLayout } from '../../layout/BaseLayout'
 import { DialogCreateGame } from './components/DialogCreateGame'
 import { ShowDesktopScreenGame } from './components/ShowDesktopScreenGame'
 import { ShowMobileScrenGame } from './components/ShowMobileScrenGame'
+
+import { SelectChangeEvent, useMediaQuery, useTheme } from '@mui/material'
+
+import { Container, ContentButton } from './styles'
 
 export function Games() {
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {

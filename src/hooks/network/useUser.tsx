@@ -28,7 +28,7 @@ export function useUser() {
   }
   const handleOpenModalDelete = (data: IUserDTO) => {
     setDataActionState(data)
-    setShowModalEdit(true)
+    setShowModalDelete(true)
   }
 
   const handleCloseModalCreate = () => setShowModalCreate(false)
@@ -172,7 +172,7 @@ export function useUser() {
     dataActionState,
     totalPage,
     page,
-
+    setUserState,
     handleOpenModalCreate,
     handleOpenModalEdit,
     handleOpenModalDelete,
@@ -185,6 +185,7 @@ export function useUser() {
     handleSubmitEditUser,
     handleSubmitDeleteUser,
     handleChangePage,
-    getUsersPaged
+    getUsersPaged,
+    setAllUsersState
   }
 }

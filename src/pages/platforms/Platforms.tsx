@@ -1,22 +1,21 @@
-import { ContentPlatforms, Platform, Container, ContentAction } from './styles'
-import addImg from '../../assets/add.svg'
-import { BaseLayout } from '../../layout/BaseLayout'
 import { useEffect } from 'react'
-
+import { useNavigate } from 'react-router-dom'
+import { usePlatform } from '../../hooks/network/usePlatform'
 import * as React from 'react'
 
-import EditIcon from '@mui/icons-material/Edit'
-import DeleteIcon from '@mui/icons-material/Delete'
-
+import addImg from '../../assets/add.svg'
+import { BaseLayout } from '../../layout/BaseLayout'
 import { DialogDeletePlatform } from './components/DialogDeletePlatform'
 import { DialogEditPlatform } from './components/DialogEditPlatform'
-
 import { LoadingComponent } from '../../components/Loading'
 import { DialogCreatePlatform } from './components/DialogCreatePlatform'
 import { EmptyItem } from '../../components/EmptyItem'
 import { ContentDefault, MessageDefault } from '../../styles/global'
-import { useNavigate } from 'react-router-dom'
-import { usePlatform } from '../../hooks/network/usePlatform'
+
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
+
+import { ContentPlatforms, Platform, Container, ContentAction } from './styles'
 
 export function Platforms() {
   const {

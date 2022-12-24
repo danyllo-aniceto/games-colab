@@ -1,7 +1,7 @@
 import { DialogContent, DialogActions, Button } from '@mui/material'
-import { InputField } from '../../../components/InputField'
-import { IUserDTO } from '../../../dtos/IUserDTO'
-import { Dialog } from '../../../components/StyledDialog'
+import { InputField } from '../../../../components/InputField'
+import { IUserDTO } from '../../../../dtos/IUserDTO'
+import { Dialog } from '../../../../components/StyledDialog'
 
 interface IDialogEditUser {
   user: IUserDTO
