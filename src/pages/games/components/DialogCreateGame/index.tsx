@@ -2,26 +2,26 @@ import {
   Button,
   DialogActions,
   DialogContent,
-  SelectChangeEvent,
-} from "@mui/material";
-import React, { useState } from "react";
-import { InputField } from "../../../../components/InputField";
-import { Select } from "../../../../components/Select";
-import { Dialog } from "../../../../components/StyledDialog";
-import { IGameDTO } from "../../../../dtos/IGameDTO";
-import { IPlatformDTO } from "../../../../dtos/IPlatformDTO";
-import { ContentRadio, Label } from "./styles";
+  SelectChangeEvent
+} from '@mui/material'
+import React, { useState } from 'react'
+import { InputField } from '../../../../components/InputField'
+import { Select } from '../../../../components/Select'
+import { Dialog } from '../../../../components/StyledDialog'
+import { IGameDTO } from '../../../../dtos/IGameDTO'
+import { IPlatformDTO } from '../../../../dtos/IPlatformDTO'
+import { ContentRadio, Label } from './styles'
 
 // teste
 
 interface IDialogCreateGame {
-  game: IGameDTO;
-  open: boolean;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onChangeSelect: (event: SelectChangeEvent<(string | number)[]>) => void;
-  onClose: () => void;
-  onSubmitCreate: () => Promise<void>;
-  arrayPlatforms: IPlatformDTO[];
+  game: IGameDTO
+  open: boolean
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  onChangeSelect: (event: SelectChangeEvent<(string | number)[]>) => void
+  onClose: () => void
+  onSubmitCreate: () => Promise<void>
+  arrayPlatforms: IPlatformDTO[]
 }
 
 export function DialogCreateGame({
@@ -31,10 +31,9 @@ export function DialogCreateGame({
   onChangeSelect,
   onClose,
   onSubmitCreate,
-  arrayPlatforms,
+  arrayPlatforms
 }: IDialogCreateGame) {
-  const [showInputUpload, setShowInputUpload] = useState(false);
-  console.log(arrayPlatforms);
+  const [showInputUpload, setShowInputUpload] = useState(false)
 
   return (
     <Dialog onClose={onClose} open={open} title="Cadastrar Jogo">
@@ -44,25 +43,25 @@ export function DialogCreateGame({
             value={game.name}
             onChange={onChange}
             label="Nome"
-            name={"name"}
+            name={'name'}
           />
           <InputField
             value={game.developer}
             onChange={onChange}
             label="Desenvolvedor"
-            name={"developer"}
+            name={'developer'}
           />
           <InputField
             value={game.summary}
             onChange={onChange}
             label="Descrição"
-            name={"summary"}
+            name={'summary'}
           />
           <InputField
             value={game.genre}
             onChange={onChange}
             label="Gênero"
-            name={"genre"}
+            name={'genre'}
           />
           <Select
             label="Plataforma"
@@ -122,5 +121,5 @@ export function DialogCreateGame({
         </DialogActions>
       </>
     </Dialog>
-  );
+  )
 }

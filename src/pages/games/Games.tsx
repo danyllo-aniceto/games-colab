@@ -19,6 +19,8 @@ export function Games() {
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name } = event.target
     const { value } = event.target
+    console.log('value', value)
+    console.log('name', name)
     setGameState(values => ({ ...values, [name]: value }))
   }
 
@@ -27,6 +29,8 @@ export function Games() {
   ) => {
     const value = event.target.value
     const name = event.target.name
+    console.log('value', value)
+    console.log('name', name)
     setGameState(values => ({
       ...values,
       [name]: typeof value === 'string' ? value.split(',') : value

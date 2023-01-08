@@ -4,6 +4,7 @@ import {
   InputLabel,
   ListItemText,
   MenuItem,
+  OutlinedInput,
   Select as MuiSelect,
   SelectChangeEvent
 } from '@mui/material'
@@ -47,7 +48,7 @@ export function Select({
       <InputLabel>{label}</InputLabel>
       <MuiSelect
         name={name}
-        value={isMultiple ? value || [] : value || ''}
+        value={isMultiple ? stateMultiple || [] : value || ''}
         label={label}
         onChange={onChange}
         onBlur={onBlur}

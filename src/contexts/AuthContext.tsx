@@ -1,3 +1,4 @@
+import jwt_decode from 'jwt-decode'
 import React, { createContext, useEffect, useState } from 'react'
 import { IAuthProvider, IContext, IUser } from './types'
 import { getUserLocalStorage, LoginRequest, setUserLocalStorage } from './util'
@@ -6,12 +7,14 @@ export const AuthContext = createContext<IContext>({} as IContext)
 
 export const AuthProvider = ({ children }: IAuthProvider) => {
   const [user, setUser] = useState<IUser | null>()
+  const [userDecrypt, setUserDecrypt] = useState()
 
   useEffect(() => {
     const user = getUserLocalStorage()
 
     if (user) {
       setUser(user)
+      setUserDecrypt(jwt_decode(user.token))
     }
   }, [])
 
@@ -30,7 +33,9 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
   }
 
   return (
-    <AuthContext.Provider value={{ ...user, authenticate, logout }}>
+    <AuthContext.Provider
+      value={{ ...user, userDecrypt: userDecrypt, authenticate, logout }}
+    >
       {children}
     </AuthContext.Provider>
   )

@@ -2,7 +2,7 @@ import { useGame } from '../../hooks/network/useGame'
 import { useEvaluation } from '../../hooks/network/useEvaluation'
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import React from 'react'
+import React, { useState } from 'react'
 
 import { Button } from '../../components/Button'
 import { LoadingComponent } from '../../components/Loading'
@@ -37,6 +37,8 @@ import {
   Img,
   MobileGameInformation
 } from './styles'
+import { useAuth } from '../../hooks/useAuth'
+import { IEvaluationDTO } from '../../dtos/IEvaluationDTO'
 
 export function GameDisplay() {
   const {
@@ -58,8 +60,6 @@ export function GameDisplay() {
   const {
     loadingEvaluationsState,
     setLoadingEvaluationsState,
-    evaluationState,
-    setEvaluationState,
     handleSubmitCreateEvaluation,
     allEvaluationsState,
     getEvaluations
@@ -67,6 +67,22 @@ export function GameDisplay() {
 
   const { id } = useParams<'id'>()
   const navigate = useNavigate()
+
+  const { userDecrypt } = useAuth()
+  const idUser = Number(userDecrypt?.sub)
+  console.log('idUser', idUser)
+  console.log('gameState id', id)
+
+  const initStateFormEvaluation = {
+    comment: '',
+    idGame: Number(id),
+    idUser: idUser,
+    rating: 0
+  }
+
+  const [evaluationState, setEvaluationState] = useState<IEvaluationDTO>(
+    initStateFormEvaluation
+  )
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name } = event.target
@@ -81,12 +97,8 @@ export function GameDisplay() {
   }
 
   useEffect(() => {
-    if (id) {
-      getGameById(Number(id))
-    }
-  }, [])
+    getGameById(Number(id))
 
-  useEffect(() => {
     getEvaluations()
   }, [])
 
@@ -111,13 +123,13 @@ export function GameDisplay() {
 
                   <Summary>
                     <SubTitle>Resumo</SubTitle>
-                    <p>
+                    <div>
                       &nbsp;{gameState?.summary}
                       <MobileGameInformation>
                         &nbsp;O jogo foi desenvolvido por {gameState?.developer}{' '}
                         e apresenta o gênero(s) de {gameState?.genre}
                       </MobileGameInformation>
-                    </p>
+                    </div>
 
                     <TableContent>
                       <table>
@@ -221,8 +233,9 @@ export function GameDisplay() {
                       </div>
                       <ContentButtons>
                         <Button
-                          onClick={handleSubmitCreateEvaluation}
-                          onChange={handleChangeEvaluation}
+                          onClick={() => {
+                            handleSubmitCreateEvaluation(evaluationState)
+                          }}
                         >
                           Avaliar
                         </Button>
