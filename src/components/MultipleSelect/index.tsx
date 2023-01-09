@@ -46,18 +46,25 @@ export default function MultipleSelectCheckmarks({
   required,
   setId,
 }: PropTypes) {
-  const [valueState, setValueState] = useState<string[]>([]);
+  const [valueState, setValueState] = useState<any[]>([]);
 
   const handleChange = (event: SelectChangeEvent<typeof valueState>) => {
     const value = event.target.value as any;
-    console.log("aqui", value);
-    setValueState(typeof value.name === "string" ? value.split(",") : value);
 
-    if (setId) {
-    }
+    let duplicateRemoved = [];
+
+    value.forEach((item: any) => {
+      if (duplicateRemoved.findIndex((o) => o.id === item.id) >= 0) {
+        duplicateRemoved = duplicateRemoved.filter((x) => x.id === item.id);
+      } else {
+        duplicateRemoved.push(item);
+      }
+    });
+
+    setValueState(duplicateRemoved);
   };
 
-  // console.log(valueState);
+  console.log(valueState);
 
   return (
     <FormControl
@@ -71,12 +78,14 @@ export default function MultipleSelectCheckmarks({
         multiple
         value={valueState}
         onChange={handleChange}
-        renderValue={(selected) => selected.join(", ")}
+        renderValue={(selected) => selected.map((item) => item.name).join(", ")}
         MenuProps={MenuProps}
       >
         {options.map((item) => (
-          <MenuItem key={item.name} value={item}>
-            <Checkbox checked={valueState.indexOf(item.name) > -1} />
+          <MenuItem key={item.id ?? item.name} value={item}>
+            <Checkbox
+              checked={valueState.findIndex((x) => x.id === item.id) >= 0}
+            />
             <ListItemText primary={item.name} />
           </MenuItem>
         ))}
