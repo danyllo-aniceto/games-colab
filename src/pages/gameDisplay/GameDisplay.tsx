@@ -62,7 +62,7 @@ export function GameDisplay() {
     setLoadingEvaluationsState,
     handleSubmitCreateEvaluation,
     allEvaluationsState,
-    getEvaluations
+    getEvaluationByIdGame
   } = useEvaluation()
 
   const { id } = useParams<'id'>()
@@ -99,7 +99,7 @@ export function GameDisplay() {
   useEffect(() => {
     getGameById(Number(id))
 
-    getEvaluations()
+    getEvaluationByIdGame(Number(id))
   }, [])
 
   return (
