@@ -22,16 +22,12 @@ const MenuProps = {
 
 interface PropTypes {
   name: string;
-  value: string | number | string[];
+  value: any[];
   options: any[];
   label: React.ReactNode;
   required?: boolean;
   disabled?: boolean;
-  state: string | number | string[];
-  setId?: boolean;
-  onChange?: (event: SelectChangeEvent<any>, child: React.ReactNode) => void;
-  onBlur?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  onClose?: (event: React.SyntheticEvent<Element, Event>) => void;
+  onChange?: (nameField: string, array: any[]) => void;
 }
 
 export default function MultipleSelectCheckmarks({
@@ -41,10 +37,7 @@ export default function MultipleSelectCheckmarks({
   options,
   value,
   disabled,
-  onBlur,
-  onClose,
   required,
-  setId,
 }: PropTypes) {
   const [valueState, setValueState] = useState<any[]>([]);
 
@@ -62,9 +55,8 @@ export default function MultipleSelectCheckmarks({
     });
 
     setValueState(duplicateRemoved);
+    onChange(name, duplicateRemoved);
   };
-
-  console.log(valueState);
 
   return (
     <FormControl

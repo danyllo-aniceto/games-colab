@@ -7,7 +7,6 @@ import {
 import React, { useState } from "react";
 import { InputField } from "../../../../components/InputField";
 import MultipleSelectCheckmarks from "../../../../components/MultipleSelect";
-import { Select } from "../../../../components/Select";
 import { Dialog } from "../../../../components/StyledDialog";
 import { IGameDTO } from "../../../../dtos/IGameDTO";
 import { IPlatformDTO } from "../../../../dtos/IPlatformDTO";
@@ -19,7 +18,7 @@ interface IDialogCreateGame {
   game: IGameDTO;
   open: boolean;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onChangeSelect: (event: SelectChangeEvent<(string | number)[]>) => void;
+  onChangeSelect: (nameField: string, array: any[]) => void;
   onClose: () => void;
   onSubmitCreate: () => Promise<void>;
   arrayPlatforms: IPlatformDTO[];
@@ -69,9 +68,7 @@ export function DialogCreateGame({
             options={arrayPlatforms}
             name="idPlatform"
             onChange={onChangeSelect}
-            value={game.idPlatformForm}
-            state={game.idPlatformForm}
-            setId
+            value={game.idPlatform}
           />
 
           <ContentRadio>
