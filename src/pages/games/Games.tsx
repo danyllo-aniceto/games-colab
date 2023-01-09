@@ -1,44 +1,41 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect } from 'react'
-import { useGame } from '../../hooks/network/useGame'
-import { usePlatform } from '../../hooks/network/usePlatform'
+import { useEffect } from "react";
+import { useGame } from "../../hooks/network/useGame";
+import { usePlatform } from "../../hooks/network/usePlatform";
 
-import { Button } from '../../components/Button'
-import { EmptyState } from '../../components/EmptyState'
-import { LoadingComponent } from '../../components/Loading'
-import { BaseLayout } from '../../layout/BaseLayout'
-import { DialogCreateGame } from './components/DialogCreateGame'
-import { ShowDesktopScreenGame } from './components/ShowDesktopScreenGame'
-import { ShowMobileScrenGame } from './components/ShowMobileScrenGame'
+import { Button } from "../../components/Button";
+import { EmptyState } from "../../components/EmptyState";
+import { LoadingComponent } from "../../components/Loading";
+import { BaseLayout } from "../../layout/BaseLayout";
+import { DialogCreateGame } from "./components/DialogCreateGame";
+import { ShowDesktopScreenGame } from "./components/ShowDesktopScreenGame";
+import { ShowMobileScrenGame } from "./components/ShowMobileScrenGame";
 
-import { SelectChangeEvent, useMediaQuery, useTheme } from '@mui/material'
+import { useMediaQuery, useTheme } from "@mui/material";
 
-import { Container, ContentButton } from './styles'
+import { Container, ContentButton } from "./styles";
+import { IPlatformDTO } from "../../dtos/IPlatformDTO";
 
 export function Games() {
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const { name } = event.target
-    const { value } = event.target
-    console.log('value', value)
-    console.log('name', name)
-    setGameState(values => ({ ...values, [name]: value }))
+    const { name } = event.target;
+    const { value } = event.target;
+
+    setGameState((values) => ({ ...values, [name]: value }));
   }
 
-  const handleChangeSelect = (
-    event: SelectChangeEvent<typeof gameState.idPlatformForm>
+  const handleChangeMultipleSelect = (
+    nameField: string,
+    array: IPlatformDTO[]
   ) => {
-    const value = event.target.value
-    const name = event.target.name
-    console.log('value', value)
-    console.log('name', name)
-    setGameState(values => ({
+    setGameState((values) => ({
       ...values,
-      [name]: typeof value === 'string' ? value.split(',') : value
-    }))
-  }
+      [nameField]: array.map((item) => item.id),
+    }));
+  };
 
-  const theme = useTheme()
-  const mobile = useMediaQuery(theme.breakpoints.down('sm'))
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const {
     allGamesState,
@@ -51,20 +48,20 @@ export function Games() {
     handleOpenModalCreate,
     handleCloseModalCreate,
     getGames,
-    handleSubmitCreateGame
-  } = useGame()
+    handleSubmitCreateGame,
+  } = useGame();
 
   const {
     getPlatforms,
     allPlatformsState,
     loadingPlatformsState,
-    setLoadingPlatformsState
-  } = usePlatform()
+    setLoadingPlatformsState,
+  } = usePlatform();
 
   useEffect(() => {
-    getGames()
-    getPlatforms()
-  }, [])
+    getGames();
+    getPlatforms();
+  }, []);
 
   return (
     <BaseLayout>
@@ -73,8 +70,8 @@ export function Games() {
           <LoadingComponent
             open={loadingGamesState || loadingPlatformsState}
             onClose={() => {
-              setLoadingGamesState(false)
-              setLoadingPlatformsState(false)
+              setLoadingGamesState(false);
+              setLoadingPlatformsState(false);
             }}
           />
         ) : (
@@ -84,8 +81,8 @@ export function Games() {
                 message="Nenhum jogo cadastrado 😥"
                 textButton="Novo Jogo"
                 onClickButton={() => {
-                  setGameState(initStateForm)
-                  handleOpenModalCreate()
+                  setGameState(initStateForm);
+                  handleOpenModalCreate();
                 }}
               />
             ) : (
@@ -93,8 +90,8 @@ export function Games() {
                 <ContentButton>
                   <Button
                     onClick={() => {
-                      setGameState(initStateForm)
-                      handleOpenModalCreate()
+                      setGameState(initStateForm);
+                      handleOpenModalCreate();
                     }}
                   >
                     Novo Jogo
@@ -115,12 +112,12 @@ export function Games() {
           open={showModalCreate}
           onClose={handleCloseModalCreate}
           onChange={handleChange}
-          onChangeSelect={handleChangeSelect}
+          onChangeSelect={handleChangeMultipleSelect}
           onSubmitCreate={handleSubmitCreateGame}
           game={gameState}
           arrayPlatforms={allPlatformsState}
         />
       </Container>
     </BaseLayout>
-  )
+  );
 }

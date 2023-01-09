@@ -70,8 +70,6 @@ export function GameDisplay() {
 
   const { userDecrypt } = useAuth()
   const idUser = Number(userDecrypt?.sub)
-  console.log('idUser', idUser)
-  console.log('gameState id', id)
 
   const initStateFormEvaluation = {
     comment: '',
