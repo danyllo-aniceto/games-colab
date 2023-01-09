@@ -1,20 +1,20 @@
-import { useGame } from "../../hooks/network/useGame";
-import { useEvaluation } from "../../hooks/network/useEvaluation";
-import { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import React, { useState } from "react";
+import { useGame } from '../../hooks/network/useGame'
+import { useEvaluation } from '../../hooks/network/useEvaluation'
+import { useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import React, { useState } from 'react'
 
-import { Button } from "../../components/Button";
-import { LoadingComponent } from "../../components/Loading";
-import { BaseLayout } from "../../layout/BaseLayout";
-import { DialogDeleteGame } from "./components/DialogDeleteGame";
-import { DialogEditGame } from "./components/DialogEditGame";
-import { InputField } from "../../components/InputField";
+import { Button } from '../../components/Button'
+import { LoadingComponent } from '../../components/Loading'
+import { BaseLayout } from '../../layout/BaseLayout'
+import { DialogDeleteGame } from './components/DialogDeleteGame'
+import { DialogEditGame } from './components/DialogEditGame'
+import { InputField } from '../../components/InputField'
 
-import DeleteIcon from "@mui/icons-material/Delete";
-import Rating from "@mui/material/Rating";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
+import DeleteIcon from '@mui/icons-material/Delete'
+import Rating from '@mui/material/Rating'
+import Typography from '@mui/material/Typography'
+import Box from '@mui/material/Box'
 
 import {
   Container,
@@ -35,10 +35,10 @@ import {
   SubTitle,
   GameTitle,
   Img,
-  MobileGameInformation,
-} from "./styles";
-import { useAuth } from "../../hooks/useAuth";
-import { IEvaluationDTO } from "../../dtos/IEvaluationDTO";
+  MobileGameInformation
+} from './styles'
+import { useAuth } from '../../hooks/useAuth'
+import { IEvaluationDTO } from '../../dtos/IEvaluationDTO'
 
 export function GameDisplay() {
   const {
@@ -54,51 +54,51 @@ export function GameDisplay() {
     handleCloseModalEdit,
     handleSubmitEditGame,
     handleSubmitDeleteGame,
-    getGameById,
-  } = useGame();
+    getGameById
+  } = useGame()
 
   const {
     loadingEvaluationsState,
     setLoadingEvaluationsState,
     handleSubmitCreateEvaluation,
     allEvaluationsState,
-    getEvaluations,
-  } = useEvaluation();
+    getEvaluationByIdGame
+  } = useEvaluation()
 
-  const { id } = useParams<"id">();
-  const navigate = useNavigate();
+  const { id } = useParams<'id'>()
+  const navigate = useNavigate()
 
-  const { userDecrypt } = useAuth();
-  const idUser = Number(userDecrypt?.sub);
+  const { userDecrypt } = useAuth()
+  const idUser = Number(userDecrypt?.sub)
 
   const initStateFormEvaluation = {
-    comment: "",
+    comment: '',
     idGame: Number(id),
     idUser: idUser,
-    rating: 0,
-  };
+    rating: 0
+  }
 
   const [evaluationState, setEvaluationState] = useState<IEvaluationDTO>(
     initStateFormEvaluation
-  );
+  )
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const { name } = event.target;
-    const { value } = event.target;
-    setGameState((values) => ({ ...values, [name]: value }));
+    const { name } = event.target
+    const { value } = event.target
+    setGameState(values => ({ ...values, [name]: value }))
     // setGameModal(values => ({ ...values, [name]: value }))
   }
   function handleChangeEvaluation(event: React.ChangeEvent<HTMLInputElement>) {
-    const { name } = event.target;
-    const { value } = event.target;
-    setEvaluationState((values) => ({ ...values, [name]: value }));
+    const { name } = event.target
+    const { value } = event.target
+    setEvaluationState(values => ({ ...values, [name]: value }))
   }
 
   useEffect(() => {
-    getGameById(Number(id));
+    getGameById(Number(id))
 
-    getEvaluations();
-  }, []);
+    getEvaluationByIdGame(Number(id))
+  }, [])
 
   return (
     <BaseLayout>
@@ -108,8 +108,8 @@ export function GameDisplay() {
             <LoadingComponent
               open={loadingGamesState || loadingEvaluationsState}
               onClose={() => {
-                setLoadingGamesState(false);
-                setLoadingEvaluationsState(false);
+                setLoadingGamesState(false)
+                setLoadingEvaluationsState(false)
               }}
             />
           ) : (
@@ -124,7 +124,7 @@ export function GameDisplay() {
                     <div>
                       &nbsp;{gameState?.summary}
                       <MobileGameInformation>
-                        &nbsp;O jogo foi desenvolvido por {gameState?.developer}{" "}
+                        &nbsp;O jogo foi desenvolvido por {gameState?.developer}{' '}
                         e apresenta o gênero(s) de {gameState?.genre}
                       </MobileGameInformation>
                     </div>
@@ -174,22 +174,22 @@ export function GameDisplay() {
                           image: gameState.image,
                           rating: gameState.rating,
                           summary: gameState.summary,
-                          file: gameState.file,
-                        });
-                        handleOpenModalEdit(gameState);
+                          file: gameState.file
+                        })
+                        handleOpenModalEdit(gameState)
                       }}
                     >
                       Editar
                     </Button>
                     <Button
                       onClick={() => {
-                        setGameState({ id: gameState.id, ...gameState });
-                        handleOpenModalDelete(gameState);
+                        setGameState({ id: gameState.id, ...gameState })
+                        handleOpenModalDelete(gameState)
                       }}
                     >
                       Deletar
                     </Button>
-                    <Button onClick={() => navigate("/games")}>Voltar</Button>
+                    <Button onClick={() => navigate('/games')}>Voltar</Button>
                   </ContentButtons>
                 </SecondaryContent>
 
@@ -200,14 +200,14 @@ export function GameDisplay() {
                     <Box
                       sx={{
                         width: 800,
-                        maxWidth: "100%",
+                        maxWidth: '100%'
                       }}
                     >
                       <StyleTextField>
                         {/* <TextField fullWidth label="Comentário" /> */}
                         <InputField
                           label="Comentário"
-                          name={"comment"}
+                          name={'comment'}
                           onChange={handleChangeEvaluation}
                           value={evaluationState.comment}
                           variant="outlined"
@@ -219,12 +219,12 @@ export function GameDisplay() {
                       <div>
                         <Typography component="legend">Nota</Typography>
                         <Rating
-                          name={"rating"}
+                          name={'rating'}
                           value={evaluationState.rating}
                           onChange={(event, newValue) =>
-                            setEvaluationState((valuesEval) => ({
+                            setEvaluationState(valuesEval => ({
                               ...valuesEval,
-                              rating: newValue,
+                              rating: newValue
                             }))
                           }
                         />
@@ -232,7 +232,7 @@ export function GameDisplay() {
                       <ContentButtons>
                         <Button
                           onClick={() => {
-                            handleSubmitCreateEvaluation(evaluationState);
+                            handleSubmitCreateEvaluation(evaluationState)
                           }}
                         >
                           Avaliar
@@ -242,7 +242,7 @@ export function GameDisplay() {
                   </Evaluation>
                 </EvaluationContent>
                 <SubTitle>Avaliações</SubTitle>
-                {allEvaluationsState.map((eva) => (
+                {allEvaluationsState.map(eva => (
                   <CommentContent key={eva.id}>
                     <Comment>&nbsp;{eva.comment}</Comment>
                     <ItemsComment>
@@ -272,5 +272,5 @@ export function GameDisplay() {
         />
       </>
     </BaseLayout>
-  );
+  )
 }

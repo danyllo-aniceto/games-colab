@@ -127,6 +127,19 @@ export function useEvaluation() {
     }
   }
 
+  async function getEvaluationByIdGame(idGame: number): Promise<void> {
+    try {
+      const response = await evaluationService.loadByIdGame(idGame)
+      setAllEvaluationsState(response)
+    } catch (error) {
+      const { response } = error as AxiosError
+      addToast(
+        `Falha ao buscar avaliações do jogo - ${response?.data?.message}`,
+        ToastType.ERROR
+      )
+    }
+  }
+
   return {
     allEvaluationsState,
     evaluationState,
@@ -147,6 +160,7 @@ export function useEvaluation() {
     handleCloseModalDelete,
     getEvaluations,
     getEvaluationById,
+    getEvaluationByIdGame,
     handleSubmitCreateEvaluation,
     handleSubmitEditEvaluation,
     handleSubmitDeleteEvaluation
