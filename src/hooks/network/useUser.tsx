@@ -5,44 +5,24 @@ import { ToastType } from "../../components/Toast/enum";
 import { variables } from "../../constants/variables";
 import { IUserDTO } from "../../dtos/IUserDTO";
 import UserService from "../../services/UserService";
+import { useLoading } from "../useLoading";
 import { useToast } from "../useToast";
 
 export function useUser() {
   const { addToast } = useToast();
+  const { onToggleLoading } = useLoading();
   const userService = new UserService();
 
   const [allUsersState, setAllUsersState] = useState<IUserDTO[]>([]);
-  const [loadingUsersState, setLoadingUsersState] = useState(false);
-  const [loadingFormState, setLoadingFormState] = useState(false);
 
-  const [dataActionState, setDataActionState] = useState<IUserDTO>();
+  const [userByIdState, setUserByIdState] = useState<IUserDTO>();
 
   const [showModalCreate, setShowModalCreate] = useState(false);
   const [showModalEdit, setShowModalEdit] = useState(false);
   const [showModalDelete, setShowModalDelete] = useState(false);
-
-  const handleOpenModalCreate = () => setShowModalCreate(true);
-  const handleOpenModalEdit = (data: IUserDTO) => {
-    setDataActionState(data);
-    setShowModalEdit(true);
-  };
-  const handleOpenModalDelete = (data: IUserDTO) => {
-    setDataActionState(data);
-    setShowModalDelete(true);
-  };
-
-  const handleCloseModalCreate = () => setShowModalCreate(false);
-  const handleCloseModalEdit = () => setShowModalEdit(false);
-  const handleCloseModalDelete = () => setShowModalDelete(false);
-
-  const initStateForm = {
-    id: null,
-    name: "",
-    email: "",
-    password: "",
-  };
-
-  const [userState, setUserState] = useState<IUserDTO>(initStateForm);
+  const onToggleModalCreate = () => setShowModalCreate((prev) => !prev);
+  const onToggleModalEdit = () => setShowModalEdit((prev) => !prev);
+  const onToggleModalDelete = () => setShowModalDelete((prev) => !prev);
 
   const [totalPage, setTotalPage] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -52,7 +32,7 @@ export function useUser() {
   }, [searchParams]);
 
   async function getUsers(): Promise<void> {
-    setLoadingUsersState(true);
+    onToggleLoading();
 
     try {
       const response = await userService.loadAll();
@@ -64,15 +44,15 @@ export function useUser() {
         ToastType.ERROR
       );
     } finally {
-      setLoadingUsersState(false);
+      onToggleLoading();
     }
   }
 
   async function getUserById(id: number): Promise<void> {
-    setLoadingUsersState(true);
+    onToggleLoading();
     try {
       const response = await userService.loadById(id);
-      setUserState(response);
+      setUserByIdState(response);
     } catch (err) {
       const { response } = err as AxiosError;
       addToast(
@@ -80,7 +60,7 @@ export function useUser() {
         ToastType.ERROR
       );
     } finally {
-      setLoadingUsersState(false);
+      onToggleLoading();
     }
   }
 
@@ -89,13 +69,14 @@ export function useUser() {
   }
 
   async function getUsersPaged(page?: string) {
-    setLoadingUsersState(true);
+    onToggleLoading();
+
     try {
       const response = await userService.loadAllPaged(
         variables.LIMIT_TABLE_ROWS,
         Number(page)
       );
-      setAllUsersState(response.instances ?? []);
+      setAllUsersState(response.instances);
       setTotalPage(parseInt(response.totalPages.toString()));
     } catch (error) {
       const { response } = error as AxiosError;
@@ -105,18 +86,18 @@ export function useUser() {
         ToastType.ERROR
       );
     } finally {
-      setLoadingUsersState(false);
+      onToggleLoading();
     }
   }
 
-  async function handleSubmitCreateUser() {
-    setLoadingFormState(true);
+  async function handleSubmitCreateUser(user: IUserDTO) {
+    onToggleLoading();
 
     try {
-      await userService.create(userState);
-      handleCloseModalCreate();
-      addToast("Plataforma criada com sucesso!", ToastType.SUCCESS);
-      getUsers();
+      await userService.create(user);
+      onToggleModalCreate();
+      addToast("Usuário criado com sucesso!", ToastType.SUCCESS);
+      getUsersPaged("1");
     } catch (error) {
       const { response } = error as AxiosError;
       addToast(
@@ -124,60 +105,59 @@ export function useUser() {
         ToastType.ERROR
       );
     } finally {
-      setUserState(initStateForm);
+      onToggleLoading();
     }
   }
 
-  async function handleSubmitEditUser() {
+  async function handleSubmitEditUser(user: IUserDTO) {
+    onToggleLoading();
+
     try {
-      await userService.updateById(userState);
-      handleCloseModalEdit();
-      addToast("Plataforma editada com sucesso!", ToastType.SUCCESS);
-      getUsers();
+      await userService.updateById(user);
+      onToggleModalEdit();
+      addToast("Usuário editado com sucesso!", ToastType.SUCCESS);
+      getUsersPaged("1");
     } catch (error) {
       const { response } = error as AxiosError;
       addToast(
         `Falha ao editar usuário - ${response?.data?.message}`,
         ToastType.ERROR
       );
+    } finally {
+      onToggleLoading();
     }
   }
 
-  async function handleSubmitDeleteUser() {
+  async function handleSubmitDeleteUser(user: IUserDTO) {
+    onToggleLoading();
+
     try {
-      await userService.deleteById(userState.id);
-      handleCloseModalDelete();
-      addToast("Plataforma deletada com sucesso!", ToastType.SUCCESS);
-      getUsers();
+      await userService.deleteById(user.id);
+      onToggleModalDelete();
+      addToast("Usuário deletado com sucesso!", ToastType.SUCCESS);
+      getUsersPaged("1");
     } catch (error) {
       const { response } = error as AxiosError;
       addToast(
         `Falha ao deletar usuário - ${response?.data?.message}`,
         ToastType.ERROR
       );
+    } finally {
+      onToggleLoading();
     }
   }
 
   return {
     allUsersState,
-    userState,
-    initStateForm,
-    loadingUsersState,
-    setLoadingUsersState,
-    loadingFormState,
+    userByIdState,
     showModalCreate,
     showModalEdit,
     showModalDelete,
-    dataActionState,
     totalPage,
     page,
-    setUserState,
-    handleOpenModalCreate,
-    handleOpenModalEdit,
-    handleOpenModalDelete,
-    handleCloseModalCreate,
-    handleCloseModalEdit,
-    handleCloseModalDelete,
+    onToggleModalCreate,
+    onToggleModalEdit,
+    onToggleModalDelete,
     getUsers,
     getUserById,
     handleSubmitCreateUser,
@@ -185,6 +165,5 @@ export function useUser() {
     handleSubmitDeleteUser,
     handleChangePage,
     getUsersPaged,
-    setAllUsersState,
   };
 }

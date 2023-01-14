@@ -10,93 +10,93 @@ import {
   UserEmail,
   UserPassword,
   ButtonRegister,
-  ButtonNewRegister
-} from './styles'
-import logoImg from '../../assets/logo.png'
-import { FormEvent, useState } from 'react'
-import UserService from '../../services/UserService'
+  ButtonNewRegister,
+} from "./styles";
+import logoImg from "../../assets/logo.png";
+import { FormEvent, useState } from "react";
+import UserService from "../../services/UserService";
 
-import { IUserDTO } from '../../dtos/IUserDTO'
-import { IMessageAlert, ToastType } from '../../components/Toast/enum'
-import { DialogCreateUser } from '../users/components/DialogCreateUser'
-import { AxiosError } from 'axios'
-import { Toast } from '../../components/Toast'
-import { useAuth } from '../../hooks/useAuth'
-import { useNavigate } from 'react-router-dom'
-import { LoadingComponent } from '../../components/Loading'
+import { IUserDTO } from "../../dtos/IUserDTO";
+import { IMessageAlert, ToastType } from "../../components/Toast/enum";
+import { DialogFormUser } from "../users/components/DialogFormUser";
+import { AxiosError } from "axios";
+import { Toast } from "../../components/Toast";
+import { useAuth } from "../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
+import { LoadingComponent } from "../../components/Loading";
 
 export function Login() {
-  const userService = new UserService()
+  const userService = new UserService();
 
   const [user, setUser] = useState<IUserDTO>({
     id: null,
-    name: '',
-    email: '',
-    password: ''
-  })
+    name: "",
+    email: "",
+    password: "",
+  });
 
-  const [openModalNewUser, setOpenModalNewUser] = useState(false)
+  const [openModalNewUser, setOpenModalNewUser] = useState(false);
 
-  const [openAlert, setOpenAlert] = useState(false)
+  const [openAlert, setOpenAlert] = useState(false);
   const [messageAlert, setMessageAlert] = useState<IMessageAlert>({
     type: ToastType.SUCCESS,
-    message: ''
-  })
+    message: "",
+  });
 
   function displayNotificationMessage(message: string, type: ToastType) {
-    setOpenAlert(true)
-    setMessageAlert({ message, type })
+    setOpenAlert(true);
+    setMessageAlert({ message, type });
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const { name } = event.target
-    const { value } = event.target
-    setUser(values => ({ ...values, [name]: value }))
+    const { name } = event.target;
+    const { value } = event.target;
+    setUser((values) => ({ ...values, [name]: value }));
   }
 
   async function handleCreateNewUser() {
     try {
-      await userService.create(user)
-      setOpenModalNewUser(false)
+      await userService.create(user);
+      setOpenModalNewUser(false);
       displayNotificationMessage(
-        'Usuário criado com sucesso!',
+        "Usuário criado com sucesso!",
         ToastType.SUCCESS
-      )
+      );
     } catch (error) {
-      const { response } = error as AxiosError
+      const { response } = error as AxiosError;
       displayNotificationMessage(
         `Falha ao criar usuário - ${response?.data?.message}`,
         ToastType.ERROR
-      )
+      );
     }
 
     setUser({
       id: null,
-      name: '',
-      email: '',
-      password: ''
-    })
+      name: "",
+      email: "",
+      password: "",
+    });
   }
 
-  const auth = useAuth()
-  const navigate = useNavigate()
+  const auth = useAuth();
+  const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   async function onFinish(event: FormEvent<HTMLFormElement>) {
-    setLoading(true)
-    event.preventDefault()
+    setLoading(true);
+    event.preventDefault();
     try {
-      await auth.authenticate(user.email, user.password)
-      navigate('/dashboard')
+      await auth.authenticate(user.email, user.password);
+      navigate("/dashboard");
     } catch (error) {
-      const { response } = error as AxiosError
+      const { response } = error as AxiosError;
       displayNotificationMessage(
         `Senha ou email inválido - ${response?.data?.message}`,
         ToastType.ERROR
-      )
+      );
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -152,13 +152,16 @@ export function Login() {
         </Form>
       </Container>
 
-      <DialogCreateUser
+      <DialogFormUser
         open={openModalNewUser}
         onClose={() => setOpenModalNewUser(false)}
         onChange={handleChange}
-        onSubmitCreate={handleCreateNewUser}
+        onSubmit={handleCreateNewUser}
         user={user}
+        title="Cadastro de usuário"
+        textButtonConfirm="Cadastrar usuário"
+        textButtonCancel="Cancelar"
       />
     </>
-  )
+  );
 }
