@@ -19,21 +19,21 @@ export function useEvaluation() {
 
   const [showModalCreate, setShowModalCreate] = useState(false)
   const [showModalEdit, setShowModalEdit] = useState(false)
-  const [showModalDelete, setShowModalDelete] = useState(false)
+  const [showModalDeleteEvaluation, setShowModalDeleteEvaluation] =
+    useState(false)
 
   const handleOpenModalCreate = () => setShowModalCreate(true)
   const handleOpenModalEdit = (data: IEvaluationDTO) => {
     setDataActionState(data)
     setShowModalEdit(true)
   }
-  const handleOpenModalDelete = (data: IEvaluationDTO) => {
-    setDataActionState(data)
-    setShowModalEdit(true)
-  }
+  const handleOpenModalDeleteEvaluation = () =>
+    setShowModalDeleteEvaluation(true)
 
   const handleCloseModalCreate = () => setShowModalCreate(false)
   const handleCloseModalEdit = () => setShowModalEdit(false)
-  const handleCloseModalDelete = () => setShowModalDelete(false)
+  const handleCloseModalDeleteEvaluation = () =>
+    setShowModalDeleteEvaluation(false)
 
   const initStateFormEvaluation = {
     id: null,
@@ -85,7 +85,6 @@ export function useEvaluation() {
     try {
       await evaluationService.create(evaluationState)
       addToast('Avaliação criada com sucesso!', ToastType.SUCCESS)
-      getEvaluations()
     } catch (error) {
       const { response } = error as AxiosError
       addToast(
@@ -112,12 +111,15 @@ export function useEvaluation() {
     }
   }
 
-  async function handleSubmitDeleteEvaluation() {
+  async function handleSubmitDeleteEvaluation(
+    eva: IEvaluationDTO,
+    idGame: number
+  ) {
     try {
-      await evaluationService.deleteById(evaluationState.id)
-      handleCloseModalDelete()
+      await evaluationService.deleteById(eva.id)
+      handleCloseModalDeleteEvaluation()
       addToast('Avaliação deletada com sucesso!', ToastType.SUCCESS)
-      getEvaluations()
+      getEvaluationByIdGame(idGame)
     } catch (error) {
       const { response } = error as AxiosError
       addToast(
@@ -150,14 +152,14 @@ export function useEvaluation() {
     loadingFormState,
     showModalCreate,
     showModalEdit,
-    showModalDelete,
+    showModalDeleteEvaluation,
     dataActionState,
     handleOpenModalCreate,
     handleOpenModalEdit,
-    handleOpenModalDelete,
+    handleOpenModalDeleteEvaluation,
     handleCloseModalCreate,
     handleCloseModalEdit,
-    handleCloseModalDelete,
+    handleCloseModalDeleteEvaluation,
     getEvaluations,
     getEvaluationById,
     getEvaluationByIdGame,

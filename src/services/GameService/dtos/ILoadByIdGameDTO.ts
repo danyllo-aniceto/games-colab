@@ -7,7 +7,7 @@ export interface ILoadByIdGameDTOResponse {
   genre: string
   image: string
   rating: number
-  file: File | string
+  file: File
   created_at: Date
   updated_at: Date
 }

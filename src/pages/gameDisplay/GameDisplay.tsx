@@ -39,6 +39,7 @@ import {
 } from './styles'
 import { useAuth } from '../../hooks/useAuth'
 import { IEvaluationDTO } from '../../dtos/IEvaluationDTO'
+import { DialogDeleteEvaluation } from './components/DialogDeleteEvaluation'
 
 export function GameDisplay() {
   const {
@@ -62,7 +63,11 @@ export function GameDisplay() {
     setLoadingEvaluationsState,
     handleSubmitCreateEvaluation,
     allEvaluationsState,
-    getEvaluationByIdGame
+    getEvaluationByIdGame,
+    handleOpenModalDeleteEvaluation,
+    showModalDeleteEvaluation,
+    handleCloseModalDeleteEvaluation,
+    handleSubmitDeleteEvaluation
   } = useEvaluation()
 
   const { id } = useParams<'id'>()
@@ -70,10 +75,12 @@ export function GameDisplay() {
 
   const { userDecrypt } = useAuth()
   const idUser = Number(userDecrypt?.sub)
+  const idGame = Number(id)
 
   const initStateFormEvaluation = {
+    id: null,
     comment: '',
-    idGame: Number(id),
+    idGame: idGame,
     idUser: idUser,
     rating: 0
   }
@@ -249,7 +256,17 @@ export function GameDisplay() {
                       <ContentRaiting>
                         <Rating name="read-only" value={eva.rating} readOnly />
                       </ContentRaiting>
-                      <DeleteIcon color="warning" />
+                      <DeleteIcon
+                        color="warning"
+                        onClick={e => {
+                          setEvaluationState({
+                            id: eva.id,
+                            ...eva
+                          })
+                          handleOpenModalDeleteEvaluation()
+                          console.log(eva)
+                        }}
+                      />
                     </ItemsComment>
                   </CommentContent>
                 ))}
@@ -269,6 +286,14 @@ export function GameDisplay() {
           open={showModalDelete}
           onClose={handleCloseModalDelete}
           onSubmitDelete={handleSubmitDeleteGame}
+        />
+
+        <DialogDeleteEvaluation
+          open={showModalDeleteEvaluation}
+          onClose={handleCloseModalDeleteEvaluation}
+          evaluationState={evaluationState}
+          onSubmitDelete={handleSubmitDeleteEvaluation}
+          idGame={idGame}
         />
       </>
     </BaseLayout>
