@@ -1,23 +1,26 @@
-import React from 'react'
-import { GlobalStyle } from './styles/global'
-import { Router } from './routes'
-import { AuthProvider } from './contexts/AuthContext'
-import { createTheme, ThemeProvider } from '@mui/material'
-import ToastProvider from './contexts/ToastContext'
+import React from "react";
+import { GlobalStyle } from "./styles/global";
+import { Router } from "./routes";
+import { AuthProvider } from "./contexts/AuthContext";
+import { createTheme, ThemeProvider } from "@mui/material";
+import ToastProvider from "./contexts/ToastContext";
+import LoadingProvider from "./contexts/LoadingContext";
 
-const theme = createTheme()
+const theme = createTheme();
 
 export default function App() {
   return (
     <>
-      <AuthProvider>
+      <LoadingProvider>
         <ToastProvider>
-          <ThemeProvider theme={theme}>
-            <Router />
-          </ThemeProvider>
+          <AuthProvider>
+            <ThemeProvider theme={theme}>
+              <Router />
+            </ThemeProvider>
+          </AuthProvider>
         </ToastProvider>
-      </AuthProvider>
+      </LoadingProvider>
       <GlobalStyle />
     </>
-  )
+  );
 }

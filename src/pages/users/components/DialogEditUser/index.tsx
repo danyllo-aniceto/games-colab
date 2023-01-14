@@ -1,14 +1,14 @@
-import { DialogContent, DialogActions, Button } from '@mui/material'
-import { InputField } from '../../../../components/InputField'
-import { IUserDTO } from '../../../../dtos/IUserDTO'
-import { Dialog } from '../../../../components/StyledDialog'
+import { DialogContent, DialogActions, Button } from "@mui/material";
+import { InputField } from "../../../../components/InputField";
+import { IUserDTO } from "../../../../dtos/IUserDTO";
+import { Dialog } from "../../../../components/StyledDialog";
 
 interface IDialogEditUser {
-  user: IUserDTO
-  open: boolean
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-  onClose: () => void
-  onSubmitEdit: () => Promise<void>
+  user: IUserDTO;
+  open: boolean;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onClose: () => void;
+  onSubmitEdit: (user: IUserDTO) => Promise<void>;
 }
 
 export function DialogEditUser({
@@ -16,7 +16,7 @@ export function DialogEditUser({
   open,
   onChange,
   onClose,
-  onSubmitEdit
+  onSubmitEdit,
 }: IDialogEditUser) {
   return (
     <Dialog open={open} onClose={onClose} title="Dados do Usuário">
@@ -45,9 +45,9 @@ export function DialogEditUser({
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>Cancelar</Button>
-          <Button onClick={onSubmitEdit}>Editar</Button>
+          <Button onClick={() => onSubmitEdit(user)}>Editar</Button>
         </DialogActions>
       </>
     </Dialog>
-  )
+  );
 }

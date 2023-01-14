@@ -1,141 +1,88 @@
-import { useEffect } from 'react'
-import { useUser } from '../../hooks/network/useUser'
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from "react";
+import { useUser } from "../../hooks/network/useUser";
 
-import { BaseLayout } from '../../layout/BaseLayout'
-import { DialogEditUser } from './components/DialogEditUser'
-import { DialogDeleteUser } from './components/DialogDeleteUser'
-import { LoadingComponent } from '../../components/Loading'
-import { EmptyItem } from '../../components/EmptyItem'
-import { Button } from '../../components/Button'
-import { ContentButton } from '../games/styles'
-import { DialogCreateUser } from './components/DialogCreateUser'
-import { Pagination } from '../../components/Pagination'
+import { Button } from "../../components/Button";
+import { EmptyItem } from "../../components/EmptyItem";
+import { BaseLayout } from "../../layout/BaseLayout";
+import { ContentButton } from "../games/styles";
+import { DialogCreateUser } from "./components/DialogCreateUser";
+import { DialogDeleteUser } from "./components/DialogDeleteUser";
+import { DialogEditUser } from "./components/DialogEditUser";
 
-import EditIcon from '@mui/icons-material/Edit'
-import DeleteIcon from '@mui/icons-material/Delete'
-
-import { Container, ContentAction, Message, TableContainer } from './styles'
+import { IUserDTO } from "../../dtos/IUserDTO";
+import { TableUser } from "./components/TableUser";
+import { initStateUserForm } from "./schema";
+import { Container, Message } from "./styles";
 
 export function Users() {
   const {
-    loadingUsersState,
-    setLoadingUsersState,
     allUsersState,
-    initStateForm,
-    userState,
-    setUserState,
-    handleOpenModalCreate,
-    handleOpenModalEdit,
-    handleOpenModalDelete,
     showModalCreate,
     showModalDelete,
     showModalEdit,
-    handleCloseModalCreate,
-    handleCloseModalDelete,
-    handleCloseModalEdit,
+    totalPage,
+    page,
     handleSubmitCreateUser,
     handleSubmitDeleteUser,
     handleSubmitEditUser,
-    totalPage,
-    page,
     handleChangePage,
-    getUsersPaged
-  } = useUser()
+    getUsersPaged,
+    onToggleModalCreate,
+    onToggleModalDelete,
+    onToggleModalEdit,
+  } = useUser();
+
+  const [userState, setUserState] = useState<IUserDTO>(initStateUserForm);
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const { name } = event.target
-    const { value } = event.target
-    setUserState(values => ({ ...values, [name]: value }))
+    const { name } = event.target;
+    const { value } = event.target;
+    setUserState((values) => ({ ...values, [name]: value }));
   }
 
   useEffect(() => {
-    getUsersPaged(page)
-  }, [page])
+    getUsersPaged(page);
+  }, [page]);
 
   return (
     <BaseLayout>
       <>
         <Container>
-          {loadingUsersState ? (
-            <LoadingComponent
-              open={loadingUsersState}
-              onClose={() => setLoadingUsersState(false)}
-            />
-          ) : (
-            <>
-              {allUsersState?.length === 0 ? (
-                <Message>
-                  <EmptyItem message="Nenhum usuário encontrado 😢" />
-                </Message>
-              ) : (
-                <>
-                  <ContentButton>
-                    <Button
-                      onClick={() => {
-                        setUserState(initStateForm)
-                        handleOpenModalCreate()
-                      }}
-                    >
-                      Novo Usuário
-                    </Button>
-                  </ContentButton>
-                  <TableContainer>
-                    <table>
-                      <thead>
-                        <tr>
-                          <td>Nome</td>
-                          <td>E-mail</td>
-                          <td>Ações</td>
-                        </tr>
-                      </thead>
-
-                      <tbody>
-                        {allUsersState?.map(user => (
-                          <tr key={user.id}>
-                            <td>{user.name}</td>
-                            <td>{user.email}</td>
-                            <td>
-                              <ContentAction>
-                                <EditIcon
-                                  color="action"
-                                  onClick={() => {
-                                    setUserState({
-                                      id: user.id,
-                                      name: user.name,
-                                      email: user.email,
-                                      password: user.password
-                                    })
-                                    handleOpenModalEdit(userState)
-                                  }}
-                                />
-                                <DeleteIcon
-                                  color="warning"
-                                  onClick={() => {
-                                    setUserState({ id: user.id, ...user })
-                                    handleOpenModalDelete(userState)
-                                  }}
-                                />
-                              </ContentAction>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </TableContainer>
-                  <Pagination
-                    count={totalPage}
-                    page={Number(page)}
-                    onChange={(_, newPage) => handleChangePage(newPage)}
-                  />
-                </>
-              )}
-            </>
-          )}
+          <>
+            {allUsersState.length >= 0 ? (
+              <>
+                <ContentButton>
+                  <Button
+                    onClick={() => {
+                      setUserState(initStateUserForm);
+                      onToggleModalCreate();
+                    }}
+                  >
+                    Novo Usuário
+                  </Button>
+                </ContentButton>
+                <TableUser
+                  allUsersState={allUsersState}
+                  handleChangePage={handleChangePage}
+                  onToggleModalDelete={onToggleModalDelete}
+                  onToggleModalEdit={onToggleModalEdit}
+                  page={page}
+                  setUserState={setUserState}
+                  totalPage={totalPage}
+                />
+              </>
+            ) : (
+              <Message>
+                <EmptyItem message="Nenhum usuário encontrado 😢" />
+              </Message>
+            )}
+          </>
         </Container>
 
         <DialogCreateUser
           open={showModalCreate}
-          onClose={handleCloseModalCreate}
+          onClose={onToggleModalCreate}
           onChange={handleChange}
           onSubmitCreate={handleSubmitCreateUser}
           user={userState}
@@ -143,7 +90,7 @@ export function Users() {
 
         <DialogEditUser
           open={showModalEdit}
-          onClose={handleCloseModalEdit}
+          onClose={onToggleModalEdit}
           onChange={handleChange}
           onSubmitEdit={handleSubmitEditUser}
           user={userState}
@@ -151,10 +98,11 @@ export function Users() {
 
         <DialogDeleteUser
           open={showModalDelete}
-          onClose={handleCloseModalDelete}
+          onClose={onToggleModalDelete}
           onSubmitDelete={handleSubmitDeleteUser}
+          user={userState}
         />
       </>
     </BaseLayout>
-  )
+  );
 }
