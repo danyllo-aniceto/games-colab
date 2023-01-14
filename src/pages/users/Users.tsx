@@ -6,9 +6,8 @@ import { Button } from "../../components/Button";
 import { EmptyItem } from "../../components/EmptyItem";
 import { BaseLayout } from "../../layout/BaseLayout";
 import { ContentButton } from "../games/styles";
-import { DialogCreateUser } from "./components/DialogCreateUser";
 import { DialogDeleteUser } from "./components/DialogDeleteUser";
-import { DialogEditUser } from "./components/DialogEditUser";
+import { DialogFormUser } from "./components/DialogFormUser";
 
 import { IUserDTO } from "../../dtos/IUserDTO";
 import { TableUser } from "./components/TableUser";
@@ -80,20 +79,26 @@ export function Users() {
           </>
         </Container>
 
-        <DialogCreateUser
+        <DialogFormUser
           open={showModalCreate}
           onClose={onToggleModalCreate}
           onChange={handleChange}
-          onSubmitCreate={handleSubmitCreateUser}
+          onSubmit={handleSubmitCreateUser}
           user={userState}
+          title="Cadastro de usuário"
+          textButtonConfirm="Cadastrar usuário"
+          textButtonCancel="Cancelar"
         />
 
-        <DialogEditUser
+        <DialogFormUser
           open={showModalEdit}
           onClose={onToggleModalEdit}
           onChange={handleChange}
-          onSubmitEdit={handleSubmitEditUser}
+          onSubmit={handleSubmitEditUser}
           user={userState}
+          title="Dados de usuário"
+          textButtonConfirm="Editar usuário"
+          textButtonCancel="Cancelar"
         />
 
         <DialogDeleteUser

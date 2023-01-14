@@ -1,51 +1,58 @@
 import { DialogContent, DialogActions, Button } from "@mui/material";
+import React from "react";
 import { InputField } from "../../../../components/InputField";
 import { IUserDTO } from "../../../../dtos/IUserDTO";
 import { Dialog } from "../../../../components/StyledDialog";
 
-interface IDialogEditUser {
+interface IDialogFormUser {
+  title: string;
+  textButtonCancel: string;
+  textButtonConfirm: string;
   user: IUserDTO;
   open: boolean;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onClose: () => void;
-  onSubmitEdit: (user: IUserDTO) => Promise<void>;
+  onSubmit: (user: IUserDTO) => Promise<void>;
 }
 
-export function DialogEditUser({
+export function DialogFormUser({
   user,
   open,
+  textButtonCancel,
+  textButtonConfirm,
+  title,
   onChange,
   onClose,
-  onSubmitEdit,
-}: IDialogEditUser) {
+  onSubmit,
+}: IDialogFormUser) {
   return (
-    <Dialog open={open} onClose={onClose} title="Dados do Usuário">
+    <Dialog open={open} onClose={onClose} title={title}>
       <>
         <DialogContent>
           <InputField
+            value={user.name}
+            onChange={onChange}
             label="Nome"
             name="name"
-            onChange={onChange}
-            value={user.name}
           />
           <InputField
+            value={user.email}
+            onChange={onChange}
             label="E-mail"
             name="email"
-            onChange={onChange}
-            value={user.email}
             type="email"
           />
           <InputField
+            value={user.password}
+            onChange={onChange}
             label="Senha"
             name="password"
-            onChange={onChange}
-            value={user.password}
             type="password"
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose}>Cancelar</Button>
-          <Button onClick={() => onSubmitEdit(user)}>Editar</Button>
+          <Button onClick={onClose}>{textButtonCancel}</Button>
+          <Button onClick={() => onSubmit(user)}>{textButtonConfirm}</Button>
         </DialogActions>
       </>
     </Dialog>
