@@ -1,41 +1,29 @@
 import { useState } from 'react'
+import { useToast } from '../useToast'
+import { useLoading } from '../useLoading'
+
 import { IGameDTO } from '../../dtos/IGameDTO'
 import GameService from '../../services/GameService'
 import { AxiosError } from 'axios'
 import { ToastType } from '../../components/Toast/enum'
-import { useToast } from '../useToast'
 import { ILoadTopThreeGamesDTOResponse } from '../../services/GameService/dtos/ILoadTopThreeGamesDTO'
 
 export function useGame() {
   const { addToast } = useToast()
+  const { onToggleLoading } = useLoading()
   const gameService = new GameService()
 
   const [allGamesState, setAllGamesState] = useState<IGameDTO[]>([])
   const [listTopThreeGames, setTopThreeGames] = useState<
     ILoadTopThreeGamesDTOResponse[]
   >([])
-  const [loadingGamesState, setLoadingGamesState] = useState(false)
-  const [loadingFormState, setLoadingFormState] = useState(false)
-
-  const [dataActionState, setDataActionState] = useState<IGameDTO>()
 
   const [showModalCreate, setShowModalCreate] = useState(false)
   const [showModalEdit, setShowModalEdit] = useState(false)
   const [showModalDelete, setShowModalDelete] = useState(false)
-
-  const handleOpenModalCreate = () => setShowModalCreate(true)
-  const handleOpenModalEdit = (data: IGameDTO) => {
-    setDataActionState(data)
-    setShowModalEdit(true)
-  }
-  const handleOpenModalDelete = (data: IGameDTO) => {
-    setDataActionState(data)
-    setShowModalDelete(true)
-  }
-
-  const handleCloseModalCreate = () => setShowModalCreate(false)
-  const handleCloseModalEdit = () => setShowModalEdit(false)
-  const handleCloseModalDelete = () => setShowModalDelete(false)
+  const onToggleModalCreate = () => setShowModalCreate(prev => !prev)
+  const onToggleModalEdit = () => setShowModalEdit(prev => !prev)
+  const onToggleModalDelete = () => setShowModalDelete(prev => !prev)
 
   const initStateForm = {
     id: null,
@@ -53,7 +41,7 @@ export function useGame() {
   const [gameState, setGameState] = useState<IGameDTO>(initStateForm)
 
   async function getGames(): Promise<void> {
-    setLoadingGamesState(true)
+    onToggleLoading()
 
     try {
       const response = await gameService.loadAll()
@@ -65,12 +53,12 @@ export function useGame() {
         ToastType.ERROR
       )
     } finally {
-      setLoadingGamesState(false)
+      onToggleLoading()
     }
   }
 
   async function getGameById(id: number): Promise<void> {
-    setLoadingGamesState(true)
+    onToggleLoading()
     try {
       const response = await gameService.loadById(id)
       setGameState(response)
@@ -81,12 +69,12 @@ export function useGame() {
         ToastType.ERROR
       )
     } finally {
-      setLoadingGamesState(false)
+      onToggleLoading()
     }
   }
 
   async function getTopThreeGames(): Promise<void> {
-    setLoadingGamesState(true)
+    onToggleLoading()
     try {
       const response = await gameService.getTopThreeGames()
       setTopThreeGames(response)
@@ -97,19 +85,19 @@ export function useGame() {
         ToastType.ERROR
       )
     } finally {
-      setLoadingGamesState(false)
+      onToggleLoading()
     }
   }
 
   // deploy
   async function handleSubmitCreateGame() {
-    setLoadingFormState(true)
+    onToggleLoading()
 
     if (gameState.file) {
       console.log(gameState.file)
       try {
         await gameService.createUpload(gameState)
-        handleCloseModalCreate()
+        onToggleModalCreate()
         addToast('Jogo criado com sucesso!', ToastType.SUCCESS)
         getGames()
       } catch (error) {
@@ -122,7 +110,7 @@ export function useGame() {
     } else {
       try {
         await gameService.create(gameState)
-        handleCloseModalCreate()
+        onToggleModalCreate()
         addToast('Jogo criado com sucesso!', ToastType.SUCCESS)
         getGames()
       } catch (error) {
@@ -133,15 +121,15 @@ export function useGame() {
         )
       }
     }
-    setLoadingFormState(false)
+    onToggleLoading()
     setGameState(initStateForm)
   }
 
   async function handleSubmitEditGame() {
-    setLoadingFormState(true)
+    onToggleLoading()
     try {
       await gameService.updateById(gameState)
-      handleCloseModalEdit()
+      onToggleModalEdit()
       addToast('Game editada com sucesso!', ToastType.SUCCESS)
       getGames()
     } catch (error) {
@@ -151,15 +139,15 @@ export function useGame() {
         ToastType.ERROR
       )
     } finally {
-      setLoadingFormState(false)
+      onToggleLoading()
     }
   }
 
   async function handleSubmitDeleteGame() {
-    setLoadingFormState(true)
+    onToggleLoading()
     try {
       await gameService.deleteById(gameState.id)
-      handleCloseModalDelete()
+      onToggleModalDelete()
       addToast('Game deletada com sucesso!', ToastType.SUCCESS)
       getGames()
     } catch (error) {
@@ -169,7 +157,7 @@ export function useGame() {
         ToastType.ERROR
       )
     } finally {
-      setLoadingFormState(false)
+      onToggleLoading()
     }
   }
 
@@ -177,21 +165,14 @@ export function useGame() {
     allGamesState,
     listTopThreeGames,
     gameState,
-    setGameState,
     initStateForm,
-    loadingGamesState,
-    setLoadingGamesState,
-    loadingFormState,
     showModalCreate,
     showModalEdit,
     showModalDelete,
-    dataActionState,
-    handleOpenModalCreate,
-    handleOpenModalEdit,
-    handleOpenModalDelete,
-    handleCloseModalCreate,
-    handleCloseModalEdit,
-    handleCloseModalDelete,
+    onToggleModalCreate,
+    onToggleModalDelete,
+    onToggleModalEdit,
+    setGameState,
     getGames,
     getGameById,
     getTopThreeGames,

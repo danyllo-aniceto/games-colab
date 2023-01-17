@@ -5,9 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import React from 'react'
 
 import { Button } from '../../components/Button'
-import { LoadingComponent } from '../../components/Loading'
 import { BaseLayout } from '../../layout/BaseLayout'
-import { DialogDeleteGame } from './components/DialogDeleteGame'
 import { DialogEditGame } from './components/DialogEditGame'
 import { EvaluationContainer } from './components/EvaluationContainer'
 
@@ -28,29 +26,22 @@ import {
   Img,
   MobileGameInformation
 } from './styles'
+import { DialogDelete } from '../../components/DialogDelete'
 
 export function GameDisplay() {
   const {
-    loadingGamesState,
-    setLoadingGamesState,
     gameState,
-    setGameState,
     showModalDelete,
     showModalEdit,
-    handleOpenModalDelete,
-    handleCloseModalDelete,
-    handleOpenModalEdit,
-    handleCloseModalEdit,
+    setGameState,
     handleSubmitEditGame,
     handleSubmitDeleteGame,
-    getGameById
+    getGameById,
+    onToggleModalDelete,
+    onToggleModalEdit
   } = useGame()
 
-  const {
-    loadingEvaluationsState,
-    setLoadingEvaluationsState,
-    getEvaluationByIdGame
-  } = useEvaluation()
+  const { getEvaluationByIdGame } = useEvaluation()
 
   const { id } = useParams<'id'>()
   const navigate = useNavigate()
@@ -72,112 +63,103 @@ export function GameDisplay() {
     <BaseLayout>
       <>
         <Container>
-          {loadingGamesState || loadingEvaluationsState ? (
-            <LoadingComponent
-              open={loadingGamesState || loadingEvaluationsState}
-              onClose={() => {
-                setLoadingGamesState(false)
-                setLoadingEvaluationsState(false)
-              }}
-            />
-          ) : (
-            <>
-              <GameTitle>{gameState?.name}</GameTitle>
-              <Content>
-                <MainContent>
-                  <Img src={gameState?.image} alt={gameState?.name} />
+          <>
+            <GameTitle>{gameState?.name}</GameTitle>
+            <Content>
+              <MainContent>
+                <Img src={gameState?.image} alt={gameState?.name} />
 
-                  <Summary>
-                    <SubTitle>Resumo</SubTitle>
-                    <div>
-                      &nbsp;{gameState?.summary}
-                      <MobileGameInformation>
-                        &nbsp;O jogo foi desenvolvido por {gameState?.developer}{' '}
-                        e apresenta o gênero(s) de {gameState?.genre}
-                      </MobileGameInformation>
-                    </div>
+                <Summary>
+                  <SubTitle>Resumo</SubTitle>
+                  <div>
+                    &nbsp;{gameState?.summary}
+                    <MobileGameInformation>
+                      &nbsp;O jogo foi desenvolvido por {gameState?.developer} e
+                      apresenta o gênero(s) de {gameState?.genre}
+                    </MobileGameInformation>
+                  </div>
 
-                    <TableContent>
-                      <table>
-                        <thead>
-                          <tr>
-                            <td>Desenvolvedor</td>
-                            <td>Gênero</td>
-                            <td>Plataforma</td>
-                            <td>Rating</td>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>{gameState?.developer}</td>
-                            <td>{gameState?.genre}</td>
-                            <td>{gameState?.idPlatform}</td>
-                            <td>{gameState?.rating}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </TableContent>
-                  </Summary>
-                </MainContent>
+                  <TableContent>
+                    <table>
+                      <thead>
+                        <tr>
+                          <td>Desenvolvedor</td>
+                          <td>Gênero</td>
+                          <td>Plataforma</td>
+                          <td>Rating</td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>{gameState?.developer}</td>
+                          <td>{gameState?.genre}</td>
+                          <td>{gameState?.idPlatform}</td>
+                          <td>{gameState?.rating}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </TableContent>
+                </Summary>
+              </MainContent>
 
-                <SecondaryContent>
-                  <ContentRaiting>
-                    <Typography component="legend">Rating</Typography>
-                    <Rating
-                      name="read-only"
-                      value={gameState.rating}
-                      readOnly
-                    />
-                  </ContentRaiting>
+              <SecondaryContent>
+                <ContentRaiting>
+                  <Typography component="legend">Rating</Typography>
+                  <Rating name="read-only" value={gameState.rating} readOnly />
+                </ContentRaiting>
 
-                  <ContentButtons>
-                    <Button
-                      onClick={() => {
-                        setGameState({
-                          id: gameState.id,
-                          name: gameState.name,
-                          idPlatform: gameState.idPlatform,
-                          developer: gameState.developer,
-                          genre: gameState.genre,
-                          image: gameState.image,
-                          rating: gameState.rating,
-                          summary: gameState.summary,
-                          file: gameState.file
-                        })
-                        handleOpenModalEdit(gameState)
-                      }}
-                    >
-                      Editar
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        setGameState({ id: gameState.id, ...gameState })
-                        handleOpenModalDelete(gameState)
-                      }}
-                    >
-                      Deletar
-                    </Button>
-                    <Button onClick={() => navigate('/games')}>Voltar</Button>
-                  </ContentButtons>
-                </SecondaryContent>
+                <ContentButtons>
+                  <Button
+                    onClick={() => {
+                      setGameState({
+                        id: gameState.id,
+                        name: gameState.name,
+                        idPlatform: gameState.idPlatform,
+                        developer: gameState.developer,
+                        genre: gameState.genre,
+                        image: gameState.image,
+                        rating: gameState.rating,
+                        summary: gameState.summary,
+                        file: gameState.file
+                      })
+                      onToggleModalEdit()
+                    }}
+                  >
+                    Editar
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setGameState({ id: gameState.id, ...gameState })
+                      onToggleModalDelete()
+                    }}
+                  >
+                    Deletar
+                  </Button>
+                  <Button onClick={() => navigate('/games')}>Voltar</Button>
+                </ContentButtons>
+              </SecondaryContent>
 
-                <EvaluationContainer />
-              </Content>
-            </>
-          )}
+              <EvaluationContainer />
+            </Content>
+          </>
         </Container>
         <DialogEditGame
           open={showModalEdit}
-          onClose={handleCloseModalEdit}
+          onClose={onToggleModalEdit}
           onChange={handleChange}
           onSubmitEdit={handleSubmitEditGame}
           game={gameState}
         />
 
-        <DialogDeleteGame
+        <DialogDelete
           open={showModalDelete}
-          onClose={handleCloseModalDelete}
+          onClose={onToggleModalDelete}
           onSubmitDelete={handleSubmitDeleteGame}
+          deleteConfirmationText={'Tem certeza que deseja excluir este jogo?'}
+          entity={gameState}
+          textButtonCancel={'Cancelar'}
+          textButtonConfirm={'Deletar Jogo'}
+          title={'Deletar Jogo'}
         />
       </>
     </BaseLayout>

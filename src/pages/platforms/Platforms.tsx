@@ -7,7 +7,6 @@ import addImg from '../../assets/add.svg'
 import { BaseLayout } from '../../layout/BaseLayout'
 import { DialogDeletePlatform } from './components/DialogDeletePlatform'
 import { DialogEditPlatform } from './components/DialogEditPlatform'
-import { LoadingComponent } from '../../components/Loading'
 import { DialogCreatePlatform } from './components/DialogCreatePlatform'
 import { EmptyItem } from '../../components/EmptyItem'
 import { ContentDefault, MessageDefault } from '../../styles/global'
@@ -20,24 +19,19 @@ import { ContentPlatforms, Platform, Container, ContentAction } from './styles'
 export function Platforms() {
   const {
     platformState,
-    setPlatformState,
-    loadingPlatformsState,
-    setLoadingPlatformsState,
     allPlatformsState,
-    getPlatforms,
     initStateForm,
-    handleOpenModalCreate,
-    handleOpenModalEdit,
-    handleOpenModalDelete,
     showModalCreate,
     showModalDelete,
     showModalEdit,
-    handleCloseModalCreate,
-    handleCloseModalDelete,
-    handleCloseModalEdit,
+    setPlatformState,
+    getPlatforms,
     handleSubmitCreatePlatform,
     handleSubmitDeletePlatform,
-    handleSubmitEditPlatform
+    handleSubmitEditPlatform,
+    onToggleModalCreate,
+    onToggleModalDelete,
+    onToggleModalEdit
   } = usePlatform()
 
   const navigate = useNavigate()
@@ -56,102 +50,95 @@ export function Platforms() {
     <BaseLayout>
       <>
         <Container>
-          {loadingPlatformsState ? (
-            <LoadingComponent
-              open={loadingPlatformsState}
-              onClose={() => setLoadingPlatformsState(false)}
-            />
-          ) : (
-            <>
-              {allPlatformsState.length === 0 ? (
-                <>
-                  <ContentDefault>
-                    <MessageDefault>
-                      <EmptyItem message="Nenhuma plataforma cadastrada 😥" />
-                    </MessageDefault>
+          <>
+            {allPlatformsState.length === 0 ? (
+              <>
+                <ContentDefault>
+                  <MessageDefault>
+                    <EmptyItem message="Nenhuma plataforma cadastrada 😥" />
+                  </MessageDefault>
 
+                  <Platform
+                    onClick={() => {
+                      setPlatformState(initStateForm)
+                      onToggleModalCreate()
+                    }}
+                  >
+                    <img src={addImg} alt="Adicionar nova plataforma" />
+                    <div className="description">
+                      <h2>Nova Plataforma</h2>
+                    </div>
+                  </Platform>
+                </ContentDefault>
+              </>
+            ) : (
+              <>
+                <h1>Escolha sua plataforma preferida:</h1>
+                <ContentPlatforms>
+                  {allPlatformsState.map(platform => (
                     <Platform
-                      onClick={() => {
-                        setPlatformState(initStateForm)
-                        handleOpenModalCreate()
-                      }}
+                      onClick={() =>
+                        navigate(`/bestPlatformGames/${platform.id}`)
+                      }
+                      key={platform.id}
                     >
-                      <img src={addImg} alt="Adicionar nova plataforma" />
-                      <div className="description">
-                        <h2>Nova Plataforma</h2>
-                      </div>
-                    </Platform>
-                  </ContentDefault>
-                </>
-              ) : (
-                <>
-                  <h1>Escolha sua plataforma preferida:</h1>
-                  <ContentPlatforms>
-                    {allPlatformsState.map(platform => (
-                      <Platform
+                      <ContentAction>
+                        <div>
+                          <EditIcon
+                            color="action"
+                            onClick={e => {
+                              e.stopPropagation()
+                              setPlatformState({
+                                id: platform.id,
+                                name: platform.name,
+                                image: platform.image
+                              })
+                              onToggleModalEdit()
+                            }}
+                          />
+                        </div>
+                        <div>
+                          <DeleteIcon
+                            color="warning"
+                            onClick={e => {
+                              e.stopPropagation()
+                              setPlatformState({
+                                id: platform.id,
+                                ...platform
+                              })
+                              onToggleModalDelete()
+                            }}
+                          />
+                        </div>
+                      </ContentAction>
+                      <img
+                        src={platform.image}
+                        alt={platform.name}
                         onClick={() =>
-                          navigate(`/bestPlatformGames/${platform.id}`)
+                          navigate(`/bestConsoleGames/${platform.id}`)
                         }
-                        key={platform.id}
-                      >
-                        <ContentAction>
-                          <div>
-                            <EditIcon
-                              color="action"
-                              onClick={e => {
-                                e.stopPropagation()
-                                setPlatformState({
-                                  id: platform.id,
-                                  name: platform.name,
-                                  image: platform.image
-                                })
-                                handleOpenModalEdit(platformState)
-                              }}
-                            />
-                          </div>
-                          <div>
-                            <DeleteIcon
-                              color="warning"
-                              onClick={e => {
-                                e.stopPropagation()
-                                setPlatformState({
-                                  id: platform.id,
-                                  ...platform
-                                })
-                                handleOpenModalDelete(platformState)
-                              }}
-                            />
-                          </div>
-                        </ContentAction>
-                        <img
-                          src={platform.image}
-                          alt={platform.name}
-                          onClick={() =>
-                            navigate(`/bestConsoleGames/${platform.id}`)
-                          }
-                        />
-                      </Platform>
-                    ))}
-                    <Platform
-                      onClick={() => {
-                        setPlatformState(initStateForm)
-                        handleOpenModalCreate()
-                      }}
-                    >
-                      <img src={addImg} alt="Adicionar nova plataforma" />
-                      <div className="description">
-                        <h2>Nova Plataforma</h2>
-                      </div>
+                      />
                     </Platform>
-                  </ContentPlatforms>
-                </>
-              )}
-            </>
-          )}
+                  ))}
+                  <Platform
+                    onClick={() => {
+                      setPlatformState(initStateForm)
+                      onToggleModalCreate()
+                    }}
+                  >
+                    <img src={addImg} alt="Adicionar nova plataforma" />
+                    <div className="description">
+                      <h2>Nova Plataforma</h2>
+                    </div>
+                  </Platform>
+                </ContentPlatforms>
+              </>
+            )}
+          </>
         </Container>
         <DialogCreatePlatform
           open={showModalCreate}
-          onClose={handleCloseModalCreate}
+          onClose={onToggleModalCreate}
           onChange={handleChange}
           onSubmitCreate={handleSubmitCreatePlatform}
           platform={platformState}
@@ -159,7 +146,7 @@ export function Platforms() {
 
         <DialogEditPlatform
           open={showModalEdit}
-          onClose={handleCloseModalEdit}
+          onClose={onToggleModalEdit}
           onChange={handleChange}
           onSubmitEdit={handleSubmitEditPlatform}
           platform={platformState}
@@ -167,7 +154,7 @@ export function Platforms() {
 
         <DialogDeletePlatform
           open={showModalDelete}
-          onClose={handleCloseModalDelete}
+          onClose={onToggleModalDelete}
           onSubmitDelete={handleSubmitDeletePlatform}
         />
       </>

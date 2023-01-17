@@ -1,39 +1,27 @@
-import { AxiosError } from 'axios'
 import { useState } from 'react'
+import { useLoading } from '../useLoading'
+import { useToast } from '../useToast'
+
+import { AxiosError } from 'axios'
 import { ToastType } from '../../components/Toast/enum'
 import { IEvaluationDTO } from '../../dtos/IEvaluationDTO'
 import EvaluationService from '../../services/EvaluationService'
-import { useToast } from '../useToast'
 
 export function useEvaluation() {
   const { addToast } = useToast()
+  const { onToggleLoading } = useLoading()
   const evaluationService = new EvaluationService()
 
   const [allEvaluationsState, setAllEvaluationsState] = useState<
     IEvaluationDTO[]
   >([])
-  const [loadingEvaluationsState, setLoadingEvaluationsState] = useState(false)
-  const [loadingFormState, setLoadingFormState] = useState(false)
 
-  const [dataActionState, setDataActionState] = useState<IEvaluationDTO>()
-
-  const [showModalCreate, setShowModalCreate] = useState(false)
   const [showModalEdit, setShowModalEdit] = useState(false)
   const [showModalDeleteEvaluation, setShowModalDeleteEvaluation] =
     useState(false)
 
-  const handleOpenModalCreate = () => setShowModalCreate(true)
-  const handleOpenModalEdit = (data: IEvaluationDTO) => {
-    setDataActionState(data)
-    setShowModalEdit(true)
-  }
-  const handleOpenModalDeleteEvaluation = () =>
-    setShowModalDeleteEvaluation(true)
-
-  const handleCloseModalCreate = () => setShowModalCreate(false)
-  const handleCloseModalEdit = () => setShowModalEdit(false)
-  const handleCloseModalDeleteEvaluation = () =>
-    setShowModalDeleteEvaluation(false)
+  const onToggleModalEdit = () => setShowModalEdit(prev => !prev)
+  const onToggleModalDelete = () => setShowModalDeleteEvaluation(prev => !prev)
 
   const initStateFormEvaluation = {
     id: null,
@@ -48,7 +36,7 @@ export function useEvaluation() {
   )
 
   async function getEvaluations(): Promise<void> {
-    setLoadingEvaluationsState(true)
+    onToggleLoading()
 
     try {
       const response = await evaluationService.loadAll()
@@ -60,12 +48,12 @@ export function useEvaluation() {
         ToastType.ERROR
       )
     } finally {
-      setLoadingEvaluationsState(false)
+      onToggleLoading()
     }
   }
 
   async function getEvaluationById(id: number): Promise<void> {
-    setLoadingEvaluationsState(true)
+    onToggleLoading()
     try {
       const response = await evaluationService.loadById(id)
       setEvaluationState(response)
@@ -76,12 +64,12 @@ export function useEvaluation() {
         ToastType.ERROR
       )
     } finally {
-      setLoadingEvaluationsState(false)
+      onToggleLoading()
     }
   }
 
   async function handleSubmitCreateEvaluation(evaluationState: IEvaluationDTO) {
-    setLoadingFormState(true)
+    onToggleLoading()
     try {
       await evaluationService.create(evaluationState)
       addToast('Avaliação criada com sucesso!', ToastType.SUCCESS)
@@ -93,13 +81,15 @@ export function useEvaluation() {
       )
     } finally {
       setEvaluationState(initStateFormEvaluation)
+      onToggleLoading()
     }
   }
 
   async function handleSubmitEditEvaluation() {
+    onToggleLoading()
     try {
       await evaluationService.updateById(evaluationState)
-      handleCloseModalEdit()
+      onToggleModalEdit()
       addToast('Avaliação editada com sucesso!', ToastType.SUCCESS)
       getEvaluations()
     } catch (error) {
@@ -108,6 +98,8 @@ export function useEvaluation() {
         `Falha ao editar avaliação - ${response?.data?.message}`,
         ToastType.ERROR
       )
+    } finally {
+      onToggleLoading()
     }
   }
 
@@ -115,9 +107,10 @@ export function useEvaluation() {
     eva: IEvaluationDTO,
     idGame: number
   ) {
+    onToggleLoading()
     try {
       await evaluationService.deleteById(eva.id)
-      handleCloseModalDeleteEvaluation()
+      onToggleModalDelete()
       addToast('Avaliação deletada com sucesso!', ToastType.SUCCESS)
       getEvaluationByIdGame(idGame)
     } catch (error) {
@@ -126,10 +119,13 @@ export function useEvaluation() {
         `Falha ao deletar avaliação - ${response?.data?.message}`,
         ToastType.ERROR
       )
+    } finally {
+      onToggleLoading()
     }
   }
 
   async function getEvaluationByIdGame(idGame: number): Promise<void> {
+    onToggleLoading()
     try {
       const response = await evaluationService.loadByIdGame(idGame)
       setAllEvaluationsState(response)
@@ -139,32 +135,25 @@ export function useEvaluation() {
         `Falha ao buscar avaliações do jogo - ${response?.data?.message}`,
         ToastType.ERROR
       )
+    } finally {
+      onToggleLoading()
     }
   }
 
   return {
     allEvaluationsState,
     evaluationState,
-    setEvaluationState,
     initStateFormEvaluation,
-    loadingEvaluationsState,
-    setLoadingEvaluationsState,
-    loadingFormState,
-    showModalCreate,
     showModalEdit,
     showModalDeleteEvaluation,
-    dataActionState,
-    handleOpenModalCreate,
-    handleOpenModalEdit,
-    handleOpenModalDeleteEvaluation,
-    handleCloseModalCreate,
-    handleCloseModalEdit,
-    handleCloseModalDeleteEvaluation,
+    setEvaluationState,
     getEvaluations,
     getEvaluationById,
     getEvaluationByIdGame,
     handleSubmitCreateEvaluation,
     handleSubmitEditEvaluation,
-    handleSubmitDeleteEvaluation
+    handleSubmitDeleteEvaluation,
+    onToggleModalDelete,
+    onToggleModalEdit
   }
 }

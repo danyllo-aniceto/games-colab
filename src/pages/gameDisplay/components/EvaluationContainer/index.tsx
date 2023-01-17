@@ -29,12 +29,11 @@ import { DialogDeleteEvaluation } from '../DialogDeleteEvaluation'
 export function EvaluationContainer() {
   const {
     handleSubmitCreateEvaluation,
-    allEvaluationsState,
-    handleOpenModalDeleteEvaluation,
+    handleSubmitDeleteEvaluation,
     getEvaluationByIdGame,
     showModalDeleteEvaluation,
-    handleCloseModalDeleteEvaluation,
-    handleSubmitDeleteEvaluation
+    allEvaluationsState,
+    onToggleModalDelete
   } = useEvaluation()
 
   const { id } = useParams<'id'>()
@@ -130,7 +129,7 @@ export function EvaluationContainer() {
                   id: eva.id,
                   ...eva
                 })
-                handleOpenModalDeleteEvaluation()
+                onToggleModalDelete()
                 console.log(eva)
               }}
             />
@@ -140,7 +139,7 @@ export function EvaluationContainer() {
 
       <DialogDeleteEvaluation
         open={showModalDeleteEvaluation}
-        onClose={handleCloseModalDeleteEvaluation}
+        onClose={onToggleModalDelete}
         evaluationState={evaluationState}
         onSubmitDelete={handleSubmitDeleteEvaluation}
         idGame={idGame}

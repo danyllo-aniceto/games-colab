@@ -5,7 +5,6 @@ import { usePlatform } from '../../hooks/network/usePlatform'
 
 import { Button } from '../../components/Button'
 import { EmptyState } from '../../components/EmptyState'
-import { LoadingComponent } from '../../components/Loading'
 import { BaseLayout } from '../../layout/BaseLayout'
 import { DialogCreateGame } from './components/DialogCreateGame'
 import { ShowDesktopScreenGame } from './components/ShowDesktopScreenGame'
@@ -57,21 +56,13 @@ export function Games() {
     gameState,
     setGameState,
     initStateForm,
-    loadingGamesState,
-    setLoadingGamesState,
     showModalCreate,
-    handleOpenModalCreate,
-    handleCloseModalCreate,
     getGames,
-    handleSubmitCreateGame
+    handleSubmitCreateGame,
+    onToggleModalCreate
   } = useGame()
 
-  const {
-    getPlatforms,
-    allPlatformsState,
-    loadingPlatformsState,
-    setLoadingPlatformsState
-  } = usePlatform()
+  const { getPlatforms, allPlatformsState } = usePlatform()
 
   useEffect(() => {
     getGames()
@@ -81,51 +72,41 @@ export function Games() {
   return (
     <BaseLayout>
       <Container>
-        {loadingGamesState || loadingPlatformsState ? (
-          <LoadingComponent
-            open={loadingGamesState || loadingPlatformsState}
-            onClose={() => {
-              setLoadingGamesState(false)
-              setLoadingPlatformsState(false)
-            }}
-          />
-        ) : (
-          <>
-            {allGamesState.length === 0 ? (
-              <EmptyState
-                message="Nenhum jogo cadastrado 😥"
-                textButton="Novo Jogo"
-                onClickButton={() => {
-                  setGameState(initStateForm)
-                  handleOpenModalCreate()
-                }}
-              />
-            ) : (
-              <>
-                <ContentButton>
-                  <Button
-                    onClick={() => {
-                      setGameState(initStateForm)
-                      handleOpenModalCreate()
-                    }}
-                  >
-                    Novo Jogo
-                  </Button>
-                </ContentButton>
+        <>
+          {allGamesState.length === 0 ? (
+            <EmptyState
+              message="Nenhum jogo cadastrado 😥"
+              textButton="Novo Jogo"
+              onClickButton={() => {
+                setGameState(initStateForm)
+                onToggleModalCreate()
+              }}
+            />
+          ) : (
+            <>
+              <ContentButton>
+                <Button
+                  onClick={() => {
+                    setGameState(initStateForm)
+                    onToggleModalCreate()
+                  }}
+                >
+                  Novo Jogo
+                </Button>
+              </ContentButton>
 
-                {mobile ? (
-                  <ShowMobileScrenGame allGamesState={allGamesState} />
-                ) : (
-                  <ShowDesktopScreenGame allGamesState={allGamesState} />
-                )}
-              </>
-            )}
-          </>
-        )}
+              {mobile ? (
+                <ShowMobileScrenGame allGamesState={allGamesState} />
+              ) : (
+                <ShowDesktopScreenGame allGamesState={allGamesState} />
+              )}
+            </>
+          )}
+        </>
 
         <DialogCreateGame
           open={showModalCreate}
-          onClose={handleCloseModalCreate}
+          onClose={onToggleModalCreate}
           onChange={handleChange}
           onChangeSelect={handleChangeMultipleSelect}
           onChangeInputFile={handleChangeInputFile}

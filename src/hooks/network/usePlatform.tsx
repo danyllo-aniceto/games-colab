@@ -1,37 +1,26 @@
-import { AxiosError } from 'axios'
+import { useToast } from '../useToast'
 import { useState } from 'react'
+import { useLoading } from '../useLoading'
+
+import { AxiosError } from 'axios'
 import { ToastType } from '../../components/Toast/enum'
 import { IPlatformDTO } from '../../dtos/IPlatformDTO'
 import PlatformService from '../../services/PlatformService'
-import { useToast } from '../useToast'
 
 export function usePlatform() {
   const { addToast } = useToast()
+  const { onToggleLoading } = useLoading()
   const platformService = new PlatformService()
 
   const [allPlatformsState, setAllPlatformsState] = useState<IPlatformDTO[]>([])
-  const [loadingPlatformsState, setLoadingPlatformsState] = useState(false)
-  const [loadingFormState, setLoadingFormState] = useState(false)
-
-  const [dataActionState, setDataActionState] = useState<IPlatformDTO>()
 
   const [showModalCreate, setShowModalCreate] = useState(false)
   const [showModalEdit, setShowModalEdit] = useState(false)
   const [showModalDelete, setShowModalDelete] = useState(false)
 
-  const handleOpenModalCreate = () => setShowModalCreate(true)
-  const handleOpenModalEdit = (data: IPlatformDTO) => {
-    setDataActionState(data)
-    setShowModalEdit(true)
-  }
-  const handleOpenModalDelete = (data: IPlatformDTO) => {
-    setDataActionState(data)
-    setShowModalDelete(true)
-  }
-
-  const handleCloseModalCreate = () => setShowModalCreate(false)
-  const handleCloseModalEdit = () => setShowModalEdit(false)
-  const handleCloseModalDelete = () => setShowModalDelete(false)
+  const onToggleModalCreate = () => setShowModalCreate(prev => !prev)
+  const onToggleModalEdit = () => setShowModalEdit(prev => !prev)
+  const onToggleModalDelete = () => setShowModalDelete(prev => !prev)
 
   const initStateForm = {
     id: null,
@@ -43,7 +32,7 @@ export function usePlatform() {
     useState<IPlatformDTO>(initStateForm)
 
   async function getPlatforms(): Promise<void> {
-    setLoadingPlatformsState(true)
+    onToggleLoading()
 
     try {
       const response = await platformService.loadAll()
@@ -55,12 +44,12 @@ export function usePlatform() {
         ToastType.ERROR
       )
     } finally {
-      setLoadingPlatformsState(false)
+      onToggleLoading()
     }
   }
 
   async function getPlatformById(id: number): Promise<void> {
-    setLoadingPlatformsState(true)
+    onToggleLoading()
     try {
       const response = await platformService.loadById(id)
       setPlatformState(response)
@@ -71,16 +60,16 @@ export function usePlatform() {
         ToastType.ERROR
       )
     } finally {
-      setLoadingPlatformsState(false)
+      onToggleLoading()
     }
   }
 
   async function handleSubmitCreatePlatform() {
-    setLoadingFormState(true)
+    onToggleLoading()
 
     try {
       await platformService.create(platformState)
-      handleCloseModalCreate()
+      onToggleModalCreate()
       addToast('Plataforma criada com sucesso!', ToastType.SUCCESS)
       getPlatforms()
     } catch (error) {
@@ -91,13 +80,15 @@ export function usePlatform() {
       )
     } finally {
       setPlatformState(initStateForm)
+      onToggleLoading()
     }
   }
 
   async function handleSubmitEditPlatform() {
+    onToggleLoading()
     try {
       await platformService.updateById(platformState)
-      handleCloseModalEdit()
+      onToggleModalEdit()
       addToast('Plataforma editada com sucesso!', ToastType.SUCCESS)
       getPlatforms()
     } catch (error) {
@@ -106,13 +97,16 @@ export function usePlatform() {
         `Falha ao editar plataforma - ${response?.data?.message}`,
         ToastType.ERROR
       )
+    } finally {
+      onToggleLoading()
     }
   }
 
   async function handleSubmitDeletePlatform() {
+    onToggleLoading()
     try {
       await platformService.deleteById(platformState.id)
-      handleCloseModalDelete()
+      onToggleModalDelete()
       addToast('Plataforma deletada com sucesso!', ToastType.SUCCESS)
       getPlatforms()
     } catch (error) {
@@ -121,6 +115,8 @@ export function usePlatform() {
         `Falha ao deletar plataforma - ${response?.data?.message}`,
         ToastType.ERROR
       )
+    } finally {
+      onToggleLoading()
     }
   }
 
@@ -128,20 +124,13 @@ export function usePlatform() {
     allPlatformsState,
     platformState,
     initStateForm,
-    loadingPlatformsState,
-    setLoadingPlatformsState,
-    loadingFormState,
     showModalCreate,
     showModalEdit,
     showModalDelete,
-    dataActionState,
     setPlatformState,
-    handleOpenModalCreate,
-    handleOpenModalEdit,
-    handleOpenModalDelete,
-    handleCloseModalCreate,
-    handleCloseModalEdit,
-    handleCloseModalDelete,
+    onToggleModalCreate,
+    onToggleModalDelete,
+    onToggleModalEdit,
     getPlatforms,
     getPlatformById,
     handleSubmitCreatePlatform,
