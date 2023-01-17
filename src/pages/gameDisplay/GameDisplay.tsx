@@ -2,19 +2,17 @@ import { useGame } from '../../hooks/network/useGame'
 import { useEvaluation } from '../../hooks/network/useEvaluation'
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import React, { useState } from 'react'
+import React from 'react'
 
 import { Button } from '../../components/Button'
 import { LoadingComponent } from '../../components/Loading'
 import { BaseLayout } from '../../layout/BaseLayout'
 import { DialogDeleteGame } from './components/DialogDeleteGame'
 import { DialogEditGame } from './components/DialogEditGame'
-import { InputField } from '../../components/InputField'
+import { EvaluationContainer } from './components/EvaluationContainer'
 
-import DeleteIcon from '@mui/icons-material/Delete'
 import Rating from '@mui/material/Rating'
 import Typography from '@mui/material/Typography'
-import Box from '@mui/material/Box'
 
 import {
   Container,
@@ -24,22 +22,12 @@ import {
   SecondaryContent,
   MainContent,
   Summary,
-  EvaluationContent,
-  Evaluation,
-  StyleTextField,
-  RatingAndEvaluation,
   TableContent,
-  Comment,
-  ItemsComment,
-  CommentContent,
   SubTitle,
   GameTitle,
   Img,
   MobileGameInformation
 } from './styles'
-import { useAuth } from '../../hooks/useAuth'
-import { IEvaluationDTO } from '../../dtos/IEvaluationDTO'
-import { DialogDeleteEvaluation } from './components/DialogDeleteEvaluation'
 
 export function GameDisplay() {
   const {
@@ -61,44 +49,17 @@ export function GameDisplay() {
   const {
     loadingEvaluationsState,
     setLoadingEvaluationsState,
-    handleSubmitCreateEvaluation,
-    allEvaluationsState,
-    getEvaluationByIdGame,
-    handleOpenModalDeleteEvaluation,
-    showModalDeleteEvaluation,
-    handleCloseModalDeleteEvaluation,
-    handleSubmitDeleteEvaluation
+    getEvaluationByIdGame
   } = useEvaluation()
 
   const { id } = useParams<'id'>()
   const navigate = useNavigate()
-
-  const { userDecrypt } = useAuth()
-  const idUser = Number(userDecrypt?.sub)
-  const idGame = Number(id)
-
-  const initStateFormEvaluation = {
-    id: null,
-    comment: '',
-    idGame: idGame,
-    idUser: idUser,
-    rating: 0
-  }
-
-  const [evaluationState, setEvaluationState] = useState<IEvaluationDTO>(
-    initStateFormEvaluation
-  )
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name } = event.target
     const { value } = event.target
     setGameState(values => ({ ...values, [name]: value }))
     // setGameModal(values => ({ ...values, [name]: value }))
-  }
-  function handleChangeEvaluation(event: React.ChangeEvent<HTMLInputElement>) {
-    const { name } = event.target
-    const { value } = event.target
-    setEvaluationState(values => ({ ...values, [name]: value }))
   }
 
   useEffect(() => {
@@ -200,76 +161,7 @@ export function GameDisplay() {
                   </ContentButtons>
                 </SecondaryContent>
 
-                <EvaluationContent>
-                  <SubTitle>Contribua com sua avaliação!</SubTitle>
-
-                  <Evaluation>
-                    <Box
-                      sx={{
-                        width: 800,
-                        maxWidth: '100%'
-                      }}
-                    >
-                      <StyleTextField>
-                        {/* <TextField fullWidth label="Comentário" /> */}
-                        <InputField
-                          label="Comentário"
-                          name={'comment'}
-                          onChange={handleChangeEvaluation}
-                          value={evaluationState.comment}
-                          variant="outlined"
-                          isTextArea
-                        />
-                      </StyleTextField>
-                    </Box>
-                    <RatingAndEvaluation>
-                      <div>
-                        <Typography component="legend">Nota</Typography>
-                        <Rating
-                          name={'rating'}
-                          value={evaluationState.rating}
-                          onChange={(event, newValue) =>
-                            setEvaluationState(valuesEval => ({
-                              ...valuesEval,
-                              rating: newValue
-                            }))
-                          }
-                        />
-                      </div>
-                      <ContentButtons>
-                        <Button
-                          onClick={() => {
-                            handleSubmitCreateEvaluation(evaluationState)
-                          }}
-                        >
-                          Avaliar
-                        </Button>
-                      </ContentButtons>
-                    </RatingAndEvaluation>
-                  </Evaluation>
-                </EvaluationContent>
-                <SubTitle>Avaliações</SubTitle>
-                {allEvaluationsState.map(eva => (
-                  <CommentContent key={eva.id}>
-                    <Comment>&nbsp;{eva.comment}</Comment>
-                    <ItemsComment>
-                      <ContentRaiting>
-                        <Rating name="read-only" value={eva.rating} readOnly />
-                      </ContentRaiting>
-                      <DeleteIcon
-                        color="warning"
-                        onClick={e => {
-                          setEvaluationState({
-                            id: eva.id,
-                            ...eva
-                          })
-                          handleOpenModalDeleteEvaluation()
-                          console.log(eva)
-                        }}
-                      />
-                    </ItemsComment>
-                  </CommentContent>
-                ))}
+                <EvaluationContainer />
               </Content>
             </>
           )}
@@ -286,14 +178,6 @@ export function GameDisplay() {
           open={showModalDelete}
           onClose={handleCloseModalDelete}
           onSubmitDelete={handleSubmitDeleteGame}
-        />
-
-        <DialogDeleteEvaluation
-          open={showModalDeleteEvaluation}
-          onClose={handleCloseModalDeleteEvaluation}
-          evaluationState={evaluationState}
-          onSubmitDelete={handleSubmitDeleteEvaluation}
-          idGame={idGame}
         />
       </>
     </BaseLayout>
