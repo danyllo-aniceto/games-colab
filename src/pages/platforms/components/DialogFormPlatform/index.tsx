@@ -5,22 +5,28 @@ import { IPlatformDTO } from '../../../../dtos/IPlatformDTO'
 import { Dialog } from '../../../../components/StyledDialog'
 
 interface IDialogCreatePlatform {
+  title: string
+  textButtonCancel: string
+  textButtonConfirm: string
   platform: IPlatformDTO
   open: boolean
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   onClose: () => void
-  onSubmitCreate: () => Promise<void>
+  onSubmit: (platform: IPlatformDTO) => Promise<void>
 }
 
-export function DialogCreatePlatform({
+export function DialogFormPlatform({
+  textButtonCancel,
+  textButtonConfirm,
+  title,
   platform,
   open,
   onChange,
   onClose,
-  onSubmitCreate
+  onSubmit
 }: IDialogCreatePlatform) {
   return (
-    <Dialog open={open} onClose={onClose} title="Cadastrar Plataforma">
+    <Dialog open={open} onClose={onClose} title={title}>
       <>
         <DialogContent>
           <InputField
@@ -37,8 +43,10 @@ export function DialogCreatePlatform({
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose}>Cancelar</Button>
-          <Button onClick={onSubmitCreate}>Cadastrar</Button>
+          <Button onClick={onClose}>{textButtonCancel}</Button>
+          <Button onClick={() => onSubmit(platform)}>
+            {textButtonConfirm}
+          </Button>
         </DialogActions>
       </>
     </Dialog>

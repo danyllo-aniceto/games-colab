@@ -68,11 +68,15 @@ export function useEvaluation() {
     }
   }
 
-  async function handleSubmitCreateEvaluation(evaluationState: IEvaluationDTO) {
+  async function handleSubmitCreateEvaluation(
+    evaluationState: IEvaluationDTO,
+    idGame: number
+  ) {
     onToggleLoading()
     try {
       await evaluationService.create(evaluationState)
       addToast('Avaliação criada com sucesso!', ToastType.SUCCESS)
+      getEvaluationByIdGame(idGame)
     } catch (error) {
       const { response } = error as AxiosError
       addToast(
@@ -85,13 +89,17 @@ export function useEvaluation() {
     }
   }
 
-  async function handleSubmitEditEvaluation() {
+  async function handleSubmitEditEvaluation(
+    eva: IEvaluationDTO,
+    idGame: number
+  ) {
     onToggleLoading()
+
     try {
-      await evaluationService.updateById(evaluationState)
+      await evaluationService.updateById({ ...eva, rating: Number(eva.rating) })
       onToggleModalEdit()
       addToast('Avaliação editada com sucesso!', ToastType.SUCCESS)
-      getEvaluations()
+      getEvaluationByIdGame(idGame)
     } catch (error) {
       const { response } = error as AxiosError
       addToast(

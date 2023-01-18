@@ -5,9 +5,8 @@ import * as React from 'react'
 
 import addImg from '../../assets/add.svg'
 import { BaseLayout } from '../../layout/BaseLayout'
-import { DialogDeletePlatform } from './components/DialogDeletePlatform'
-import { DialogEditPlatform } from './components/DialogEditPlatform'
-import { DialogCreatePlatform } from './components/DialogCreatePlatform'
+import { DialogDelete } from '../../components/DialogDelete'
+import { DialogFormPlatform } from './components/DialogFormPlatform'
 import { EmptyItem } from '../../components/EmptyItem'
 import { ContentDefault, MessageDefault } from '../../styles/global'
 
@@ -136,26 +135,39 @@ export function Platforms() {
             )}
           </>
         </Container>
-        <DialogCreatePlatform
+        <DialogFormPlatform
           open={showModalCreate}
           onClose={onToggleModalCreate}
           onChange={handleChange}
-          onSubmitCreate={handleSubmitCreatePlatform}
+          onSubmit={handleSubmitCreatePlatform}
           platform={platformState}
+          textButtonCancel={'Cancelar'}
+          textButtonConfirm={'Criar Plataforma'}
+          title={'Cadastrar Plataforma'}
         />
 
-        <DialogEditPlatform
+        <DialogFormPlatform
           open={showModalEdit}
           onClose={onToggleModalEdit}
           onChange={handleChange}
-          onSubmitEdit={handleSubmitEditPlatform}
+          onSubmit={handleSubmitEditPlatform}
           platform={platformState}
+          textButtonCancel={'Cancelar'}
+          textButtonConfirm={'Editar Plataforma'}
+          title={'Dados da Plataforma'}
         />
 
-        <DialogDeletePlatform
+        <DialogDelete
           open={showModalDelete}
           onClose={onToggleModalDelete}
           onSubmitDelete={handleSubmitDeletePlatform}
+          deleteConfirmationText={
+            'Tem certeza que deseja deletar a plataforma?'
+          }
+          entity={platformState}
+          textButtonCancel={'Cancelar'}
+          textButtonConfirm={'Deletar Plataforma'}
+          title={'Deleção de Plataforma'}
         />
       </>
     </BaseLayout>

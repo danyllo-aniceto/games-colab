@@ -7,10 +7,13 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Rating from '@mui/material/Rating'
 import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
 
 import { InputField } from '../../../../components/InputField'
 import { Button } from '../../../../components/Button'
 import { IEvaluationDTO } from '../../../../dtos/IEvaluationDTO'
+import { DialogDeleteEvaluation } from '../DialogDeleteEvaluation'
+import { DialogEditEvaluation } from '../DialogEditEvaluation'
 
 import {
   EvaluationContent,
@@ -24,16 +27,18 @@ import {
   ItemsComment,
   ContentRaiting
 } from './styles'
-import { DialogDeleteEvaluation } from '../DialogDeleteEvaluation'
 
 export function EvaluationContainer() {
   const {
     handleSubmitCreateEvaluation,
     handleSubmitDeleteEvaluation,
+    handleSubmitEditEvaluation,
     getEvaluationByIdGame,
+    onToggleModalDelete,
+    onToggleModalEdit,
     showModalDeleteEvaluation,
     allEvaluationsState,
-    onToggleModalDelete
+    showModalEdit
   } = useEvaluation()
 
   const { id } = useParams<'id'>()
@@ -105,7 +110,7 @@ export function EvaluationContainer() {
             <ContentButtons>
               <Button
                 onClick={() => {
-                  handleSubmitCreateEvaluation(evaluationState)
+                  handleSubmitCreateEvaluation(evaluationState, idGame)
                 }}
               >
                 Avaliar
@@ -122,17 +127,32 @@ export function EvaluationContainer() {
             <ContentRaiting>
               <Rating name="read-only" value={eva.rating} readOnly />
             </ContentRaiting>
-            <DeleteIcon
-              color="warning"
-              onClick={e => {
-                setEvaluationState({
-                  id: eva.id,
-                  ...eva
-                })
-                onToggleModalDelete()
-                console.log(eva)
-              }}
-            />
+            <div>
+              <EditIcon
+                color="action"
+                onClick={() => {
+                  setEvaluationState({
+                    id: eva.id,
+                    comment: eva.comment,
+                    idGame: idGame,
+                    idUser: idUser,
+                    rating: eva.rating
+                  })
+                  onToggleModalEdit()
+                }}
+              />
+              <DeleteIcon
+                color="warning"
+                onClick={e => {
+                  setEvaluationState({
+                    id: eva.id,
+                    ...eva
+                  })
+                  onToggleModalDelete()
+                  console.log(eva)
+                }}
+              />
+            </div>
           </ItemsComment>
         </CommentContent>
       ))}
@@ -142,6 +162,15 @@ export function EvaluationContainer() {
         onClose={onToggleModalDelete}
         evaluationState={evaluationState}
         onSubmitDelete={handleSubmitDeleteEvaluation}
+        idGame={idGame}
+      />
+
+      <DialogEditEvaluation
+        open={showModalEdit}
+        onClose={onToggleModalEdit}
+        evaluation={evaluationState}
+        onChange={handleChangeEvaluation}
+        onSubmitEdit={handleSubmitEditEvaluation}
         idGame={idGame}
       />
     </>

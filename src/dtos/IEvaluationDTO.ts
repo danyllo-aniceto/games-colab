@@ -1,5 +1,5 @@
 export interface IEvaluationDTO {
-  id?: number
+  id: number
   idUser: number
   idGame: number
   rating: number

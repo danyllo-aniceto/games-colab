@@ -48,6 +48,7 @@ export default class EvaluationService {
   public async updateById(
     dataRequest: IUpdateEvaluationRequest
   ): Promise<IUpdateEvaluationResponse> {
+    console.log(dataRequest, 'service')
     const { data } = await api.put<IUpdateEvaluationResponse>(
       `${this.route}/${dataRequest.id}`,
       dataRequest
